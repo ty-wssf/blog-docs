@@ -1,0 +1,16 @@
+{
+  "name": "vuepress_docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.8.2",
+    "vuepress": "^1.8.2",
+    "@vssue/vuepress-plugin-vssue": "^1.4.8",
+    "@vssue/api-github-v4": "^1.4.7"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  }
+}
