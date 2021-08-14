@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring IOC 容器源码分析 - 创建单例 bean 的过程 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/69.6b65e613.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring IOC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="sidebar-link">Spring bean的生命流程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html" class="sidebar-link">Spring IOC 容器源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="sidebar-link">Spring IOC 容器源码分析 - 获取单例 bean</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html" class="active sidebar-link">Spring IOC 容器源码分析 - 创建单例 bean 的过程</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html#_1-简介" class="sidebar-link">1. 简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html#_2-源码分析" class="sidebar-link">2. 源码分析</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html#_2-1-创建-bean-实例的入口" class="sidebar-link">2.1 创建 bean 实例的入口</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html#_2-2-createbean-方法全貌" class="sidebar-link">2.2 createBean 方法全貌</a></li></ul></li></ul></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建原始 bean 对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="sidebar-link">Spring IOC 容器源码分析 - 循环依赖的解决办法</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html" class="sidebar-link">Spring IOC 容器源码分析 - 余下的初始化工作</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring AOP</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析系列文章导读.html" class="sidebar-link">Spring AOP 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="sidebar-link">Spring AOP 源码分析 - 筛选合适的通知器</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html" class="sidebar-link">Spring AOP 源码分析 - 创建代理对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html" class="sidebar-link">Spring AOP 源码分析 - 拦截器链的执行过程</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring MVC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="sidebar-link">Spring MVC 原理探秘 - 一个请求的旅行过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html" class="sidebar-link">Spring MVC 原理探秘 - 容器的创建过程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-ioc-容器源码分析-创建单例-bean-的过程"><a href="#spring-ioc-容器源码分析-创建单例-bean-的过程" class="header-anchor">#</a> Spring IOC 容器源码分析 - 创建单例 bean 的过程</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1. 简介</h2> <p>在<a href="http://www.coolblog.xyz/2018/06/01/Spring-IOC-%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8B-bean/" target="_blank" rel="noopener noreferrer">上一篇文章<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>中，我比较详细的分析了获取 bean 的方法，也就是<code>getBean(String)</code>的实现逻辑。对于已实例化好的单例 bean，getBean(String) 方法并不会再一次去创建，而是从缓存中获取。如果某个 bean 还未实例化，这个时候就无法命中缓存。此时，就要根据 bean 的配置信息去创建这个 bean 了。相较于<code>getBean(String)</code>方法的实现逻辑，创建 bean 的方法<code>createBean(String, RootBeanDefinition, Object[])</code>及其所调用的方法逻辑上更为复杂一些。关于创建 bean 实例的过程，我将会分几篇文章进行分析。本篇文章会先从大体上分析 <code>createBean(String, RootBeanDefinition, Object[])</code>方法的代码逻辑，至于其所调用的方法将会在随后的文章中进行分析。</p> <p>好了，其他的不多说，直接进入正题吧。</p> <h2 id="_2-源码分析"><a href="#_2-源码分析" class="header-anchor">#</a> 2. 源码分析</h2> <h3 id="_2-1-创建-bean-实例的入口"><a href="#_2-1-创建-bean-实例的入口" class="header-anchor">#</a> 2.1 创建 bean 实例的入口</h3> <p>在正式分析<code>createBean(String, RootBeanDefinition, Object[])</code>方法前，我们先来看看 createBean 方法是在哪里被调用的。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public T doGetBean(...) {
+    // 省略不相关代码
+    if (mbd.isSingleton()) {
+        sharedInstance = getSingleton(beanName, new ObjectFactory&lt;Object&gt;() {
+            @Override
+            public Object getObject() throws BeansException {
+                try {
+                    return createBean(beanName, mbd, args);
+                }
+                catch (BeansException ex) {
+                    destroySingleton(beanName);
+                    throw ex;
+                }
+            }
+        });
+        bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+    }
+    // 省略不相关代码
+}
+</code></pre></div><p>上面是 doGetBean 方法的代码片段，从中可以发现 createBean 方法。createBean 方法被匿名工厂类的 getObject 方法包裹，但这个匿名工厂类对象并未直接调用 getObject 方法。而是将自身作为参数传给了<code>getSingleton(String, ObjectFactory)</code>方法，那么我们接下来再去看看一下getSingleton(String, ObjectFactory) 方法的实现。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public Object getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory) {
+    Assert.notNull(beanName, &quot;'beanName' must not be null&quot;);
+    synchronized (this.singletonObjects) {
+        // 从缓存中获取单例 bean，若不为空，则直接返回，不用再初始化
+        Object singletonObject = this.singletonObjects.get(beanName);
+        if (singletonObject == null) {
+            if (this.singletonsCurrentlyInDestruction) {
+                throw new BeanCreationNotAllowedException(beanName,
+                        &quot;Singleton bean creation not allowed while singletons of this factory are in destruction &quot; +
+                        &quot;(Do not request a bean from a BeanFactory in a destroy method implementation!)&quot;);
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;Creating shared instance of singleton bean '&quot; + beanName + &quot;'&quot;);
+            }
+            /* 
+             * 将 beanName 添加到 singletonsCurrentlyInCreation 集合中，
+             * 用于表明 beanName 对应的 bean 正在创建中
+             */
+            beforeSingletonCreation(beanName);
+            boolean newSingleton = false;
+            boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
+            if (recordSuppressedExceptions) {
+                this.suppressedExceptions = new LinkedHashSet&lt;Exception&gt;();
+            }
+            try {
+                // 通过 getObject 方法调用 createBean 方法创建 bean 实例
+                singletonObject = singletonFactory.getObject();
+                newSingleton = true;
+            }
+            catch (IllegalStateException ex) {
+                singletonObject = this.singletonObjects.get(beanName);
+                if (singletonObject == null) {
+                    throw ex;
+                }
+            }
+            catch (BeanCreationException ex) {
+                if (recordSuppressedExceptions) {
+                    for (Exception suppressedException : this.suppressedExceptions) {
+                        ex.addRelatedCause(suppressedException);
+                    }
+                }
+                throw ex;
+            }
+            finally {
+                if (recordSuppressedExceptions) {
+                    this.suppressedExceptions = null;
+                }
+                // 将 beanName 从 singletonsCurrentlyInCreation 移除
+                afterSingletonCreation(beanName);
+            }
+            if (newSingleton) {
+                /* 
+                 * 将 &lt;beanName, singletonObject&gt; 键值对添加到 singletonObjects 集合中，
+                 * 并从其他集合（比如 earlySingletonObjects）中移除 singletonObject 记录
+                 */
+                addSingleton(beanName, singletonObject);
+            }
+        }
+        return (singletonObject != NULL_OBJECT ? singletonObject : null);
+    }
+}
+</code></pre></div><p>上面的方法逻辑不是很复杂，这里简单总结一下。如下：</p> <ol><li>先从 singletonObjects 集合获取 bean 实例，若不为空，则直接返回</li> <li>若为空，进入创建 bean 实例阶段。先将 beanName 添加到 singletonsCurrentlyInCreation</li> <li>通过 getObject 方法调用 createBean 方法创建 bean 实例</li> <li>将 beanName 从 singletonsCurrentlyInCreation 集合中移除</li> <li>将 &lt;beanName, singletonObject&gt; 映射缓存到 singletonObjects 集合中</li></ol> <p>从上面的分析中，我们知道了 createBean 方法在何处被调用的。那么接下来我们一起深入 createBean 方法的源码中，来看看这个方法具体都做了什么事情。</p> <h3 id="_2-2-createbean-方法全貌"><a href="#_2-2-createbean-方法全貌" class="header-anchor">#</a> 2.2 createBean 方法全貌</h3> <p>createBean 和 getBean 方法类似，基本上都是空壳方法，只不过 createBean 的逻辑稍微多点，多做了一些事情。下面我们一起看看这个方法的实现逻辑，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {
+    if (logger.isDebugEnabled()) {
+        logger.debug(&quot;Creating instance of bean '&quot; + beanName + &quot;'&quot;);
+    }
+    RootBeanDefinition mbdToUse = mbd;
+
+    // 解析 bean 的类型
+    Class&lt;?&gt; resolvedClass = resolveBeanClass(mbd, beanName);
+    if (resolvedClass != null &amp;&amp; !mbd.hasBeanClass() &amp;&amp; mbd.getBeanClassName() != null) {
+        mbdToUse = new RootBeanDefinition(mbd);
+        mbdToUse.setBeanClass(resolvedClass);
+    }
+
+    try {
+        // 处理 lookup-method 和 replace-method 配置，Spring 将这两个配置统称为 override method
+        mbdToUse.prepareMethodOverrides();
+    }
+    catch (BeanDefinitionValidationException ex) {
+        throw new BeanDefinitionStoreException(mbdToUse.getResourceDescription(),
+                beanName, &quot;Validation of method overrides failed&quot;, ex);
+    }
+
+    try {
+        // 在 bean 初始化前应用后置处理，如果后置处理返回的 bean 不为空，则直接返回
+        Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+        if (bean != null) {
+            return bean;
+        }
+    }
+    catch (Throwable ex) {
+        throw new BeanCreationException(mbdToUse.getResourceDescription(), beanName,
+                &quot;BeanPostProcessor before instantiation of bean failed&quot;, ex);
+    }
+
+    // 调用 doCreateBean 创建 bean
+    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+    if (logger.isDebugEnabled()) {
+        logger.debug(&quot;Finished creating instance of bean '&quot; + beanName + &quot;'&quot;);
+    }
+    return beanInstance;
+}
+</code></pre></div><p>上面的代码不长，代码的执行流程比较容易看出，这里罗列一下：</p> <ol><li>解析 bean 类型</li> <li>处理 lookup-method 和 replace-method 配置</li> <li>在 bean 初始化前应用后置处理，若后置处理返回的 bean 不为空，则直接返回</li> <li>若上一步后置处理返回的 bean 为空，则调用 doCreateBean 创建 bean 实例</li></ol> <p>下面我会分节对第2、3和4步的流程进行分析，步骤1的详细实现大家有兴趣的话，就自己去看看吧。</p> <h4 id="_2-2-1-验证和准备-override-方法"><a href="#_2-2-1-验证和准备-override-方法" class="header-anchor">#</a> 2.2.1 验证和准备 override 方法</h4> <p>当用户配置了 lookup-method 和 replace-method 时，Spring 需要对目标 bean 进行增强。在增强之前，需要做一些准备工作，也就是 prepareMethodOverrides 中的逻辑。下面来看看这个方法的源码：</p> <div class="language- extra-class"><pre class="language-text"><code>public void prepareMethodOverrides() throws BeanDefinitionValidationException {
+    MethodOverrides methodOverrides = getMethodOverrides();
+    if (!methodOverrides.isEmpty()) {
+        Set&lt;MethodOverride&gt; overrides = methodOverrides.getOverrides();
+        synchronized (overrides) {
+            // 循环处理每个 MethodOverride 对象
+            for (MethodOverride mo : overrides) {
+                prepareMethodOverride(mo);
+            }
+        }
+    }
+}
+
+protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
+    // 获取方法名为 mo.getMethodName() 的方法数量，当方法重载时，count 的值就会大于1
+    int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());
+    // count = 0，表明根据方法名未找到相应的方法，此时抛出异常
+    if (count == 0) {
+        throw new BeanDefinitionValidationException(
+                &quot;Invalid method override: no method with name '&quot; + mo.getMethodName() +
+                &quot;' on class [&quot; + getBeanClassName() + &quot;]&quot;);
+    }
+    // 若 count = 1，表明仅存在已方法名为 mo.getMethodName()，这意味着方法不存在重载
+    else if (count == 1) {
+        // 方法不存在重载，则将 overloaded 成员变量设为 false
+        mo.setOverloaded(false);
+    }
+}
+</code></pre></div><p>上面的源码中，<code>prepareMethodOverrides</code>方法循环调用了<code>prepareMethodOverride</code>方法，并没其他的太多逻辑。主要准备工作都是在 prepareMethodOverride 方法中进行的，所以我们重点关注一下这个方法。prepareMethodOverride 这个方法主要用于获取指定方法的方法数量 count，并根据 count 的值进行相应的处理。count = 0 时，表明方法不存在，此时抛出异常。count = 1 时，设置 MethodOverride 对象的<code>overloaded</code>成员变量为 false。这样做的目的在于，提前标注名称<code>mo.getMethodName()</code>的方法不存在重载，在使用 CGLIB 增强阶段就不需要进行校验，直接找到某个方法进行增强即可。</p> <p>上面的方法没太多的逻辑，比较简单，就先分析到这里。</p> <h4 id="_2-2-2-bean-实例化前的后置处理"><a href="#_2-2-2-bean-实例化前的后置处理" class="header-anchor">#</a> 2.2.2 bean 实例化前的后置处理</h4> <p>后置处理是 Spring 的一个拓展点，用户通过实现 BeanPostProcessor 接口，并将实现类配置到 Spring 的配置文件中（或者使用注解），即可在 bean 初始化前后进行自定义操作。关于后置处理较为详细的说明，可以参考我的了一篇文章<a href="http://www.coolblog.xyz/2018/05/30/Spring-IOC-%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%AF%BC%E8%AF%BB/" target="_blank" rel="noopener noreferrer">Spring IOC 容器源码分析系列文章导读<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，这里就不赘述了。下面我们来看看 createBean 方法中的后置处理逻辑，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
+    Object bean = null;
+    // 检测是否解析过，mbd.beforeInstantiationResolved 的值在下面的代码中会被设置
+    if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
+        if (!mbd.isSynthetic() &amp;&amp; hasInstantiationAwareBeanPostProcessors()) {
+            Class&lt;?&gt; targetType = determineTargetType(beanName, mbd);
+            if (targetType != null) {
+                // 应用前置处理
+                bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
+                if (bean != null) {
+                    // 应用后置处理
+                    bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+                }
+            }
+        }
+        // 设置 mbd.beforeInstantiationResolved
+        mbd.beforeInstantiationResolved = (bean != null);
+    }
+    return bean;
+}
+
+protected Object applyBeanPostProcessorsBeforeInstantiation(Class&lt;?&gt; beanClass, String beanName) {
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        // InstantiationAwareBeanPostProcessor 一般在 Spring 框架内部使用，不建议用户直接使用
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            // bean 初始化前置处理
+            Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
+            if (result != null) {
+                return result;
+            }
+        }
+    }
+    return null;
+}
+
+public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
+        throws BeansException {
+
+    Object result = existingBean;
+    for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+       // bean 初始化后置处理
+        result = beanProcessor.postProcessAfterInitialization(result, beanName);
+        if (result == null) {
+            return result;
+        }
+    }
+    return result;
+}
+</code></pre></div><p>在 resolveBeforeInstantiation 方法中，当前置处理方法返回的 bean 不为空时，后置处理才会被执行。前置处理器是 InstantiationAwareBeanPostProcessor 类型的，该种类型的处理器一般用在 Spring 框架内部，比如 AOP 模块中的<code>AbstractAutoProxyCreator</code>抽象类间接实现了这个接口中的 <code>postProcessBeforeInstantiation</code>方法，所以 AOP 可以在这个方法中生成为目标类的代理对象。不过我在调试的过程中，发现 AOP 在此处生成代理对象是有条件的。一般情况下条件都不成立，也就不会在此处生成代理对象。至于这个条件为什么不成立，因 AOP 这一块的源码我还没来得及看，所以暂时还无法解答。等我看过 AOP 模块的源码后，我再来尝试分析这个条件。</p> <h4 id="_2-2-3-调用-docreatebean-方法创建-bean"><a href="#_2-2-3-调用-docreatebean-方法创建-bean" class="header-anchor">#</a> 2.2.3 调用 doCreateBean 方法创建 bean</h4> <p>这一节，我们来分析一下<code>doCreateBean</code>方法的源码。在 Spring 中，做事情的方法基本上都是以<code>do</code>开头的，doCreateBean 也不例外。那下面我们就来看看这个方法都做了哪些事情。</p> <div class="language- extra-class"><pre class="language-text"><code>protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args)
+        throws BeanCreationException {
+
+    /* 
+     * BeanWrapper 是一个基础接口，由接口名可看出这个接口的实现类用于包裹 bean 实例。
+     * 通过 BeanWrapper 的实现类可以方便的设置/获取 bean 实例的属性
+     */
+    BeanWrapper instanceWrapper = null;
+    if (mbd.isSingleton()) {
+        // 从缓存中获取 BeanWrapper，并清理相关记录
+        instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
+    }
+    if (instanceWrapper == null) {
+        /* 
+         * 创建 bean 实例，并将实例包裹在 BeanWrapper 实现类对象中返回。createBeanInstance 
+         * 中包含三种创建 bean 实例的方式：
+         *   1. 通过工厂方法创建 bean 实例
+         *   2. 通过构造方法自动注入（autowire by constructor）的方式创建 bean 实例
+         *   3. 通过无参构造方法方法创建 bean 实例
+         *
+         * 若 bean 的配置信息中配置了 lookup-method 和 replace-method，则会使用 CGLIB 
+         * 增强 bean 实例。关于这个方法，后面会专门写一篇文章介绍，这里先说这么多。
+         */
+        instanceWrapper = createBeanInstance(beanName, mbd, args);
+    }
+    // 此处的 bean 可以认为是一个原始的 bean 实例，暂未填充属性
+    final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);
+    Class&lt;?&gt; beanType = (instanceWrapper != null ? instanceWrapper.getWrappedClass() : null);
+    mbd.resolvedTargetType = beanType;
+
+    // 这里又遇到后置处理了，此处的后置处理是用于处理已“合并的 BeanDefinition”。关于这种后置处理器具体的实现细节就不深入理解了，大家有兴趣可以自己去看
+    synchronized (mbd.postProcessingLock) {
+        if (!mbd.postProcessed) {
+            try {
+                applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+            }
+            catch (Throwable ex) {
+                throw new BeanCreationException(mbd.getResourceDescription(), beanName,
+                        &quot;Post-processing of merged bean definition failed&quot;, ex);
+            }
+            mbd.postProcessed = true;
+        }
+    }
+
+    /*
+     * earlySingletonExposure 是一个重要的变量，这里要说明一下。该变量用于表示是否提前暴露
+     * 单例 bean，用于解决循环依赖。earlySingletonExposure 由三个条件综合而成，如下：
+     *   条件1：mbd.isSingleton() - 表示 bean 是否是单例类型
+     *   条件2：allowCircularReferences - 是否允许循环依赖
+     *   条件3：isSingletonCurrentlyInCreation(beanName) - 当前 bean 是否处于创建的状态中
+     * 
+     * earlySingletonExposure = 条件1 &amp;&amp; 条件2 &amp;&amp; 条件3 
+     *                        = 单例 &amp;&amp; 是否允许循环依赖 &amp;&amp; 是否存于创建状态中。
+     */
+    boolean earlySingletonExposure = (mbd.isSingleton() &amp;&amp; this.allowCircularReferences &amp;&amp;
+            isSingletonCurrentlyInCreation(beanName));
+    if (earlySingletonExposure) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(&quot;Eagerly caching bean '&quot; + beanName +
+                    &quot;' to allow for resolving potential circular references&quot;);
+        }
+        // 添加工厂对象到 singletonFactories 缓存中
+        addSingletonFactory(beanName, new ObjectFactory&lt;Object&gt;() {
+            @Override
+            public Object getObject() throws BeansException {
+                // 获取早期 bean 的引用，如果 bean 中的方法被 AOP 切点所匹配到，此时 AOP 相关逻辑会介入
+                return getEarlyBeanReference(beanName, mbd, bean);
+            }
+        });
+    }
+
+    Object exposedObject = bean;
+    try {
+        // 向 bean 实例中填充属性，populateBean 方法也是一个很重要的方法，后面会专门写文章分析
+        populateBean(beanName, mbd, instanceWrapper);
+        if (exposedObject != null) {
+            /*
+             * 进行余下的初始化工作，详细如下：
+             * 1. 判断 bean 是否实现了 BeanNameAware、BeanFactoryAware、
+             *    BeanClassLoaderAware 等接口，并执行接口方法
+             * 2. 应用 bean 初始化前置操作
+             * 3. 如果 bean 实现了 InitializingBean 接口，则执行 afterPropertiesSet 
+             *    方法。如果用户配置了 init-method，则调用相关方法执行自定义初始化逻辑
+             * 4. 应用 bean 初始化后置操作
+             * 
+             * 另外，AOP 相关逻辑也会在该方法中织入切面逻辑，此时的 exposedObject 就变成了
+             * 一个代理对象了
+             */
+            exposedObject = initializeBean(beanName, exposedObject, mbd);
+        }
+    }
+    catch (Throwable ex) {
+        if (ex instanceof BeanCreationException &amp;&amp; beanName.equals(((BeanCreationException) ex).getBeanName())) {
+            throw (BeanCreationException) ex;
+        }
+        else {
+            throw new BeanCreationException(
+                    mbd.getResourceDescription(), beanName, &quot;Initialization of bean failed&quot;, ex);
+        }
+    }
+
+    if (earlySingletonExposure) {
+        Object earlySingletonReference = getSingleton(beanName, false);
+        if (earlySingletonReference != null) {
+            // 若 initializeBean 方法未改变 exposedObject 的引用，则此处的条件为 true。
+            if (exposedObject == bean) {
+                exposedObject = earlySingletonReference;
+            }
+            // 下面的逻辑我也没完全搞懂，就不分析了。见谅。
+            else if (!this.allowRawInjectionDespiteWrapping &amp;&amp; hasDependentBean(beanName)) {
+                String[] dependentBeans = getDependentBeans(beanName);
+                Set&lt;String&gt; actualDependentBeans = new LinkedHashSet&lt;String&gt;(dependentBeans.length);
+                for (String dependentBean : dependentBeans) {
+                    if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) {
+                        actualDependentBeans.add(dependentBean);
+                    }
+                }
+                if (!actualDependentBeans.isEmpty()) {
+                    throw new BeanCurrentlyInCreationException(beanName,
+                            &quot;Bean with name '&quot; + beanName + &quot;' has been injected into other beans [&quot; +
+                            StringUtils.collectionToCommaDelimitedString(actualDependentBeans) +
+                            &quot;] in its raw version as part of a circular reference, but has eventually been &quot; +
+                            &quot;wrapped. This means that said other beans do not use the final version of the &quot; +
+                            &quot;bean. This is often the result of over-eager type matching - consider using &quot; +
+                            &quot;'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.&quot;);
+                }
+            }
+        }
+    }
+
+    try {
+        // 注册销毁逻辑
+        registerDisposableBeanIfNecessary(beanName, bean, mbd);
+    }
+    catch (BeanDefinitionValidationException ex) {
+        throw new BeanCreationException(
+                mbd.getResourceDescription(), beanName, &quot;Invalid destruction signature&quot;, ex);
+    }
+
+    return exposedObject;
+}
+</code></pre></div><p>上面的注释比较多，分析的应该比较详细的。不过有一部分代码我暂时没看懂，就不分析了，见谅。下面我们来总结一下 doCreateBean 方法的执行流程吧，如下：</p> <ol><li>从缓存中获取 BeanWrapper 实现类对象，并清理相关记录</li> <li>若未命中缓存，则创建 bean 实例，并将实例包裹在 BeanWrapper 实现类对象中返回</li> <li>应用 MergedBeanDefinitionPostProcessor 后置处理器相关逻辑</li> <li>根据条件决定是否提前暴露 bean 的早期引用（early reference），用于处理循环依赖问题</li> <li>调用 populateBean 方法向 bean 实例中填充属性</li> <li>调用 initializeBean 方法完成余下的初始化工作</li> <li>注册销毁逻辑</li></ol></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="prev">
+        Spring IOC 容器源码分析 - 获取单例 bean
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html">
+        Spring IOC 容器源码分析 - 创建原始 bean 对象
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/69.6b65e613.js" defer></script>
+  </body>
+</html>

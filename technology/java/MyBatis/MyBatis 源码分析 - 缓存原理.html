@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MyBatis 源码分析 - 缓存原理 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/24.54c027da.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>MyBatis</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读.html" class="sidebar-link">MyBatis 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 配置文件解析过程.html" class="sidebar-link">MyBatis 源码分析 - 配置文件解析过程</a></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 映射文件解析过程.html" class="sidebar-link">MyBatis 源码分析 - 映射文件解析过程</a></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - SQL 的执行过程.html" class="sidebar-link">MyBatis 源码分析 - SQL 的执行过程</a></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 内置数据源.html" class="sidebar-link">MyBatis 源码分析 - 内置数据源</a></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html" class="active sidebar-link">MyBatis 源码分析 - 缓存原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_1-简介" class="sidebar-link">1.简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_2-缓存类介绍" class="sidebar-link">2.缓存类介绍</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_2-1-perpetualcache" class="sidebar-link">2.1 PerpetualCache</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_2-2-lrucache" class="sidebar-link">2.2 LruCache</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_2-3-blockingcache" class="sidebar-link">2.3 BlockingCache</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_3-cachekey" class="sidebar-link">3. CacheKey</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_4-一级缓存" class="sidebar-link">4.一级缓存</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 缓存原理.html#_5-二级缓存" class="sidebar-link">5.二级缓存</a></li></ul></li><li><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 插件机制.html" class="sidebar-link">MyBatis 源码分析 - 插件机制</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="mybatis-源码分析-缓存原理"><a href="#mybatis-源码分析-缓存原理" class="header-anchor">#</a> MyBatis 源码分析 - 缓存原理</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1.简介</h2> <p>在 Web 应用中，缓存是必不可少的组件。通常我们都会用 Redis 或 memcached 等缓存中间件，拦截大量奔向数据库的请求，减轻数据库压力。作为一个重要的组件，MyBatis 自然也在内部提供了相应的支持。通过在框架层面增加缓存功能，可减轻数据库的压力，同时又可以提升查询速度，可谓一举两得。MyBatis 缓存结构由一级缓存和二级缓存构成，这两级缓存均是使用 Cache 接口的实现类。因此，在接下里的章节中，我将首先会向大家介绍 Cache 几种实现类的源码，然后再分析一级和二级缓存的实现。下面先来分析 Cache 及其实现类。</p> <h2 id="_2-缓存类介绍"><a href="#_2-缓存类介绍" class="header-anchor">#</a> 2.缓存类介绍</h2> <p>在 MyBatis 中，Cache 是缓存接口，定义了一些基本的缓存操作，所有缓存类都应该实现该接口。MyBatis 内部提供了丰富的缓存实现类，比如具有基本缓存功能的 PerpetualCache，具有 LRU 策略的缓存 LruCache，以及可保证线程安全的缓存 SynchronizedCache 和具备阻塞功能的缓存 BlockingCache 等。除此之外，还有很多缓存实现类，这里就不一一列举了。需要特别说明的是，MyBatis 在实现缓存模块的过程中，使用了装饰模式。在以上几种缓存实现类中，PerpetualCache 相当于装饰模式中的 ConcreteComponent。LruCache、SynchronizedCache 和 BlockingCache 等相当于装饰模式中的 ConcreteDecorator。它们的关系如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15348250188091.jpg" alt="img"></p> <p>以上对 Cache 接口的实现类进行了简单的介绍，接下来，我们一起深入到源码中，看看这些缓存类的实现。</p> <h3 id="_2-1-perpetualcache"><a href="#_2-1-perpetualcache" class="header-anchor">#</a> 2.1 PerpetualCache</h3> <p>PerpetualCache 是一个具有基本功能的缓存类，内部使用了 HashMap 实现缓存功能。它的源码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class PerpetualCache implements Cache {
+
+    private final String id;
+
+    private Map&lt;Object, Object&gt; cache = new HashMap&lt;Object, Object&gt;();
+
+    public PerpetualCache(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public int getSize() {
+        return cache.size();
+    }
+
+    @Override
+    public void putObject(Object key, Object value) {
+        // 存储键值对到 HashMap
+        cache.put(key, value);
+    }
+
+    @Override
+    public Object getObject(Object key) {
+        // 查找缓存项
+        return cache.get(key);
+    }
+
+    @Override
+    public Object removeObject(Object key) {
+        // 移除缓存项
+        return cache.remove(key);
+    }
+
+    @Override
+    public void clear() {
+        cache.clear();
+    }
+    
+    // 省略部分代码
+}
+</code></pre></div><p>上面是 PerpetualCache 的全部代码，很简单。接下来，我们通过装饰类对该类进行装饰，使其功能变的丰富起来。</p> <h3 id="_2-2-lrucache"><a href="#_2-2-lrucache" class="header-anchor">#</a> 2.2 LruCache</h3> <p>LruCache，顾名思义，是一种具有 LRU 策略的缓存实现类。除此之外，MyBatis 还提供了具有 FIFO 策略的缓存 FifoCache。不过并未提供 LFU 缓存，如果大家有兴趣，可以自行拓展。接下来，我们来看一下 LruCache 的实现。</p> <div class="language- extra-class"><pre class="language-text"><code>public class LruCache implements Cache {
+
+    private final Cache delegate;
+    private Map&lt;Object, Object&gt; keyMap;
+    private Object eldestKey;
+
+    public LruCache(Cache delegate) {
+        this.delegate = delegate;
+        setSize(1024);
+    }
+    
+    public int getSize() {
+        return delegate.getSize();
+    }
+
+    public void setSize(final int size) {
+        /*
+         * 初始化 keyMap，注意，keyMap 的类型继承自 LinkedHashMap，
+         * 并覆盖了 removeEldestEntry 方法
+         */
+        keyMap = new LinkedHashMap&lt;Object, Object&gt;(size, .75F, true) {
+            private static final long serialVersionUID = 4267176411845948333L;
+
+            // 覆盖 LinkedHashMap 的 removeEldestEntry 方法
+            @Override
+            protected boolean removeEldestEntry(Map.Entry&lt;Object, Object&gt; eldest) {
+                boolean tooBig = size() &gt; size;
+                if (tooBig) {
+                    // 获取将要被移除缓存项的键值
+                    eldestKey = eldest.getKey();
+                }
+                return tooBig;
+            }
+        };
+    }
+
+    @Override
+    public void putObject(Object key, Object value) {
+        // 存储缓存项
+        delegate.putObject(key, value);
+        cycleKeyList(key);
+    }
+
+    @Override
+    public Object getObject(Object key) {
+        // 刷新 key 在 keyMap 中的位置
+        keyMap.get(key);
+        // 从被装饰类中获取相应缓存项
+        return delegate.getObject(key);
+    }
+
+    @Override
+    public Object removeObject(Object key) {
+        // 从被装饰类中移除相应的缓存项
+        return delegate.removeObject(key);
+    }
+
+    @Override
+    public void clear() {
+        delegate.clear();
+        keyMap.clear();
+    }
+
+    private void cycleKeyList(Object key) {
+        // 存储 key 到 keyMap 中
+        keyMap.put(key, key);
+        if (eldestKey != null) {
+            // 从被装饰类中移除相应的缓存项
+            delegate.removeObject(eldestKey);
+            eldestKey = null;
+        }
+    }
+    
+    // 省略部分代码
+}
+</code></pre></div><p>如上，LruCache 的 keyMap 属性是实现 LRU 策略的关键，该属性类型继承自 LinkedHashMap，并覆盖了 removeEldestEntry 方法。LinkedHashMap 可保持键值对的插入顺序，当插入一个新的键值对时，LinkedHashMap 内部的 tail 节点会指向最新插入的节点。head 节点则指向第一个被插入的键值对，也就是最久未被访问的那个键值对。默认情况下，LinkedHashMap 仅维护键值对的插入顺序。若要基于 LinkedHashMap 实现 LRU 缓存，还需通过构造方法将 LinkedHashMap 的 accessOrder 属性设为 true，此时 LinkedHashMap 会维护键值对的访问顺序。比如，上面代码中 getObject 方法中执行了这样一句代码 keyMap.get(key)，目的是刷新 key 对应的键值对在 LinkedHashMap 的位置。LinkedHashMap 会将 key 对应的键值对移动到链表的尾部，尾部节点表示最久刚被访问过或者插入的节点。除了需将 accessOrder 设为 true，还需覆盖 removeEldestEntry 方法。LinkedHashMap 在插入新的键值对时会调用该方法，以决定是否在插入新的键值对后，移除老的键值对。在上面的代码中，当被装饰类的容量超出了 keyMap 的所规定的容量（由构造方法传入）后，keyMap 会移除最长时间未被访问的键，并保存到 eldestKey 中，然后由 cycleKeyList 方法将 eldestKey 传给被装饰类的 removeObject 方法，移除相应的缓存项目。</p> <p>上面讲了 LinkedHashMap 是如何实现 LRU 特性的，这个是理解 LruCache 的源码的关键所在，所以大家务必搞懂。如果大家想深入了解 LinkedHashMap 的源码，也可参考我之前写的文章 <a href="https://www.tianxiaobo.com/2018/01/24/LinkedHashMap-%E6%BA%90%E7%A0%81%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90%EF%BC%88JDK1-8%EF%BC%89/" target="_blank" rel="noopener noreferrer">LinkedHashMap 源码详细分析<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>。好了，关于 LruCache 就先分析这么多了。</p> <h3 id="_2-3-blockingcache"><a href="#_2-3-blockingcache" class="header-anchor">#</a> 2.3 BlockingCache</h3> <p>BlockingCache 实现了阻塞特性，该特性是基于 Java 重入锁实现的。同一时刻下，BlockingCache 仅允许一个线程访问指定 key 的缓存项，其他线程将会被阻塞住。下面我们来看一下 BlockingCache 的源码。</p> <div class="language- extra-class"><pre class="language-text"><code>public class BlockingCache implements Cache {
+
+    private long timeout;
+    private final Cache delegate;
+    private final ConcurrentHashMap&lt;Object, ReentrantLock&gt; locks;
+
+    public BlockingCache(Cache delegate) {
+        this.delegate = delegate;
+        this.locks = new ConcurrentHashMap&lt;Object, ReentrantLock&gt;();
+    }
+
+    @Override
+    public void putObject(Object key, Object value) {
+        try {
+            // 存储缓存项
+            delegate.putObject(key, value);
+        } finally {
+            // 释放锁
+            releaseLock(key);
+        }
+    }
+
+    @Override
+    public Object getObject(Object key) {
+        // 请        // 请求锁
+        acquireLock(key);
+        Object value = delegate.getObject(key);
+        // 若缓存命中，则释放锁。需要注意的是，未命中则不释放锁
+        if (value != null) {
+            // 释放锁
+            releaseLock(key);
+        }
+        return value;
+    }
+
+    @Override
+    public Object removeObject(Object key) {
+        // 释放锁
+        releaseLock(key);
+        return null;
+    }
+
+    private ReentrantLock getLockForKey(Object key) {
+        ReentrantLock lock = new ReentrantLock();
+        // 存储 &lt;key, Lock&gt; 键值对到 locks 中
+        ReentrantLock previous = locks.putIfAbsent(key, lock);
+        return previous == null ? lock : previous;
+    }
+
+    private void acquireLock(Object key) {
+        Lock lock = getLockForKey(key);
+        if (timeout &gt; 0) {
+            try {
+                // 尝试加锁
+                boolean acquired = lock.tryLock(timeout, TimeUnit.MILLISECONDS);
+                if (!acquired) {
+                    throw new CacheException(&quot;...&quot;);
+                }
+            } catch (InterruptedException e) {
+                throw new CacheException(&quot;...&quot;);
+            }
+        } else {
+            // 加锁
+            lock.lock();
+        }
+    }
+
+    private void releaseLock(Object key) {
+        // 获取与当前 key 对应的锁
+        ReentrantLock lock = locks.get(key);
+        if (lock.isHeldByCurrentThread()) {
+            // 释放锁
+            lock.unlock();
+        }
+    }
+    
+    // 省略部分代码
+}
+</code></pre></div><p>如上，查询缓存时，getObject 方法会先获取与 key 对应的锁，并加锁。若缓存命中，getObject 方法会释放锁，否则将一直锁定。getObject 方法若返回 null，表示缓存未命中。此时 MyBatis 会进行数据库查询，并调用 putObject 方法存储查询结果。同时，putObject 方法会将指定 key 对应的锁进行解锁，这样被阻塞的线程即可恢复运行。</p> <p>上面的描述有点啰嗦，倒是 BlockingCache 类的注释说到比较简单明了。这里引用一下：</p> <blockquote><p>It sets a lock over a cache key when the element is not found in cache.
+This way, other threads will wait until this element is filled instead of hitting the database.</p></blockquote> <p>这段话的意思是，当指定 key 对应元素不存在于缓存中时，BlockingCache 会根据 lock 进行加锁。此时，其他线程将会进入等待状态，直到与 key 对应的元素被填充到缓存中。而不是让所有线程都去访问数据库。</p> <p>在上面代码中，removeObject 方法的逻辑很奇怪，仅调用了 releaseLock 方法释放锁，却没有调用被装饰类的 removeObject 方法移除指定缓存项。这样做是为什么呢？大家可以先思考，答案将在分析二级缓存的相关逻辑时分析。</p> <h2 id="_3-cachekey"><a href="#_3-cachekey" class="header-anchor">#</a> 3. CacheKey</h2> <p>在 MyBatis 中，引入缓存的目的是为提高查询效率，降低数据库压力。既然 MyBatis 引入了缓存，那么大家思考过缓存中的 key 和 value 的值分别是什么吗？大家可能很容易能回答出 value 的内容，不就是 SQL 的查询结果吗。那 key 是什么呢？是字符串，还是其他什么对象？如果是字符串的话，那么大家首先能想到的是用 SQL 语句作为 key。但这是不对的，比如：</p> <div class="language- extra-class"><pre class="language-text"><code>SELECT * FROM author where id &gt; ?
+</code></pre></div><p>id &gt; 1 和 id &gt; 10 查出来的结果可能是不同的，所以我们不能简单的使用 SQL 语句作为 key。从这里可以看出来，运行时参数将会影响查询结果，因此我们的 key 应该涵盖运行时参数。除此之外呢，如果进行分页查询也会导致查询结果不同，因此 key 也应该涵盖分页参数。综上，我们不能使用简单的 SQL 语句作为 key。应该考虑使用一种复合对象，能涵盖可影响查询结果的因子。在 MyBatis 中，这种复合对象就是 CacheKey。下面来看一下它的定义。</p> <div class="language- extra-class"><pre class="language-text"><code>public class CacheKey implements Cloneable, Serializable {
+
+    private static final int DEFAULT_MULTIPLYER = 37;
+    private static final int DEFAULT_HASHCODE = 17;
+
+    // 乘子，默认为37
+    private final int multiplier;
+    // CacheKey 的 hashCode，综合了各种影响因子
+    private int hashcode;
+    // 校验和
+    private long checksum;
+    // 影响因子个数
+    private int count;
+    // 影响因子集合
+    private List&lt;Object&gt; updateList;
+    
+    public CacheKey() {
+        this.hashcode = DEFAULT_HASHCODE;
+        this.multiplier = DEFAULT_MULTIPLYER;
+        this.count = 0;
+        this.updateList = new ArrayList&lt;Object&gt;();
+    }
+    
+    // 省略其他方法
+}
+</code></pre></div><p>如上，除了 multiplier 是恒定不变的 ，其他变量将在更新操作中被修改。下面看一下更新操作的代码。</p> <div class="language- extra-class"><pre class="language-text"><code>/** 每当执行更新操作时，表示有新的影响因子参与计算 */
+public void update(Object object) {
+        int baseHashCode = object == null ? 1 : ArrayUtil.hashCode(object);
+    // 自增 count
+    count++;
+    // 计算校验和
+    checksum += baseHashCode;
+    // 更新 baseHashCode
+    baseHashCode *= count;
+
+    // 计算 hashCode
+    hashcode = multiplier * hashcode + baseHashCode;
+
+    // 保存影响因子
+    updateList.add(object);
+}
+</code></pre></div><p>当不断有新的影响因子参与计算时，hashcode 和 checksum 将会变得愈发复杂和随机。这样可降低冲突率，使 CacheKey 可在缓存中更均匀的分布。CacheKey 最终要作为键存入 HashMap，因此它需要覆盖 equals 和 hashCode 方法。下面我们来看一下这两个方法的实现。</p> <div class="language- extra-class"><pre class="language-text"><code>public boolean equals(Object object) {
+    // 检测是否为同一个对象
+    if (this == object) {
+        return true;
+    }
+    // 检测 object 是否为 CacheKey
+    if (!(object instanceof CacheKey)) {
+        return false;
+    }
+    final CacheKey cacheKey = (CacheKey) object;
+
+    // 检测 hashCode 是否相等
+    if (hashcode != cacheKey.hashcode) {
+        return false;
+    }
+    // 检测校验和是否相同
+    if (checksum != cacheKey.checksum) {
+        return false;
+    }
+    // 检测 coutn 是否相同
+    if (count != cacheKey.count) {
+        return false;
+    }
+
+    // 如果上面的检测都通过了，下面分别对每个影响因子进行比较
+    for (int i = 0; i &lt; updateList.size(); i++) {
+        Object thisObject = updateList.get(i);
+        Object thatObject = cacheKey.updateList.get(i);
+        if (!ArrayUtil.equals(thisObject, thatObject)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+public int hashCode() {
+    // 返回 hashcode 变量
+    return hashcode;
+}
+</code></pre></div><p>equals 方法的检测逻辑比较严格，对 CacheKey 中多个成员变量进行了检测，已保证两者相等。hashCode 方法比较简单，返回 hashcode 变量即可。</p> <p>关于 CacheKey 就先分析到这，CacheKey 在一二级缓存中会被用到，接下来还会看到它的身影。</p> <h2 id="_4-一级缓存"><a href="#_4-一级缓存" class="header-anchor">#</a> 4.一级缓存</h2> <p>在进行数据库查询之前，MyBatis 首先会检查以及缓存中是否有相应的记录，若有的话直接返回即可。一级缓存是数据库的最后一道防护，若一级缓存未命中，查询请求将落到数据库上。一级缓存是在 BaseExecutor 被初始化的，下面我们来看一下相关的初始化逻辑：</p> <div class="language- extra-class"><pre class="language-text"><code>public abstract class BaseExecutor implements Executor {
+	protected PerpetualCache localCache;
+    // 省略其他字段
+    
+    protected BaseExecutor(Configuration configuration, Transaction transaction) {
+        this.localCache = new PerpetualCache(&quot;LocalCache&quot;);
+        // 省略其他字段初始化方法
+    }
+}
+</code></pre></div><p>如上，一级缓存的类型为 PerpetualCache，没有被其他缓存类装饰过。一级缓存所存储从查询结果会在 MyBatis 执行更新操作（INSERT/UPDATE/DELETE），以及提交和回滚事务时被清空。下面我们来看一下查询一级缓存的逻辑。</p> <div class="language- extra-class"><pre class="language-text"><code>public &lt;E&gt; List&lt;E&gt; query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {
+    BoundSql boundSql = ms.getBoundSql(parameter);
+    // 创建 CacheKey
+    CacheKey key = createCacheKey(ms, parameter, rowBounds, boundSql);
+    return query(ms, parameter, rowBounds, resultHandler, key, boundSql);
+}
+
+public &lt;E&gt; List&lt;E&gt; query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+    // 省略部分代码
+    
+    List&lt;E&gt; list;
+    try {
+        queryStack++;
+        // 查询一级缓存
+        list = resultHandler == null ? (List&lt;E&gt;) localCache.getObject(key) : null;
+        if (list != null) {
+            // 存储过程相关逻辑，忽略
+            handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
+        } else {
+            // 缓存未命中，则从数据库中查询
+            list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
+        }
+    } finally {
+        queryStack--;
+    }
+    
+    // 省略部分代码
+    
+    return list;
+}
+</code></pre></div><p>如上，在访问一级缓存之前，MyBatis 首先会调用 createCacheKey 方法创建 CacheKey。下面我们来看一下 createCacheKey 方法的逻辑：</p> <div class="language- extra-class"><pre class="language-text"><code>public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
+    if (closed) {
+        throw new ExecutorException(&quot;Executor was closed.&quot;);
+    }
+    // 创建 CacheKey 对象
+    CacheKey cacheKey = new CacheKey();
+    // 将 MappedStatement 的 id 作为影响因子进行计算
+    cacheKey.update(ms.getId());
+	// RowBounds 用于分页查询，下面将它的两个字段作为影响因子进行计算
+    cacheKey.update(rowBounds.getOffset());
+    cacheKey.update(rowBounds.getLimit());
+    // 获取 sql 语句，并进行计算
+    cacheKey.update(boundSql.getSql());
+    List&lt;ParameterMapping&gt; parameterMappings = boundSql.getParameterMappings();
+    TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
+    for (ParameterMapping parameterMapping : parameterMappings) {
+        if (parameterMapping.getMode() != ParameterMode.OUT) {
+            Object value;    // 运行时参数
+            // 当前大段代码用于获取 SQL 中的占位符 #{xxx} 对应的运行时参数，
+            // 前文有类似分析，这里忽略了
+            String propertyName = parameterMapping.getProperty();
+            if (boundSql.hasAdditionalParameter(propertyName)) {
+                value = boundSql.getAdditionalParameter(propertyName);
+            } else if (parameterObject == null) {
+                value = null;
+            } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+                value = parameterObject;
+            } else {
+                MetaObject metaObject = configuration.newMetaObject(parameterObject);
+                value = metaObject.getValue(propertyName);
+            }
+            
+            // 让运行时参数参与计算
+            cacheKey.update(value);
+        }
+    }
+    if (configuration.getEnvironment() != null) {
+        // 获取 Environment id 遍历，并让其参与计算
+        cacheKey.update(configuration.getEnvironment().getId());
+    }
+    return cacheKey;
+}
+</code></pre></div><p>如上，在计算 CacheKey 的过程中，有很多影响因子参与了计算。比如 MappedStatement 的 id 字段，SQL 语句，分页参数，运行时变量，Environment 的 id 字段等。通过让这些影响因子参与计算，可以很好的区分不同查询请求。所以，我们可以简单的把 CacheKey 看做是一个查询请求的 id。有了 CacheKey，我们就可以使用它读写缓存了。在上面代码中，若一级缓存为命中，BaseExecutor 会调用 queryFromDatabase 查询数据库，并将查询结果写入缓存中。下面看一下 queryFromDatabase 的逻辑。</p> <div class="language- extra-class"><pre class="language-text"><code>private &lt;E&gt; List&lt;E&gt; queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds,ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+    List&lt;E&gt; list;
+    // 向缓存中存储一个占位符
+    localCache.putObject(key, EXECUTION_PLACEHOLDER);
+    try {
+        // 查询数据库
+        list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
+    } finally {
+        // 移除占位符
+        localCache.removeObject(key);
+    }
+    // 存储查询结果
+    localCache.putObject(key, list);
+    
+    // 存储过程相关逻辑，忽略
+    if (ms.getStatementType() == StatementType.CALLABLE) {
+        localOutputParameterCache.putObject(key, parameter);
+    }
+    return list;
+}
+</code></pre></div><p>到此，关于一级缓存相关的逻辑就差不多分析完了。一级缓存的逻辑比较简单，大家可以简单过一遍。接下来分析二级缓存。</p> <h2 id="_5-二级缓存"><a href="#_5-二级缓存" class="header-anchor">#</a> 5.二级缓存</h2> <p>二级缓存构建在一级缓存之上，在收到查询请求时，MyBatis 首先会查询二级缓存。若二级缓存未命中，再去查询一级缓存。与一级缓存不同，二级缓存和具体的命名空间绑定，一级缓存则是和 SqlSession 绑定。在按照 MyBatis 规范使用 SqlSession 的情况下，一级缓存不存在并发问题。二级缓存则不然，二级缓存可在多个命名空间间共享。这种情况下，会存在并发问题，因此需要针对性去处理。除了并发问题，二级缓存还存在事务问题，相关问题将在接下来进行分析。下面首先来看一下访问二级缓存的逻辑。</p> <div class="language- extra-class"><pre class="language-text"><code>// -☆- CachingExecutor
+public &lt;E&gt; List&lt;E&gt; query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {
+    BoundSql boundSql = ms.getBoundSql(parameterObject);
+    // 创建 CacheKey
+    CacheKey key = createCacheKey(ms, parameterObject, rowBounds, boundSql);
+    return query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+}
+
+public &lt;E&gt; List&lt;E&gt; query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+    throws SQLException {
+    // 从 MappedStatement 中获取 Cache，注意这里的 Cache 并非是在 CachingExecutor 中创建的
+    Cache cache = ms.getCache();
+    // 如果配置文件中没有配置 &lt;cache&gt;，则 cache 为空
+    if (cache != null) {
+        flushCacheIfRequired(ms);
+        if (ms.isUseCache() &amp;&amp; resultHandler == null) {
+            ensureNoOutParams(ms, boundSql);
+            // 访问二级缓存
+            List&lt;E&gt; list = (List&lt;E&gt;) tcm.getObject(cache, key);
+            // 缓存未命中
+            if (list == null) {
+                // 向一级缓存或者数据库进行查询
+                list = delegate.&lt;E&gt;query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+                // 缓存查询结果
+                tcm.putObject(cache, key, list);
+            }
+            return list;
+        }
+    }
+    return delegate.&lt;E&gt;query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+}
+</code></pre></div><p>如上，注意二级缓存是从 MappedStatement 中获取的，而非由 CachingExecutor 创建。由于 MappedStatement 存在于全局配置中，可以多个 CachingExecutor 获取到，这样就会出现线程安全问题。除此之外，若不加以控制，多个事务共用一个缓存实例，会导致脏读问题。线程安全问题可以通过 SynchronizedCache 装饰类解决，该装饰类会在 Cache 实例构造期间被添加上。相关过程可以参考我之前写的文章 <a href="https://www.tianxiaobo.com/2018/07/30/MyBatis-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B/#211-%E8%A7%A3%E6%9E%90-cache-%E8%8A%82%E7%82%B9" target="_blank" rel="noopener noreferrer">MyBatis-源码分析-映射文件解析过程<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，这里就不多说了。至于脏读问题，需要借助其他类来处理，也就是上面代码中 tcm 变量对应的类型。下面分析一下。</p> <div class="language- extra-class"><pre class="language-text"><code>/** 事务缓存管理器 */
+public class TransactionalCacheManager {
+
+    // Cache 与 TransactionalCache 的映射关系表
+    private final Map&lt;Cache, TransactionalCache&gt; transactionalCaches = new HashMap&lt;Cache, TransactionalCache&gt;();
+
+    public void clear(Cache cache) {
+        // 获取 TransactionalCache 对象，并调用该对象的 clear 方法，下同
+        getTransactionalCache(cache).clear();
+    }
+
+    public Object getObject(Cache cache, CacheKey key) {
+        return getTransactionalCache(cache).getObject(key);
+    }
+
+    public void putObject(Cache cache, CacheKey key, Object value) {
+        getTransactionalCache(cache).putObject(key, value);
+    }
+
+    public void commit() {
+        for (TransactionalCache txCache : transactionalCaches.values()) {
+            txCache.commit();
+        }
+    }
+
+    public void rollback() {
+        for (TransactionalCache txCache : transactionalCaches.values()) {
+            txCache.rollback();
+        }
+    }
+
+    private TransactionalCache getTransactionalCache(Cache cache) {
+        // 从映射表中获取 TransactionalCache
+        TransactionalCache txCache = transactionalCaches.get(cache);
+        if (txCache == null) {
+            // TransactionalCache 也是一种装饰类，为 Cache 增加事务功能
+            txCache = new TransactionalCache(cache);
+            transactionalCaches.put(cache, txCache);
+        }
+        return txCache;
+    }
+}
+</code></pre></div><p>TransactionalCacheManager 内部维护了 Cache 实例与 TransactionalCache 实例间的映射关系，该类也仅负责维护两者的映射关系，真正做事的还是 TransactionalCache。TransactionalCache 是一种缓存装饰器，可以为 Cache 实例增加事务功能。我在之前提到的脏读问题正是由该类进行处理的。下面分析一下该类的逻辑。</p> <div class="language- extra-class"><pre class="language-text"><code>public class TransactionalCache implements Cache {
+
+    private final Cache delegate;
+    private boolean clearOnCommit;
+    // 在事务被提交前，所有从数据库中查询的结果将缓存在此集合中
+    private final Map&lt;Object, Object&gt; entriesToAddOnCommit;
+    // 在事务被提交前，当缓存未命中时，CacheKey 将会被存储在此集合中
+    private final Set&lt;Object&gt; entriesMissedInCache;
+
+    // 省略部分代码
+
+    @Override
+    public Object getObject(Object key) {
+        // 查询 delegate 所代表的缓存
+        Object object = delegate.getObject(key);
+        if (object == null) {
+            // 缓存未命中，则将 key 存入到 entriesMissedInCache 中
+            entriesMissedInCache.add(key);
+        }
+
+        if (clearOnCommit) {
+            return null;
+        } else {
+            return object;
+        }
+    }
+
+    @Override
+    public void putObject(Object key, Object object) {
+        // 将键值对存入到 entriesToAddOnCommit 中，而非 delegate 缓存中
+        entriesToAddOnCommit.put(key, object);
+    }
+
+    @Override
+    public Object removeObject(Object key) {
+        return null;
+    }
+
+    @Override
+    public void clear() {
+        clearOnCommit = true;
+        // 清空 entriesToAddOnCommit，但不清空 delegate 缓存
+        entriesToAddOnCommit.clear();
+    }
+
+    public void commit() {
+        // 根据 clearOnCommit 的值决定是否清空 delegate
+        if (clearOnCommit) {
+            delegate.clear();
+        }
+        
+        // 刷新未缓存的结果到 delegate 缓存中
+        flushPendingEntries();
+        // 重置 entriesToAddOnCommit 和 entriesMissedInCache
+        reset();
+    }
+
+    public void rollback() {
+        unlockMissedEntries();
+        reset();
+    }
+
+    private void reset() {
+        clearOnCommit = false;
+        // 清空集合
+        entriesToAddOnCommit.clear();
+        entriesMissedInCache.clear();
+    }
+
+    private void flushPendingEntries() {
+        for (Map.Entry&lt;Object, Object&gt; entry : entriesToAddOnCommit.entrySet()) {
+            // 将 entriesToAddOnCommit 中的内容转存到 delegate 中
+            delegate.putObject(entry.getKey(), entry.getValue());
+        }
+        for (Object entry : entriesMissedInCache) {
+            if (!entriesToAddOnCommit.containsKey(entry)) {
+                // 存入空值
+                delegate.putObject(entry, null);
+            }
+        }
+    }
+
+    private void unlockMissedEntries() {
+        for (Object entry : entriesMissedInCache) {
+            try {
+				// 调用 removeObject 进行解锁
+                delegate.removeObject(entry);
+            } catch (Exception e) {
+                log.warn(&quot;...&quot;);
+            }
+        }
+    }
+
+}
+</code></pre></div><p>在 TransactionalCache 的代码中，我们要重点关注 entriesToAddOnCommit 集合，TransactionalCache 中的很多方法都会与这个集合打交道。该集合用于存储从查询的结果，那为什么要将结果保存在该集合中，而非 delegate 所表示的缓存中呢？主要是因为直接存到 delegate 会导致脏数据问题。下面通过一张图演示一下脏数据问题发生的过程，假设两个线程开启两个不同的事务，它们的执行过程如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15350410327117.jpg" alt="img"></p> <p>如上图，时刻2，事务 A 对记录 A 进行了更新。时刻3，事务 A 从数据库查询记录 A，并将记录 A 写入缓存中。时刻4，事务 B 查询记录 A，由于缓存中存在记录 A，事务 B 直接从缓存中取数据。这个时候，脏数据问题就发生了。事务 B 在事务 A 未提交情况下，读取到了事务 A 所修改的记录。为了解决这个问题，我们可以为每个事务引入一个独立的缓存。查询数据时，仍从 delegate 缓存（以下统称为共享缓存）中查询。若缓存未命中，则查询数据库。存储查询结果时，并不直接存储查询结果到共享缓存中，而是先存储到事务缓存中，也就是 entriesToAddOnCommit 集合。当事务提交时，再将事务缓存中的缓存项转存到共享缓存中。这样，事务 B 只能在事务 A 提交后，才能读取到事务 A 所做的修改，解决了脏读问题。整个过程大致如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15351741016583.jpg" alt="img"></p> <p>如上，时刻2，事务 A 和 B 同时查询记录 A。此时共享缓存中还没没有数据，所以两个事务均会向数据库发起查询请求，并将查询结果存储到各自的事务缓存中。时刻3，事务 A 更新记录 A，这里把更新后的记录 A 记为 A′。时刻4，两个事务再次进行查询。此时，事务 A 读取到的记录为修改后的值，而事务 B 读取到的记录仍为原值。时刻5，事务 A 被提交，并将事务缓存 A 中的内容转存到共享缓存中。时刻6，事务 B 再次查询记录 A，由于共享缓存中有相应的数据，所以直接取缓存数据即可。因此得到记录 A′，而非记录 A。但由于事务 A 已经提交，所以事务 B 读取到的记录 A′ 并非是脏数据。MyBatis 引入事务缓存解决了脏读问题，事务间只能读取到其他事务提交后的内容，这相当于事务隔离级别中的“读已提交（Read Committed）”。但需要注意的时，MyBatis 缓存事务机制只能解决脏读问题，并不能解决“不可重复读”问题。再回到上图，事务 B 在被提交前进行了三次查询。前两次查询得到的结果为记录 A，最后一次查询得到的结果为 A′。最有一次的查询结果与前两次不同，这就会导致“不可重复读”的问题。MyBatis 的缓存事务机制最高只支持“读已提交”，并不能解决“不可重复读”问题。即使数据库使用了更高的隔离级别解决了这个问题，但因 MyBatis 缓存事务机制级别较低。此时仍然会导致“不可重复读”问题的发生，这个在日常开发中需要注意一下。</p> <p>下面写点测试代码验证 MyBatis 所导致的“不可重复读”问题，首先看一下实体类：</p> <div class="language- extra-class"><pre class="language-text"><code>public class Student {
+    private Integer id;
+    private String name;
+    private Integer age;
+    
+    // 省略 getter/setter
+}
+</code></pre></div><p>对应的数据表如下：</p> <div class="language- extra-class"><pre class="language-text"><code>       student
++----+----------+------+
+| id | name     | age  |
++----+----------+------+
+|  1 | coolblog |   20 |
++----+----------+------+
+</code></pre></div><p>Dao 接口与映射文件定义如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public interface StudentDao {
+    Student findOne(@Param(&quot;id&quot;) Integer id);
+    int update(@Param(&quot;id&quot;) Integer id, @Param(&quot;name&quot;) String name);
+}
+&lt;mapper namespace=&quot;xyz.coolblog.dao.StudentDao&quot;&gt;
+
+    &lt;!-- 注意要在映射文件中配置缓存 --&gt;
+    &lt;cache/&gt;
+
+    &lt;select id=&quot;findOne&quot; resultType=&quot;xyz.coolblog.model.Student&quot;&gt;
+        SELECT
+            `id`, `name`, `age`
+        FROM
+            student
+        WHERE
+            id = #{id}
+    &lt;/select&gt;
+
+    &lt;update id=&quot;update&quot;&gt;
+        UPDATE
+            student
+        SET
+            `name` = #{name}
+        WHERE
+            id = #{id}
+    &lt;/update&gt;
+&lt;/mapper&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class TransactionalCacheTest {
+
+    private SqlSessionFactory sqlSessionFactory;
+
+    private CountDownLatch countDownLatch = new CountDownLatch(1);
+    
+    @Before
+    public void prepare() throws IOException {
+        String resource = &quot;mybatis-transactional-cache-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        inputStream.close();
+    }
+
+    @Test
+    public void testTransactional() throws IOException, InterruptedException, ExecutionException {
+        ExecutorService es = Executors.newFixedThreadPool(2);
+        // 开启两个线程
+        Future&lt;String&gt; fa = es.submit(this::transactionalA);
+        Future&lt;String&gt; fb = es.submit(this::transactionalB);
+
+        countDownLatch.countDown();
+        es.awaitTermination(6, TimeUnit.SECONDS);
+
+        System.out.println(fa.get());
+        System.out.println(&quot;\n -------- 分割线 ------- \n&quot;);
+        System.out.println(fb.get());
+    }
+
+    private String transactionalA() throws Exception {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
+        countDownLatch.await();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(&quot;时刻1：开启事务 A\n&quot;);
+        sb.append(&quot;时刻2：查询记录 A\n&quot;);
+
+        Student s1 = studentDao.findOne(1);
+        sb.append(s1).append(&quot;\n&quot;);
+
+        sb.append(&quot;时刻3：更新记录 A\n&quot;);
+        studentDao.update(1, &quot;tianxiaobo&quot;);
+        sb.append(&quot;时刻4：查询记录 A'\n&quot;);
+        Student s2 = studentDao.findOne(1);
+        sb.append(s2).append(&quot;\n&quot;);
+
+        // 此处睡眠1秒，让事务 B 在事务 A 提交前，完成时刻4的查询请求
+        Thread.sleep(1000);
+
+        sb.append(&quot;时刻5：提交事务 A&quot;);
+        sqlSession.commit();
+
+        return sb.toString();
+    }
+
+    private String transactionalB() throws Exception {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
+        countDownLatch.await();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(&quot;时刻1：开启事务 B\n&quot;);
+        sb.append(&quot;时刻2：查询数据 A\n&quot;);
+        Student s1 = studentDao.findOne(1);
+        sb.append(s1).append(&quot;\n&quot;);
+
+        sb.append(&quot;时刻3：---------\n&quot;);
+        sb.append(&quot;时刻4：查询数据 A\n&quot;);
+        Student s2 = studentDao.findOne(1);
+        sb.append(s2).append(&quot;\n&quot;);
+
+        // 此处睡眠3秒，等待事务 A 提交
+        Thread.sleep(3000);
+
+        sb.append(&quot;时刻5：---------\n&quot;);
+        sb.append(&quot;时刻6：查询数据 A'\n&quot;);
+        Student s3 = studentDao.findOne(1);
+        sb.append(s3).append(&quot;\n&quot;);
+
+        sb.append(&quot;时刻7：提交事务 B&quot;);
+        sqlSession.commit();
+        return sb.toString();
+    }
+}
+</code></pre></div><p>最后对输出结果进行简单的美化，如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15351259392691.jpg" alt="img"></p> <p>如上，事务 B 在时刻2和时刻4读取到的记录与数据库中的记录一致，表示可重复读。但当事务 A 提交后，事务 B 在时刻6读取到的数据则是事务 A 修改的内容，这个时候就出现了“不可重复读”问题。以上测试是基于 MySql 数据可读，MySQL 默认事务级别为“可重复读”。</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15351270530717.jpg" alt="img"></p> <p>下面在本地开启两个 MySQL 客户端，模拟上面的执行流程。最终结果如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15351281217963.jpg" alt="img"></p> <p>从测试结果可以看出，不可重复读问题并未发生，事务 B 三次查询结果均相同。好了，到此关于 MyBatis 二级缓存所引发的问题就分析完了。</p> <p>接下来，我们再来看一下 entriesMissedInCache 集合，这个集合是用于存储未命中缓存的查询请求对应的 CacheKey。单独分析与 entriesMissedInCache 相关的逻辑没什么意义，要搞清 entriesMissedInCache 的实际用途，需要把它和 BlockingCache 的逻辑结合起来进行分析。在 BlockingCache，同一时刻仅允许一个线程通过 getObject 方法查询指定 key 对应的缓存项。如果缓存未命中，getObject 方法不会释放锁，导致其他线程被阻塞住。其他线程要想恢复运行，必须进行解锁，解锁逻辑由 BlockingCache 的 putObject 和 removeObject 方法执行。其中 putObject 会在 TransactionalCache 的 flushPendingEntries 方法中被调用，removeObject 方法则由 TransactionalCache 的 unlockMissedEntries 方法调用。flushPendingEntries 和 unlockMissedEntries 最终都会遍历 entriesMissedInCache 集合，并将集合元素传给 BlockingCache 的相关方法。这样可以解开指定 key 对应的锁，让阻塞线程恢复运行。</p> <p>最后特别说明一下，本节的内容参考了<a href="https://www.amazon.cn/dp/B073LWG7F7/ref=sr_1_1?ie=UTF8&amp;qid=1535112987&amp;sr=8-1&amp;keywords=mybatis%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95" target="_blank" rel="noopener noreferrer">《MyBatis技术内幕》<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 一书中关于缓存的一些分析，这里向这本书的作者表示感谢。如果大家不是很能看懂上面的内容，也可参考这本书的部分章节。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 内置数据源.html" class="prev">
+        MyBatis 源码分析 - 内置数据源
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析 - 插件机制.html">
+        MyBatis 源码分析 - 插件机制
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/24.54c027da.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring Boot 集成 Memcached | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/46.0d187cc4.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>SpringBoot专题</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/SpringBoot%E4%B8%93%E9%A2%98/" aria-current="page" class="sidebar-link">入门篇</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 2 尝鲜-动态 Banner.html" class="sidebar-link">Spring Boot 2 尝鲜-动态 Banner</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何解决项目启动时初始化资源.html" class="sidebar-link">Spring Boot 如何解决项目启动时初始化资源</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何测试打包部署.html" class="sidebar-link">Spring Boot 如何测试打包部署</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Linux下SpringBoot Jar 如何实现service服务.html" class="sidebar-link">Linux下SpringBoot Jar 如何实现service服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/springboot jar包安装成windows服务.html" class="sidebar-link">springboot jar包安装成windows服务（winsw）</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="sidebar-link">使用 Docker 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html" class="sidebar-link">使用 Jenkins 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Web 综合开发.html" class="sidebar-link">Web 综合开发</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot初始化数据库脚本.html" class="sidebar-link">Spring Boot初始化数据库脚本</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="sidebar-link">Spring Boot 中 Redis 的使用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="active sidebar-link">Spring Boot 集成 Memcached</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html#memcached-介绍" class="sidebar-link">Memcached 介绍</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html#依赖配置" class="sidebar-link">依赖配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html#启动初始化-memcachedclient" class="sidebar-link">启动初始化 MemcachedClient</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html#测试使用" class="sidebar-link">测试使用</a></li></ul></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="sidebar-link">Thymeleaf 使用详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html" class="sidebar-link">如何优雅的使用 Mybatis</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html" class="sidebar-link">如何优雅的使用 MyBatis 之 MyBatis-Plus</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Mybatis 多数据源最简解决方案.html" class="sidebar-link">Mybatis 多数据源最简解决方案</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/RabbitMQ 详解.html" class="sidebar-link">RabbitMQ 详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/定时任务.html" class="sidebar-link">定时任务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="sidebar-link">邮件服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html" class="sidebar-link">使用 Spring Boot Actuator 监控应用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html" class="sidebar-link">使用 spring-boot-admin 对 Spring Boot 服务进行监控</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot、微服务架构和大数据治理三者之间的故事.html" class="sidebar-link">Spring Boot、微服务架构和大数据治理三者之间的故事</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-boot-集成-memcached"><a href="#spring-boot-集成-memcached" class="header-anchor">#</a> Spring Boot 集成 Memcached</h1> <h2 id="memcached-介绍"><a href="#memcached-介绍" class="header-anchor">#</a> Memcached 介绍</h2> <p>Memcached 是一个高性能的分布式内存对象缓存系统，用于动态Web应用以减轻数据库负载。它通过在内存中缓存数据和对象来减少读取数据库的次数，从而提高动态、数据库驱动网站的速度。Memcached基于一个存储键/值对的hashmap。其守护进程（daemon ）是用C写的，但是客户端可以用任何语言来编写，并通过memcached协议与守护进程通信。</p> <p>因为 Spring Boot 没有针对 Memcached 提供对应的组建包，因此需要我们自己来集成。官方推出的 Java 客户端 Spymemcached 是一个比较好的选择之一。</p> <p><strong>Spymemcached 介绍</strong></p> <p>Spymemcached 最早由 Dustin Sallings 开发，Dustin 后来和别人一起创办了 Couchbase (原NorthScale)，职位为首席架构师。2014 加入 Google。</p> <p>Spymemcached 是一个采用 Java 开发的异步、单线程的 Memcached 客户端， 使用 NIO 实现。Spymemcached 是 Memcached 的一个流行的 Java client 库，性能表现出色，广泛应用于 Java + Memcached 项目中。</p> <h2 id="依赖配置"><a href="#依赖配置" class="header-anchor">#</a> 依赖配置</h2> <p><strong>添加依赖</strong></p> <p>pomx 包中添加 spymemcached 的引用</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependency&gt;
+  &lt;groupId&gt;net.spy&lt;/groupId&gt;
+  &lt;artifactId&gt;spymemcached&lt;/artifactId&gt;
+  &lt;version&gt;2.12.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div><p><strong>添加配置</strong></p> <div class="language- extra-class"><pre class="language-text"><code>memcache.ip=192.168.0.161
+memcache.port=11211
+</code></pre></div><p>分别配置 memcache 的 Ip 地址和 端口。</p> <p><strong>设置配置对象</strong></p> <p>创建 <code>MemcacheSource</code> 接收配置信息</p> <div class="language- extra-class"><pre class="language-text"><code>@Component
+@ConfigurationProperties(prefix = &quot;memcache&quot;)
+public class MemcacheSource {
+
+    private String ip;
+
+    private int port;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+}
+</code></pre></div><p><code>@ConfigurationProperties(prefix = &quot;memcache&quot;)</code> 的意思会以 <code>memcache.*</code> 为开通将对应的配置文件加载到属性中。</p> <h2 id="启动初始化-memcachedclient"><a href="#启动初始化-memcachedclient" class="header-anchor">#</a> 启动初始化 MemcachedClient</h2> <p>我们使用上一节的内容<a href="http://www.ityouknow.com/springboot/2018/05/03/spring-boot-commandLineRunner.html" target="_blank" rel="noopener noreferrer">Spring Boot 2 (七)：Spring Boot 如何解决项目启动时初始化资源<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>,利用 CommandLineRunner 在项目启动的时候配置好 MemcachedClient 。</p> <div class="language- extra-class"><pre class="language-text"><code>@Component
+public class MemcachedRunner implements CommandLineRunner {
+    protected Logger logger =  LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private  MemcacheSource memcacheSource;
+
+    private MemcachedClient client = null;
+
+    @Override
+    public void run(String... args) throws Exception {
+        try {
+            client = new MemcachedClient(new InetSocketAddress(memcacheSource.getIp(),memcacheSource.getPort()));
+        } catch (IOException e) {
+            logger.error(&quot;inint MemcachedClient failed &quot;,e);
+        }
+    }
+
+    public MemcachedClient getClient() {
+        return client;
+    }
+
+}
+</code></pre></div><h2 id="测试使用"><a href="#测试使用" class="header-anchor">#</a> 测试使用</h2> <div class="language- extra-class"><pre class="language-text"><code>@RunWith(SpringRunner.class)
+@SpringBootTest
+public class RepositoryTests {
+
+  @Resource
+    private MemcachedRunner memcachedRunner;
+
+  @Test
+  public void testSetGet()  {
+    MemcachedClient memcachedClient = memcachedRunner.getClient();
+    memcachedClient.set(&quot;testkey&quot;,1000,&quot;666666&quot;);
+    System.out.println(&quot;***********  &quot;+memcachedClient.get(&quot;testkey&quot;).toString());
+  }
+
+}
+</code></pre></div><p>使用中先测试插入一个 key 为 testkey ，1000 为过期时间单位为 毫秒，最后的 “666666” 为 key 对应的值。</p> <p>执行测试用例 testSetGet ，控制台输出内容：</p> <div class="language- extra-class"><pre class="language-text"><code>***********  666666
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="prev">
+        Spring Boot 中 Redis 的使用
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html">
+        Thymeleaf 使用详解
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/46.0d187cc4.js" defer></script>
+  </body>
+</html>

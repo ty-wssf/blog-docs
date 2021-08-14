@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>如何优雅的使用 Mybatis | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/57.f73e375d.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>SpringBoot专题</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/SpringBoot%E4%B8%93%E9%A2%98/" aria-current="page" class="sidebar-link">入门篇</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 2 尝鲜-动态 Banner.html" class="sidebar-link">Spring Boot 2 尝鲜-动态 Banner</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何解决项目启动时初始化资源.html" class="sidebar-link">Spring Boot 如何解决项目启动时初始化资源</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何测试打包部署.html" class="sidebar-link">Spring Boot 如何测试打包部署</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Linux下SpringBoot Jar 如何实现service服务.html" class="sidebar-link">Linux下SpringBoot Jar 如何实现service服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/springboot jar包安装成windows服务.html" class="sidebar-link">springboot jar包安装成windows服务（winsw）</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="sidebar-link">使用 Docker 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html" class="sidebar-link">使用 Jenkins 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Web 综合开发.html" class="sidebar-link">Web 综合开发</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot初始化数据库脚本.html" class="sidebar-link">Spring Boot初始化数据库脚本</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="sidebar-link">Spring Boot 中 Redis 的使用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="sidebar-link">Spring Boot 集成 Memcached</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="sidebar-link">Thymeleaf 使用详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html" class="active sidebar-link">如何优雅的使用 Mybatis</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#mybatis-spring-boot-starter" class="sidebar-link">mybatis-spring-boot-starter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#无配置文件注解版" class="sidebar-link">无配置文件注解版</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_1-添加相关-maven-文件" class="sidebar-link">1 添加相关 Maven 文件</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_2、application-properties-添加相关配置" class="sidebar-link">2、application.properties 添加相关配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_3、开发-mapper" class="sidebar-link">3、开发 Mapper</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_4、使用" class="sidebar-link">4、使用</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#极简-xml-版本" class="sidebar-link">极简 xml 版本</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_1、配置" class="sidebar-link">1、配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_2、添加-user-的映射文件" class="sidebar-link">2、添加 User 的映射文件</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#_3、编写-mapper-层的代码" class="sidebar-link">3、编写 Mapper 层的代码</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html#如何选择" class="sidebar-link">如何选择</a></li></ul></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html" class="sidebar-link">如何优雅的使用 MyBatis 之 MyBatis-Plus</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Mybatis 多数据源最简解决方案.html" class="sidebar-link">Mybatis 多数据源最简解决方案</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/RabbitMQ 详解.html" class="sidebar-link">RabbitMQ 详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/定时任务.html" class="sidebar-link">定时任务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="sidebar-link">邮件服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html" class="sidebar-link">使用 Spring Boot Actuator 监控应用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html" class="sidebar-link">使用 spring-boot-admin 对 Spring Boot 服务进行监控</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot、微服务架构和大数据治理三者之间的故事.html" class="sidebar-link">Spring Boot、微服务架构和大数据治理三者之间的故事</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="如何优雅的使用-mybatis"><a href="#如何优雅的使用-mybatis" class="header-anchor">#</a> 如何优雅的使用 Mybatis</h1> <p>Orm 框架的本质是简化编程中操作数据库的编码，发展到现在基本上就剩两家了，一个是宣称可以不用写一句 Sql 的 Hibernate，一个是可以灵活调试动态 Sql 的 Mybatis ,两者各有特点，在企业级系统开发中可以根据需求灵活使用。发现一个有趣的现象：传统企业大都喜欢使用 Hibernate ,互联网行业通常使用 Mybatis 。</p> <p>Mybatis 初期使用比较麻烦，需要各种配置文件、实体类、Dao 层映射关联、还有一大推其它配置。当然 Mybatis 也发现了这种弊端，初期开发了<a href="https://github.com/mybatis/generator" target="_blank" rel="noopener noreferrer">generator<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>可以根据表结果自动生产实体类、配置文件和 Dao 层代码，可以减轻一部分开发量；后期也进行了大量的优化可以使用注解了，自动管理 Dao 层和配置文件等，发展到最顶端就是今天要讲的这种模式了，<code>mybatis-spring-boot-starter</code> 就是 Spring Boot+ Mybatis 可以完全注解不用配置文件，也可以简单配置轻松上手。</p> <blockquote><p>现在想想 Spring Boot 就是牛逼呀，任何东西只要关联到 Spring Boot 都是化繁为简。</p></blockquote> <h2 id="mybatis-spring-boot-starter"><a href="#mybatis-spring-boot-starter" class="header-anchor">#</a> mybatis-spring-boot-starter</h2> <p>官方说明：<code>MyBatis Spring-Boot-Starter will help you use MyBatis with Spring Boot</code>
+其实就是 Mybatis 看 Spring Boot 这么火热也开发出一套解决方案来凑凑热闹，但这一凑确实解决了很多问题，使用起来确实顺畅了许多。<code>mybatis-spring-boot-starter</code>主要有两种解决方案，一种是使用注解解决一切问题，一种是简化后的老传统。</p> <p>当然任何模式都需要首先引入<code>mybatis-spring-boot-starter</code>的 Pom 文件，现在最新版本是 2.0.0</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependency&gt;
+	&lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+	&lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
+	&lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div><p>好了下来分别介绍两种开发模式</p> <h2 id="无配置文件注解版"><a href="#无配置文件注解版" class="header-anchor">#</a> 无配置文件注解版</h2> <p>就是一切使用注解搞定。</p> <h3 id="_1-添加相关-maven-文件"><a href="#_1-添加相关-maven-文件" class="header-anchor">#</a> 1 添加相关 Maven 文件</h3> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependencies&gt;
+	&lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
+		&lt;version&gt;2.0.0&lt;/version&gt;
+	&lt;/dependency&gt;
+     &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre></div><p>完整的 Pom 包这里就不贴了，大家直接看源码</p> <h3 id="_2、application-properties-添加相关配置"><a href="#_2、application-properties-添加相关配置" class="header-anchor">#</a> 2、<code>application.properties</code> 添加相关配置</h3> <div class="language- extra-class"><pre class="language-text"><code>mybatis.type-aliases-package=com.neo.model
+
+spring.datasource.url=jdbc:mysql://localhost:3306/test?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+</code></pre></div><p>Spring Boot 会自动加载 <code>spring.datasource.*</code> 相关配置，数据源就会自动注入到 sqlSessionFactory 中，sqlSessionFactory 会自动注入到 Mapper 中，对了，你一切都不用管了，直接拿起来使用就行了。</p> <p>在启动类中添加对 mapper 包扫描<code>@MapperScan</code></p> <div class="language- extra-class"><pre class="language-text"><code>@SpringBootApplication
+@MapperScan(&quot;com.neo.mapper&quot;)
+public class MybatisAnnotationApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MybatisAnnotationApplication.class, args);
+	}
+}
+</code></pre></div><p>或者直接在 Mapper 类上面添加注解<code>@Mapper</code>，建议使用上面那种，不然每个 mapper 加个注解也挺麻烦的</p> <h3 id="_3、开发-mapper"><a href="#_3、开发-mapper" class="header-anchor">#</a> 3、开发 Mapper</h3> <p>第三步是最关键的一块， Sql 生产都在这里</p> <div class="language- extra-class"><pre class="language-text"><code>public interface UserMapper {
+	
+	@Select(&quot;SELECT * FROM users&quot;)
+	@Results({
+		@Result(property = &quot;userSex&quot;,  column = &quot;user_sex&quot;, javaType = UserSexEnum.class),
+		@Result(property = &quot;nickName&quot;, column = &quot;nick_name&quot;)
+	})
+	List&lt;UserEntity&gt; getAll();
+	
+	@Select(&quot;SELECT * FROM users WHERE id = #{id}&quot;)
+	@Results({
+		@Result(property = &quot;userSex&quot;,  column = &quot;user_sex&quot;, javaType = UserSexEnum.class),
+		@Result(property = &quot;nickName&quot;, column = &quot;nick_name&quot;)
+	})
+	UserEntity getOne(Long id);
+
+	@Insert(&quot;INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})&quot;)
+	void insert(UserEntity user);
+
+	@Update(&quot;UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}&quot;)
+	void update(UserEntity user);
+
+	@Delete(&quot;DELETE FROM users WHERE id =#{id}&quot;)
+	void delete(Long id);
+
+}
+</code></pre></div><p><strong>为了更接近生产我特地将 user_sex、nick_name 两个属性在数据库加了下划线和实体类属性名不一致，另外 user_sex 使用了枚举</strong></p> <blockquote><ul><li>@Select 是查询类的注解，所有的查询均使用这个</li> <li>@Result 修饰返回的结果集，关联实体类属性和数据库字段一一对应，如果实体类属性和数据库属性名保持一致，就不需要这个属性来修饰。</li> <li>@Insert 插入数据库使用，直接传入实体类会自动解析属性到对应的值</li> <li>@Update 负责修改，也可以直接传入对象</li> <li>@delete 负责删除</li></ul></blockquote> <p><a href="http://www.mybatis.org/mybatis-3/zh/java-api.html" target="_blank" rel="noopener noreferrer">了解更多属性参考这里<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <blockquote><p><strong>注意，使用#符号和$符号的不同：</strong></p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>// This example creates a prepared statement, something like select * from teacher where name = ?;
+@Select(&quot;Select * from teacher where name = #{name}&quot;)
+Teacher selectTeachForGivenName(@Param(&quot;name&quot;) String name);
+
+// This example creates n inlined statement, something like select * from teacher where name = 'someName';
+@Select(&quot;Select * from teacher where name = '${name}'&quot;)
+Teacher selectTeachForGivenName(@Param(&quot;name&quot;) String name);
+</code></pre></div><h3 id="_4、使用"><a href="#_4、使用" class="header-anchor">#</a> 4、使用</h3> <p>上面三步就基本完成了相关 Mapper 层开发，使用的时候当作普通的类注入进入就可以了</p> <div class="language- extra-class"><pre class="language-text"><code>@RunWith(SpringRunner.class)
+@SpringBootTest
+public class UserMapperTest {
+
+	@Autowired
+	private UserMapper userMapper;
+
+	@Test
+	public void testInsert() throws Exception {
+		userMapper.insert(new User(&quot;aa1&quot;, &quot;a123456&quot;, UserSexEnum.MAN));
+		userMapper.insert(new User(&quot;bb1&quot;, &quot;b123456&quot;, UserSexEnum.WOMAN));
+		userMapper.insert(new User(&quot;cc1&quot;, &quot;b123456&quot;, UserSexEnum.WOMAN));
+
+		Assert.assertEquals(3, userMapper.getAll().size());
+	}
+
+	@Test
+	public void testQuery() throws Exception {
+		List&lt;User&gt; users = userMapper.getAll();
+		System.out.println(users.toString());
+	}
+	
+	
+	@Test
+	public void testUpdate() throws Exception {
+		User user = userMapper.getOne(30l);
+		System.out.println(user.toString());
+		user.setNickName(&quot;neo&quot;);
+		userMapper.update(user);
+		Assert.assertTrue((&quot;neo&quot;.equals(userMapper.getOne(30l).getNickName())));
+	}
+}
+</code></pre></div><p>源码中 Controller 层有完整的增删改查，这里就不贴了</p> <h2 id="极简-xml-版本"><a href="#极简-xml-版本" class="header-anchor">#</a> 极简 xml 版本</h2> <p>极简 xml 版本保持映射文件的老传统，接口层只需要定义空方法，系统会自动根据方法名在映射文件中找对应的 Sql .</p> <h3 id="_1、配置"><a href="#_1、配置" class="header-anchor">#</a> 1、配置</h3> <p>pom 文件和上个版本一样，只是<code>application.properties</code>新增以下配置</p> <div class="language- extra-class"><pre class="language-text"><code>mybatis.config-location=classpath:mybatis/mybatis-config.xml
+mybatis.mapper-locations=classpath:mybatis/mapper/*.xml
+</code></pre></div><p>指定了 Mybatis 基础配置文件和实体类映射文件的地址</p> <p>mybatis-config.xml 配置</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;configuration&gt;
+	&lt;typeAliases&gt;
+		&lt;typeAlias alias=&quot;Integer&quot; type=&quot;java.lang.Integer&quot; /&gt;
+		&lt;typeAlias alias=&quot;Long&quot; type=&quot;java.lang.Long&quot; /&gt;
+		&lt;typeAlias alias=&quot;HashMap&quot; type=&quot;java.util.HashMap&quot; /&gt;
+		&lt;typeAlias alias=&quot;LinkedHashMap&quot; type=&quot;java.util.LinkedHashMap&quot; /&gt;
+		&lt;typeAlias alias=&quot;ArrayList&quot; type=&quot;java.util.ArrayList&quot; /&gt;
+		&lt;typeAlias alias=&quot;LinkedList&quot; type=&quot;java.util.LinkedList&quot; /&gt;
+	&lt;/typeAliases&gt;
+&lt;/configuration&gt;
+</code></pre></div><p>这里也可以添加一些 Mybatis 基础的配置</p> <h3 id="_2、添加-user-的映射文件"><a href="#_2、添加-user-的映射文件" class="header-anchor">#</a> 2、添加 User 的映射文件</h3> <div class="language- extra-class"><pre class="language-text"><code>&lt;mapper namespace=&quot;com.neo.mapper.UserMapper&quot; &gt;
+    &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.neo.entity.UserEntity&quot; &gt;
+        &lt;id column=&quot;id&quot; property=&quot;id&quot; jdbcType=&quot;BIGINT&quot; /&gt;
+        &lt;result column=&quot;userName&quot; property=&quot;userName&quot; jdbcType=&quot;VARCHAR&quot; /&gt;
+        &lt;result column=&quot;passWord&quot; property=&quot;passWord&quot; jdbcType=&quot;VARCHAR&quot; /&gt;
+        &lt;result column=&quot;user_sex&quot; property=&quot;userSex&quot; javaType=&quot;com.neo.enums.UserSexEnum&quot;/&gt;
+        &lt;result column=&quot;nick_name&quot; property=&quot;nickName&quot; jdbcType=&quot;VARCHAR&quot; /&gt;
+    &lt;/resultMap&gt;
+    
+    &lt;sql id=&quot;Base_Column_List&quot; &gt;
+        id, userName, passWord, user_sex, nick_name
+    &lt;/sql&gt;
+
+    &lt;select id=&quot;getAll&quot; resultMap=&quot;BaseResultMap&quot;  &gt;
+       SELECT 
+       &lt;include refid=&quot;Base_Column_List&quot; /&gt;
+	   FROM users
+    &lt;/select&gt;
+
+    &lt;select id=&quot;getOne&quot; parameterType=&quot;java.lang.Long&quot; resultMap=&quot;BaseResultMap&quot; &gt;
+        SELECT 
+       &lt;include refid=&quot;Base_Column_List&quot; /&gt;
+	   FROM users
+	   WHERE id = #{id}
+    &lt;/select&gt;
+
+    &lt;insert id=&quot;insert&quot; parameterType=&quot;com.neo.entity.UserEntity&quot; &gt;
+       INSERT INTO 
+       		users
+       		(userName,passWord,user_sex) 
+       	VALUES
+       		(#{userName}, #{passWord}, #{userSex})
+    &lt;/insert&gt;
+    
+    &lt;update id=&quot;update&quot; parameterType=&quot;com.neo.entity.UserEntity&quot; &gt;
+       UPDATE 
+       		users 
+       SET 
+       	&lt;if test=&quot;userName != null&quot;&gt;userName = #{userName},&lt;/if&gt;
+       	&lt;if test=&quot;passWord != null&quot;&gt;passWord = #{passWord},&lt;/if&gt;
+       	nick_name = #{nickName}
+       WHERE 
+       		id = #{id}
+    &lt;/update&gt;
+    
+    &lt;delete id=&quot;delete&quot; parameterType=&quot;java.lang.Long&quot; &gt;
+       DELETE FROM
+       		 users 
+       WHERE 
+       		 id =#{id}
+    &lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre></div><p>其实就是把上个版本中 Mapper 的 Sql 搬到了这里的 xml 中了</p> <h3 id="_3、编写-mapper-层的代码"><a href="#_3、编写-mapper-层的代码" class="header-anchor">#</a> 3、编写 Mapper 层的代码</h3> <div class="language- extra-class"><pre class="language-text"><code>public interface UserMapper {
+	
+	List&lt;UserEntity&gt; getAll();
+	
+	UserEntity getOne(Long id);
+
+	void insert(UserEntity user);
+
+	void update(UserEntity user);
+
+	void delete(Long id);
+
+}
+</code></pre></div><p>对比上一步，这里只需要定义接口方法</p> <h2 id="如何选择"><a href="#如何选择" class="header-anchor">#</a> 如何选择</h2> <p>两种模式各有特点，注解版适合简单快速的模式，其实像现在流行的这种微服务模式，一个微服务就会对应一个自已的数据库，多表连接查询的需求会大大的降低，会越来越适合这种模式。</p> <p>老传统模式比适合大型项目，可以灵活的动态生成 Sql ，方便调整 Sql ，也有痛痛快快，洋洋洒洒的写 Sql 的感觉。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="prev">
+        Thymeleaf 使用详解
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html">
+        如何优雅的使用 MyBatis 之 MyBatis-Plus
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/57.f73e375d.js" defer></script>
+  </body>
+</html>

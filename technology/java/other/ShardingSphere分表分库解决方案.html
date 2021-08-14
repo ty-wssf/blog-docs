@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ShardingSphere分表分库解决方案 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/60.a5bc0ed5.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>其它</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步.html" class="sidebar-link">基于canal的mysql数据同步</a></li><li><a href="/blog-docs/technology/java/other/常用脚本.html" class="sidebar-link">常用脚本</a></li><li><a href="/blog-docs/technology/java/other/vue使用nginx部署配置.html" class="sidebar-link">vue使用nginx部署配置</a></li><li><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html" class="active sidebar-link">ShardingSphere分表分库解决方案</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-1-简介" class="sidebar-link">1.1 简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-2-sharding-jdbc简介" class="sidebar-link">1.2 Sharding-JDBC简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-3-sharding-proxy简介" class="sidebar-link">1.3  Sharding-Proxy简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-4-sharding-sidecar-todo-简介" class="sidebar-link">1.4 Sharding-Sidecar（TODO）简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-5-功能列表" class="sidebar-link">1.5 功能列表</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-5-1-数据分片" class="sidebar-link">1.5.1 数据分片</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-5-2-分布式事务" class="sidebar-link">1.5.2 分布式事务</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_1-5-3-数据库治理" class="sidebar-link">1.5.3 数据库治理</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-分库分表" class="sidebar-link">2.1 分库分表</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-1-准备测试数据库和表" class="sidebar-link">2.1.1 准备测试数据库和表</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-2-创建maven项目并添加依赖" class="sidebar-link">2.1.2 创建maven项目并添加依赖</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-3-spring-properties配置" class="sidebar-link">2.1.3 spring.properties配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-4-代码测试" class="sidebar-link">2.1.4 代码测试</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_2-1-5-自定义分片策略" class="sidebar-link">2.1.5 自定义分片策略</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-分库分表" class="sidebar-link">3.1 分库分表</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-1-下载sharding-proxy并安装" class="sidebar-link">3.1.1 下载Sharding-Proxy并安装</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-2-系统配置" class="sidebar-link">3.1.2 系统配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-3-分片配置" class="sidebar-link">3.1.3 分片配置</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-4-启动-sharding-proxy" class="sidebar-link">3.1.4 启动 Sharding-Proxy</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-5-测试" class="sidebar-link">3.1.5 测试</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html#_3-1-6-自定义分片策略" class="sidebar-link">3.1.6 自定义分片策略</a></li></ul></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="shardingsphere分表分库解决方案"><a href="#shardingsphere分表分库解决方案" class="header-anchor">#</a> ShardingSphere分表分库解决方案</h1> <h2 id="_1-1-简介"><a href="#_1-1-简介" class="header-anchor">#</a> 1.1 简介</h2> <p><strong>ShardingSphere</strong>一套开源的分布式数据库中间件解决方案组成的生态圈，它由<strong>Sharding-JDBC</strong>、<strong>Sharding-Proxy</strong>和<strong>Sharding-Sidecar</strong>（计划中）这3款相互独立的产品组成。 他们均提供标准化的数据分片、分布式事务和数据库治理功能，可适用于如Java同构、异构语言、云原生等各种多样化的应用场景。</p> <p><strong>ShardingSphere</strong>定位为关系型数据库中间件，旨在充分合理地在分布式的场景下利用关系型数据库的计算和存储能力，而并非实现一个全新的关系型数据库。 它与NoSQL和NewSQL是并存而非互斥的关系。NoSQL和NewSQL作为新技术探索的前沿，放眼未来，拥抱变化，是非常值得推荐的。反之，也可以用另一种思路看待问题，放眼未来，关注不变的东西，进而抓住事物本质。 关系型数据库当今依然占有巨大市场，是各个公司核心业务的基石，未来也难于撼动，我们目前阶段更加关注在原有基础上的增量，而非颠覆。</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/2f3d638e48027e510a9100504b0d08bc_1828752-20200926000514644-1159706331.png" alt="img"></p> <h2 id="_1-2-sharding-jdbc简介"><a href="#_1-2-sharding-jdbc简介" class="header-anchor">#</a> 1.2 Sharding-JDBC简介</h2> <p>定位为轻量级 Java 框架，在 Java 的 JDBC 层提供的额外服务。 它使用客户端直连数据库，以 jar 包形式提供服务，无需额外部署和依赖，可理解为增强版的 JDBC 驱动，完全兼容 JDBC 和各种 ORM 框架。</p> <ul><li><p>适用于任何基于JDBC的ORM框架，如：JPA, Hibernate, Mybatis, Spring JDBC Template或直接使用JDBC。</p></li> <li><p>支持任何第三方的数据库连接池，如：DBCP, C3P0, BoneCP, Druid, HikariCP等。</p></li> <li><p>支持任意实现JDBC规范的数据库。目前支持MySQL，Oracle，SQLServer，PostgreSQL以及任何遵循SQL92标准的数据库</p></li></ul> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/1828752-20200926000616844-1445404276.png" alt="img"></p> <h2 id="_1-3-sharding-proxy简介"><a href="#_1-3-sharding-proxy简介" class="header-anchor">#</a> 1.3  Sharding-Proxy简介</h2> <p>定位为透明化的数据库代理端，提供封装了数据库二进制协议的服务端版本，用于完成对异构语言的支持。 目前先提供MySQL/PostgreSQL版本，它可以使用任何兼容MySQL/PostgreSQL协议的访问客户端(如：MySQL Command Client, MySQL Workbench, Navicat等)操作数据，对DBA更加友好。</p> <ul><li>向应用程序完全透明，可直接当做MySQL/PostgreSQL使用。</li> <li>适用于任何兼容MySQL/PostgreSQL协议的的客户端。</li></ul> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/1828752-20200926000720270-17216569.png" alt="img"></p> <h2 id="_1-4-sharding-sidecar-todo-简介"><a href="#_1-4-sharding-sidecar-todo-简介" class="header-anchor">#</a> 1.4 Sharding-Sidecar（TODO）简介</h2> <p>定位为Kubernetes的云原生数据库代理，以Sidecar的形式代理所有对数据库的访问。 通过无中心、零侵入的方案提供与数据库交互的的啮合层，即Database Mesh，又可称数据网格。</p> <p>Database Mesh的关注重点在于如何将分布式的数据访问应用与数据库有机串联起来，它更加关注的是交互，是将杂乱无章的应用与数据库之间的交互有效的梳理。使用Database Mesh，访问数据库的应用和数据库终将形成一个巨大的网格体系，应用和数据库只需在网格体系中对号入座即可，它们都是被啮合层所治理的对象。</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/1828752-20200926000820077-1230480748.png" alt="img"></p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/image-20210414202025184.png" alt="image-20210414202025184"></p> <h2 id="_1-5-功能列表"><a href="#_1-5-功能列表" class="header-anchor">#</a> 1.5 功能列表</h2> <h3 id="_1-5-1-数据分片"><a href="#_1-5-1-数据分片" class="header-anchor">#</a> 1.5.1 数据分片</h3> <ul><li>分库 &amp; 分表</li> <li>读写分离</li> <li>分片策略定制化</li> <li>无中心化分布式主键</li></ul> <h3 id="_1-5-2-分布式事务"><a href="#_1-5-2-分布式事务" class="header-anchor">#</a> 1.5.2 分布式事务</h3> <ul><li>标准化事务接口</li> <li>XA强一致事务</li> <li>柔性事务</li></ul> <h3 id="_1-5-3-数据库治理"><a href="#_1-5-3-数据库治理" class="header-anchor">#</a> 1.5.3 数据库治理</h3> <ul><li>配置动态化</li> <li>编排 &amp; 治理</li> <li>数据脱敏</li> <li>可视化链路追踪</li></ul> <h1 id="_2-sharding-jdbc"><a href="#_2-sharding-jdbc" class="header-anchor">#</a> 2. Sharding-JDBC</h1> <h2 id="_2-1-分库分表"><a href="#_2-1-分库分表" class="header-anchor">#</a> 2.1 分库分表</h2> <h3 id="_2-1-1-准备测试数据库和表"><a href="#_2-1-1-准备测试数据库和表" class="header-anchor">#</a> 2.1.1 准备测试数据库和表</h3> <div class="language- extra-class"><pre class="language-text"><code>SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- 创建数据库
+-- ----------------------------
+DROP database if exists ds0;
+DROP database if exists ds1;
+CREATE database ds0;
+CREATE database ds1;
+
+-- ----------------------------
+-- Table structure for user_0
+-- ----------------------------
+DROP TABLE IF EXISTS ds0.`user_0`;
+CREATE TABLE ds0.`user_0` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for user_1
+-- ----------------------------
+DROP TABLE IF EXISTS ds0.`user_1`;
+CREATE TABLE ds0.`user_1` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for user_
+-- ----------------------------
+DROP TABLE IF EXISTS ds0.`user_2021_3`
+CREATE TABLE ds0.`user_2021_3` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for user_0
+-- ----------------------------
+DROP TABLE IF EXISTS ds1.`user_0`;
+CREATE TABLE ds1.`user_0` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for user_1
+-- ----------------------------
+DROP TABLE IF EXISTS `ds1.user_1`;
+CREATE TABLE ds1.`user_1` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for user_
+-- ----------------------------
+DROP TABLE IF EXISTS ds1.`user_2021_3`
+CREATE TABLE ds1.`user_2021_3` (
+  `id` bigint NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `create_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+</code></pre></div><h3 id="_2-1-2-创建maven项目并添加依赖"><a href="#_2-1-2-创建maven项目并添加依赖" class="header-anchor">#</a> 2.1.2 创建maven项目并添加依赖</h3> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.shardingsphere&lt;/groupId&gt;
+    &lt;artifactId&gt;sharding-jdbc-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;4.0.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.xml.bind&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxb-api&lt;/artifactId&gt;
+    &lt;version&gt;2.3.0-b170201.1204&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- https://mvnrepository.com/artifact/javax.activation/activation --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.activation&lt;/groupId&gt;
+    &lt;artifactId&gt;activation&lt;/artifactId&gt;
+    &lt;version&gt;1.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jaxb&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxb-runtime&lt;/artifactId&gt;
+    &lt;version&gt;2.3.0-b170127.1453&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div><h3 id="_2-1-3-spring-properties配置"><a href="#_2-1-3-spring-properties配置" class="header-anchor">#</a> 2.1.3 spring.properties配置</h3> <div class="language- extra-class"><pre class="language-text"><code>#配置数据源 boke_1 boke_2
+spring.shardingsphere.datasource.names=ds0,ds1
+
+# ds1 数据源配置
+spring.shardingsphere.datasource.ds0.type=com.zaxxer.hikari.HikariDataSource
+spring.shardingsphere.datasource.ds0.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds0.jdbc-url=jdbc:mysql://localhost:3306/ds0?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds0.username=root
+spring.shardingsphere.datasource.ds0.password=123456
+
+# ds0 数据源配置
+spring.shardingsphere.datasource.ds1.type=com.zaxxer.hikari.HikariDataSource
+spring.shardingsphere.datasource.ds1.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds1.jdbc-url=jdbc:mysql://localhost:3306/ds1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds1.username=root
+spring.shardingsphere.datasource.ds1.password=123456
+
+#  分库策略（水平） 以 id 取模  进行 分库
+spring.shardingsphere.sharding.default-database-strategy.inline.sharding-column=id
+spring.shardingsphere.sharding.default-database-strategy.inline.algorithm-expression=ds$-&gt;{id % 2}
+
+# 绑定表  user
+spring.shardingsphere.sharding.binding-tables=user
+
+# 使用SNOWFLAKE算法生成主键
+spring.shardingsphere.sharding.tables.user.key-generator.column=id
+spring.shardingsphere.sharding.tables.user.key-generator.type=SNOWFLAKE
+
+# 非自定义配置
+#  user 分表策略
+#spring.shardingsphere.sharding.tables.user.actual-data-nodes=ds$-&gt;{0..1}.user_$-&gt;{0..1}
+#  分表 id
+#spring.shardingsphere.sharding.tables.user.table-strategy.inline.sharding-column=age
+#  分表策略  id 取模
+#spring.shardingsphere.sharding.tables.user.table-strategy.inline.algorithm-expression=user_$-&gt;{age % 2}
+</code></pre></div><h3 id="_2-1-4-代码测试"><a href="#_2-1-4-代码测试" class="header-anchor">#</a> 2.1.4 代码测试</h3> <div class="language- extra-class"><pre class="language-text"><code>@Resource
+private UserService userService;
+
+// 新增测试
+@Test
+public void testInsert() {
+    for (int i = 0; i &lt; 20; i++) {
+        User user = new User();
+        user.setName(&quot;张三&quot;);
+        user.setAge(11);
+        user.setCreateTime(new Date());
+        userService.save(user);
+    }
+}
+
+// 更新测试
+@Test
+public void testUpdate() {
+    User user = new User();
+    user.setId(1370681228566134785L);
+    user.setAge(12);
+    user.setName(&quot;1111&quot;);
+    // 不能更新分片字段
+    //user.setCreateTime(new Date());
+    userService.updateById(user);
+}
+
+// 删除测试
+@Test
+public void testDelete() {
+	userService.removeById(1368486339065597954L);
+}
+
+// 单个查询测试
+@Test
+public void testSelect1() {
+    User user = userService.getById(1370681228566134785L);
+    System.out.println(&quot;=============&quot; + user);
+}
+
+// 按条件查询测试
+@Test
+public void testSelect2() {
+    QueryWrapper&lt;User&gt; wrapper = new QueryWrapper&lt;User&gt;();
+    wrapper.eq(&quot;name&quot;, &quot;张三&quot;);
+    List&lt;User&gt; list = userService.list(wrapper);
+    System.out.println(list);
+    System.out.println(list.size());
+}
+
+// 分页、条件、排序查询
+@Test
+public void testSelect3() {
+    Page&lt;User&gt; page = new Page&lt;&gt;(0, 10);
+    page.setAsc(&quot;create_time&quot;);
+    QueryWrapper&lt;User&gt; wrapper = new QueryWrapper&lt;User&gt;();
+    wrapper.eq(&quot;name&quot;, &quot;张三&quot;);
+    IPage&lt;User&gt; pageList = userService.page(page, wrapper);
+    for (int i = 0; i &lt; pageList.getRecords().size(); i++) {
+    	System.out.println(&quot;==============&quot; + pageList.getRecords().get(i));
+    }
+}
+</code></pre></div><h3 id="_2-1-5-自定义分片策略"><a href="#_2-1-5-自定义分片策略" class="header-anchor">#</a> 2.1.5 自定义分片策略</h3> <h4 id="_2-1-5-1-自定义分库策略"><a href="#_2-1-5-1-自定义分库策略" class="header-anchor">#</a> 2.1.5.1 自定义分库策略</h4> <div class="language- extra-class"><pre class="language-text"><code>public class DBShardingAlgorithm implements PreciseShardingAlgorithm&lt;Long&gt; {
+
+    @Override
+    public String doSharding(Collection&lt;String&gt; availableTargetNames, PreciseShardingValue&lt;Long&gt; shardingValue) {
+
+        System.out.println(&quot;DB  PreciseShardingAlgorithm  &quot;);
+        // 真实节点
+        availableTargetNames.stream().forEach((item) -&gt; {
+            System.out.println(String.format(&quot;actual node db:%s&quot;, item));
+        });
+
+        System.out.println(String.format(&quot;logic table name:%s,rout column:%s&quot;, shardingValue.getLogicTableName(), shardingValue.getColumnName()));
+
+        //精确分片
+        System.out.println(String.format(&quot;column value:%s&quot;, shardingValue.getValue()));
+
+        long db_index = shardingValue.getValue() % 2;
+
+        for (String each : availableTargetNames) {
+            if (each.equals(&quot;ds&quot; + db_index)) {
+                return each;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+}
+</code></pre></div><h4 id="_2-1-5-2-自定义分表策略"><a href="#_2-1-5-2-自定义分表策略" class="header-anchor">#</a> 2.1.5.2 自定义分表策略</h4> <div class="language- extra-class"><pre class="language-text"><code>package com.hy.shardingsphere.support;
+
+import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
+import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
+
+import java.util.Collection;
+import java.util.Date;
+
+public class TableShardingAlgorithm implements PreciseShardingAlgorithm&lt;Date&gt; {
+    @Override
+    public String doSharding(Collection&lt;String&gt; availableTargetNames, PreciseShardingValue&lt;Date&gt; shardingValue) {
+
+        System.out.println(&quot;table PreciseShardingAlgorithm &quot;);
+        // 真实节点
+        availableTargetNames.stream().forEach((item) -&gt; {
+            System.out.println(String.format(&quot;actual node table:%s&quot;, item));
+        });
+
+        System.out.println(String.format(&quot;logic table name:%s,rout column:%s&quot;, shardingValue.getLogicTableName(), shardingValue.getColumnName()));
+
+        //精确分片
+        System.out.println(String.format(&quot;column value:%s&quot;, shardingValue.getValue()));
+
+
+        String tb_name = shardingValue.getLogicTableName() + &quot;_&quot;;
+
+
+        // 根据当前日期 来 分库分表
+        Date date = shardingValue.getValue();
+        String year = String.format(&quot;%tY&quot;, date);
+        String mon = String.format(&quot;%tm&quot;, date);
+        String dat = String.format(&quot;%td&quot;, date);
+
+
+        // 选择表
+        tb_name = tb_name + year + &quot;_&quot; + mon.replaceAll(&quot;^(0+)&quot;, &quot;&quot;);
+        System.out.println(&quot;tb_name:&quot; + tb_name);
+
+        for (String each : availableTargetNames) {
+            if (each.equals(tb_name)) {
+                return each;
+            }
+        }
+
+        throw new IllegalArgumentException();
+    }
+}
+
+</code></pre></div><h4 id="_2-1-5-3-配置种指定自定义策略"><a href="#_2-1-5-3-配置种指定自定义策略" class="header-anchor">#</a> 2.1.5.3 配置种指定自定义策略</h4> <div class="language- extra-class"><pre class="language-text"><code>spring.shardingsphere.sharding.tables.user.actual-data-nodes=ds$-&gt;{0..1}.user_$-&gt;{2021}_$-&gt;{3}
+# 自定义 分片算法
+# 分库分片健      database-strategy 数据库策略
+spring.shardingsphere.sharding.tables.user.database-strategy.standard.sharding-column=id
+# 自定义 分片 策略
+spring.shardingsphere.sharding.tables.user.database-strategy.standard.precise-algorithm-class-name=com.hy.shardingsphere.support.DBShardingAlgorithm
+# table-strategy   表 的 策略
+spring.shardingsphere.sharding.tables.user.table-strategy.standard.sharding-column=create_time
+spring.shardingsphere.sharding.tables.user.table-strategy.standard.precise-algorithm-class-name=com.hy.shardingsphere.support.TableShardingAlgorithm
+</code></pre></div><h1 id="_3-sharding-proxy"><a href="#_3-sharding-proxy" class="header-anchor">#</a> 3. Sharding-Proxy</h1> <h2 id="_3-1-分库分表"><a href="#_3-1-分库分表" class="header-anchor">#</a> 3.1 分库分表</h2> <h3 id="_3-1-1-下载sharding-proxy并安装"><a href="#_3-1-1-下载sharding-proxy并安装" class="header-anchor">#</a> 3.1.1 下载Sharding-Proxy并安装</h3> <ul><li><p>下载地址：https://shardingsphere.apache.org/document/current/cn/downloads/</p></li> <li><p>下载后直接解压即可</p></li> <li><p>需要将对应数据库的驱动包拷贝到 <strong>lib</strong> 目录下</p></li></ul> <h3 id="_3-1-2-系统配置"><a href="#_3-1-2-系统配置" class="header-anchor">#</a> 3.1.2 系统配置</h3> <p>修改conf/server.yaml配置Sharding-Proxy系统配置</p> <div class="language- extra-class"><pre class="language-text"><code>authentication:
+  users:
+    root:
+      password: root  #root用户密码
+    sharding:	#其他用户的配置
+      password: sharding 
+      authorizedSchemas: sharding_db  #该用户能够访问的数据库
+</code></pre></div><h3 id="_3-1-3-分片配置"><a href="#_3-1-3-分片配置" class="header-anchor">#</a> 3.1.3 分片配置</h3> <p>harding-Proxy 将 分片配置提取到了 config-sharding.yaml 里面,配置和 sharding-jdbc基本一样</p> <div class="language- extra-class"><pre class="language-text"><code>schemaName: sharding_db  #数据库名字
+
+dataSources:
+  ds0:
+    url: jdbc:mysql://localhost:3306/ds0?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+  ds1:
+    url: jdbc:mysql://localhost:3306/ds1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+
+# 分片规则
+shardingRule:
+  tables:
+    user:
+      actualDataNodes: ds$-&gt;{0..1}.user_$-&gt;{0..1}  # 
+      tableStrategy:  # 配置表分片
+        inline:
+          shardingColumn: age #按照age字段分片
+          algorithmExpression: user_$-&gt;{age % 2}   # 分片规则
+      keyGenerator:
+        type: SNOWFLAKE # id生成算法 雪花算法
+        column: id      # 主键列
+  bindingTables:
+    - user
+  defaultDatabaseStrategy:  # 配置库分片
+    inline:
+      shardingColumn: id
+      algorithmExpression: ds$-&gt;{id % 2}
+  defaultTableStrategy:
+    none:
+</code></pre></div><h3 id="_3-1-4-启动-sharding-proxy"><a href="#_3-1-4-启动-sharding-proxy" class="header-anchor">#</a> 3.1.4 启动 Sharding-Proxy</h3> <div class="language- extra-class"><pre class="language-text"><code>windows: bin/start.bat
+linux: start.sh
+
+注意: Sharding-Proxy启动默认端口为 3307 启动时可指定
+windows: start.bat 3308
+linux : start.sh 3308
+</code></pre></div><h3 id="_3-1-5-测试"><a href="#_3-1-5-测试" class="header-anchor">#</a> 3.1.5 测试</h3> <p>项目的数据库连接改为连接Sharding-Proxy 后插入数据,数据能够正常添加。</p> <h3 id="_3-1-6-自定义分片策略"><a href="#_3-1-6-自定义分片策略" class="header-anchor">#</a> 3.1.6 自定义分片策略</h3> <ul><li>按照Sharding-JDBC的方式开发自定义分片策略类项目</li> <li>将该项目打成jar包</li> <li>将jar包丢到proxy的lib目录下</li> <li>配置如下</li></ul> <div class="language- extra-class"><pre class="language-text"><code>schemaName: sharding_db
+
+dataSources:
+  ds0:
+    url: jdbc:mysql://localhost:3306/ds0?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+  ds1:
+    url: jdbc:mysql://localhost:3306/ds1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+
+shardingRule:
+  tables:
+    user:
+      actualDataNodes: ds$-&gt;{0..1}.user_$-&gt;{2021}_$-&gt;{3}
+      tableStrategy:
+        standard:   # 区别在这里  指定自定义分片字段和自定义分片策略类
+          shardingColumn: create_time
+          preciseAlgorithmClassName: com.hy.shardingsphere.support.TableShardingAlgorithm
+      keyGenerator:
+        type: SNOWFLAKE
+        column: id
+  bindingTables:
+    - user
+  defaultDatabaseStrategy:
+    inline:
+      shardingColumn: id
+      algorithmExpression: ds$-&gt;{id % 2}
+  defaultTableStrategy:
+    none:
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/other/vue使用nginx部署配置.html" class="prev">
+        vue使用nginx部署配置
+      </a></span> <!----></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/60.a5bc0ed5.js" defer></script>
+  </body>
+</html>

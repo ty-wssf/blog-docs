@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Thymeleaf 使用详解 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/49.1295d1cd.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>SpringBoot专题</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/SpringBoot%E4%B8%93%E9%A2%98/" aria-current="page" class="sidebar-link">入门篇</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 2 尝鲜-动态 Banner.html" class="sidebar-link">Spring Boot 2 尝鲜-动态 Banner</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何解决项目启动时初始化资源.html" class="sidebar-link">Spring Boot 如何解决项目启动时初始化资源</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何测试打包部署.html" class="sidebar-link">Spring Boot 如何测试打包部署</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Linux下SpringBoot Jar 如何实现service服务.html" class="sidebar-link">Linux下SpringBoot Jar 如何实现service服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/springboot jar包安装成windows服务.html" class="sidebar-link">springboot jar包安装成windows服务（winsw）</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="sidebar-link">使用 Docker 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html" class="sidebar-link">使用 Jenkins 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Web 综合开发.html" class="sidebar-link">Web 综合开发</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot初始化数据库脚本.html" class="sidebar-link">Spring Boot初始化数据库脚本</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="sidebar-link">Spring Boot 中 Redis 的使用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="sidebar-link">Spring Boot 集成 Memcached</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="active sidebar-link">Thymeleaf 使用详解</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#thymeleaf-介绍" class="sidebar-link">Thymeleaf 介绍</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#标准表达式语法" class="sidebar-link">标准表达式语法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#变量表达式" class="sidebar-link">变量表达式</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#选择-星号-表达式" class="sidebar-link">选择(星号)表达式</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#文字国际化表达式" class="sidebar-link">文字国际化表达式</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#url-表达式" class="sidebar-link">URL 表达式</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#变量表达式和星号表达有什么区别吗" class="sidebar-link">变量表达式和星号表达有什么区别吗？</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#表达式支持的语法" class="sidebar-link">表达式支持的语法</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#常用th标签都有那些" class="sidebar-link">常用th标签都有那些？</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#几种常用的使用方法" class="sidebar-link">几种常用的使用方法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_1、赋值、字符串拼接" class="sidebar-link">1、赋值、字符串拼接</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_2、条件判断-if-unless" class="sidebar-link">2、条件判断 If/Unless</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_3、for-循环" class="sidebar-link">3、for 循环</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_4、url" class="sidebar-link">4、URL</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_5、内联-js" class="sidebar-link">5、内联 js</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#_6、内嵌变量" class="sidebar-link">6、内嵌变量</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html#使用-thymeleaf-布局" class="sidebar-link">使用 Thymeleaf 布局</a></li></ul></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html" class="sidebar-link">如何优雅的使用 Mybatis</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html" class="sidebar-link">如何优雅的使用 MyBatis 之 MyBatis-Plus</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Mybatis 多数据源最简解决方案.html" class="sidebar-link">Mybatis 多数据源最简解决方案</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/RabbitMQ 详解.html" class="sidebar-link">RabbitMQ 详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/定时任务.html" class="sidebar-link">定时任务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="sidebar-link">邮件服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html" class="sidebar-link">使用 Spring Boot Actuator 监控应用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html" class="sidebar-link">使用 spring-boot-admin 对 Spring Boot 服务进行监控</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot、微服务架构和大数据治理三者之间的故事.html" class="sidebar-link">Spring Boot、微服务架构和大数据治理三者之间的故事</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="thymeleaf-使用详解"><a href="#thymeleaf-使用详解" class="header-anchor">#</a> Thymeleaf 使用详解</h1> <h2 id="thymeleaf-介绍"><a href="#thymeleaf-介绍" class="header-anchor">#</a> Thymeleaf 介绍</h2> <p>简单说，Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，它可以完全替代 JSP 。相较与其他的模板引擎，它有如下三个极吸引人的特点：</p> <ul><li>1.Thymeleaf 在有网络和无网络的环境下皆可运行，即它可以让美工在浏览器查看页面的静态效果，也可以让程序员在服务器查看带数据的动态页面效果。这是由于它支持 html 原型，然后在 html 标签里增加额外的属性来达到模板+数据的展示方式。浏览器解释 html 时会忽略未定义的标签属性，所以 Thymeleaf 的模板可以静态地运行；当有数据返回到页面时，Thymeleaf 标签会动态地替换掉静态内容，使页面动态显示。</li> <li>2.Thymeleaf 开箱即用的特性。它提供标准和 Spring 标准两种方言，可以直接套用模板实现 JSTL、 OGNL表达式效果，避免每天套模板、改 Jstl、改标签的困扰。同时开发人员也可以扩展和创建自定义的方言。</li> <li>3.Thymeleaf 提供 Spring 标准方言和一个与 SpringMVC 完美集成的可选模块，可以快速的实现表单绑定、属性编辑器、国际化等功能。</li></ul> <h2 id="标准表达式语法"><a href="#标准表达式语法" class="header-anchor">#</a> 标准表达式语法</h2> <p>它们分为四类：</p> <ul><li>1.变量表达式</li> <li>2.选择或星号表达式</li> <li>3.文字国际化表达式</li> <li>4.URL 表达式</li></ul> <h3 id="变量表达式"><a href="#变量表达式" class="header-anchor">#</a> 变量表达式</h3> <p>变量表达式即 OGNL 表达式或 Spring EL 表达式(在 Spring 术语中也叫 model attributes)。如下所示：
+<code>${session.user.name}</code></p> <p>它们将以HTML标签的一个属性来表示：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;span th:text=&quot;${book.author.name}&quot;&gt;  
+&lt;li th:each=&quot;book : ${books}&quot;&gt;  
+</code></pre></div><h3 id="选择-星号-表达式"><a href="#选择-星号-表达式" class="header-anchor">#</a> 选择(星号)表达式</h3> <p>选择表达式很像变量表达式，不过它们用一个预先选择的对象来代替上下文变量容器(map)来执行，如下：
+<code>*{customer.name}</code></p> <p>被指定的 object 由 th:object 属性定义：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;div th:object=&quot;${book}&quot;&gt;  
+  ...  
+  &lt;span th:text=&quot;*{title}&quot;&gt;...&lt;/span&gt;  
+  ...  
+&lt;/div&gt;  
+</code></pre></div><h3 id="文字国际化表达式"><a href="#文字国际化表达式" class="header-anchor">#</a> 文字国际化表达式</h3> <p>文字国际化表达式允许我们从一个外部文件获取区域文字信息(.properties)，用 Key 索引 Value，还可以提供一组参数(可选).</p> <div class="language- extra-class"><pre class="language-text"><code>#{main.title}  
+#{message.entrycreated(${entryId})}  
+</code></pre></div><p>可以在模板文件中找到这样的表达式代码：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;table&gt;  
+  ...  
+  &lt;th th:text=&quot;#{header.address.city}&quot;&gt;...&lt;/th&gt;  
+  &lt;th th:text=&quot;#{header.address.country}&quot;&gt;...&lt;/th&gt;  
+  ...  
+&lt;/table&gt;  
+</code></pre></div><h3 id="url-表达式"><a href="#url-表达式" class="header-anchor">#</a> URL 表达式</h3> <p>URL 表达式指的是把一个有用的上下文或回话信息添加到 URL，这个过程经常被叫做 URL 重写。
+<code>@{/order/list}</code></p> <p>URL还可以设置参数：
+<code>@{/order/details(id=${orderId})}</code></p> <p>相对路径：
+<code>@{../documents/report}</code></p> <p>让我们看这些表达式：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;form th:action=&quot;@{/createOrder}&quot;&gt;  
+&lt;a href=&quot;main.html&quot; th:href=&quot;@{/main}&quot;&gt;
+</code></pre></div><h3 id="变量表达式和星号表达有什么区别吗"><a href="#变量表达式和星号表达有什么区别吗" class="header-anchor">#</a> 变量表达式和星号表达有什么区别吗？</h3> <p>如果不考虑上下文的情况下，两者没有区别；星号语法评估在选定对象上表达，而不是整个上下文
+什么是选定对象？就是父标签的值，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;div th:object=&quot;${session.user}&quot;&gt;
+  &lt;p&gt;Name: &lt;span th:text=&quot;*{firstName}&quot;&gt;Sebastian&lt;/span&gt;.&lt;/p&gt;
+  &lt;p&gt;Surname: &lt;span th:text=&quot;*{lastName}&quot;&gt;Pepper&lt;/span&gt;.&lt;/p&gt;
+  &lt;p&gt;Nationality: &lt;span th:text=&quot;*{nationality}&quot;&gt;Saturn&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</code></pre></div><p>这是完全等价于：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;div th:object=&quot;${session.user}&quot;&gt;
+  &lt;p&gt;Name: &lt;span th:text=&quot;${session.user.firstName}&quot;&gt;Sebastian&lt;/span&gt;.&lt;/p&gt;
+  &lt;p&gt;Surname: &lt;span th:text=&quot;${session.user.lastName}&quot;&gt;Pepper&lt;/span&gt;.&lt;/p&gt;
+  &lt;p&gt;Nationality: &lt;span th:text=&quot;${session.user.nationality}&quot;&gt;Saturn&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</code></pre></div><p>当然，美元符号和星号语法可以混合使用：</p> <div class="language- extra-class"><pre class="language-text"><code>  &lt;div th:object=&quot;${session.user}&quot;&gt;
+	  &lt;p&gt;Name: &lt;span th:text=&quot;*{firstName}&quot;&gt;Sebastian&lt;/span&gt;.&lt;/p&gt;
+  	  &lt;p&gt;Surname: &lt;span th:text=&quot;${session.user.lastName}&quot;&gt;Pepper&lt;/span&gt;.&lt;/p&gt;
+      &lt;p&gt;Nationality: &lt;span th:text=&quot;*{nationality}&quot;&gt;Saturn&lt;/span&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+</code></pre></div><h3 id="表达式支持的语法"><a href="#表达式支持的语法" class="header-anchor">#</a> 表达式支持的语法</h3> <h4 id="字面-literals"><a href="#字面-literals" class="header-anchor">#</a> 字面（Literals）</h4> <ul><li>文本文字（Text literals）: <code>'one text', 'Another one!',…</code></li> <li>数字文本（Number literals）: <code>0, 34, 3.0, 12.3,…</code></li> <li>布尔文本（Boolean literals）:<code>true, false</code></li> <li>空（Null literal）:<code>null</code></li> <li>文字标记（Literal tokens）:<code>one, sometext, main,…</code></li></ul> <h4 id="文本操作-text-operations"><a href="#文本操作-text-operations" class="header-anchor">#</a> 文本操作（Text operations）</h4> <ul><li>字符串连接(String concatenation):<code>+</code></li> <li>文本替换（Literal substitutions）:<code>|The name is ${name}|</code></li></ul> <h4 id="算术运算-arithmetic-operations"><a href="#算术运算-arithmetic-operations" class="header-anchor">#</a> 算术运算（Arithmetic operations）</h4> <ul><li>二元运算符（Binary operators）:<code>+, -, *, /, %</code></li> <li>减号（单目运算符）Minus sign (unary operator):<code>-</code></li></ul> <h4 id="布尔操作-boolean-operations"><a href="#布尔操作-boolean-operations" class="header-anchor">#</a> 布尔操作（Boolean operations）</h4> <ul><li>二元运算符（Binary operators）:<code>and, or</code></li> <li>布尔否定（一元运算符）Boolean negation (unary operator):<code>!, not</code></li></ul> <h4 id="比较和等价-comparisons-and-equality"><a href="#比较和等价-comparisons-and-equality" class="header-anchor">#</a> 比较和等价(Comparisons and equality)</h4> <ul><li>比较（Comparators）:<code>&gt;, &lt;, &gt;=, &lt;= (gt, lt, ge, le)</code></li> <li>等值运算符（Equality operators）:<code>==, != (eq, ne)</code></li></ul> <h4 id="条件运算符-conditional-operators"><a href="#条件运算符-conditional-operators" class="header-anchor">#</a> 条件运算符（Conditional operators）</h4> <ul><li>If-then:<code>(if) ? (then)</code></li> <li>If-then-else:<code>(if) ? (then) : (else)</code></li> <li>Default: (value) ?:<code>(defaultvalue)</code></li></ul> <p>所有这些特征可以被组合并嵌套：</p> <div class="language- extra-class"><pre class="language-text"><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
+</code></pre></div><h2 id="常用th标签都有那些"><a href="#常用th标签都有那些" class="header-anchor">#</a> 常用th标签都有那些？</h2> <table><thead><tr><th>关键字</th> <th>功能介绍</th> <th>案例</th></tr></thead> <tbody><tr><td>th:id</td> <td>替换id</td> <td><code>&lt;input th:id=&quot;'xxx' + ${collect.id}&quot;/&gt;</code></td></tr> <tr><td>th:text</td> <td>文本替换</td> <td><code>&lt;p th:text=&quot;${collect.description}&quot;&gt;description&lt;/p&gt;</code></td></tr> <tr><td>th:utext</td> <td>支持html的文本替换</td> <td><code>&lt;p th:utext=&quot;${htmlcontent}&quot;&gt;conten&lt;/p&gt;</code></td></tr> <tr><td>th:object</td> <td>替换对象</td> <td><code>&lt;div th:object=&quot;${session.user}&quot;&gt;</code></td></tr> <tr><td>th:value</td> <td>属性赋值</td> <td><code>&lt;input th:value=&quot;${user.name}&quot; /&gt;</code></td></tr> <tr><td>th:with</td> <td>变量赋值运算</td> <td><code>&lt;div th:with=&quot;isEven=${prodStat.count}%2==0&quot;&gt;&lt;/div&gt;</code></td></tr> <tr><td>th:style</td> <td>设置样式</td> <td><code>th:style=&quot;'display:' + @{(${sitrue} ? 'none' : 'inline-block')} + ''&quot;</code></td></tr> <tr><td>th:onclick</td> <td>点击事件</td> <td><code>th:onclick=&quot;'getCollect()'&quot;</code></td></tr> <tr><td>th:each</td> <td>属性赋值</td> <td><code>tr th:each=&quot;user,userStat:${users}&quot;&gt;</code></td></tr> <tr><td>th:if</td> <td>判断条件</td> <td><code>&lt;a th:if=&quot;${userId == collect.userId}&quot; &gt;</code></td></tr> <tr><td>th:unless</td> <td>和th:if判断相反</td> <td><code>&lt;a th:href=&quot;@{/login}&quot; th:unless=${session.user != null}&gt;Login&lt;/a&gt;</code></td></tr> <tr><td>th:href</td> <td>链接地址</td> <td><code>&lt;a th:href=&quot;@{/login}&quot; th:unless=${session.user != null}&gt;Login&lt;/a&gt; /&gt;</code></td></tr> <tr><td>th:switch</td> <td>多路选择 配合th:case 使用</td> <td><code>&lt;div th:switch=&quot;${user.role}&quot;&gt;</code></td></tr> <tr><td>th:case</td> <td>th:switch的一个分支</td> <td><code>&lt;p th:case=&quot;'admin'&quot;&gt;User is an administrator&lt;/p&gt;</code></td></tr> <tr><td>th:fragment</td> <td>布局标签，定义一个代码片段，方便其它地方引用</td> <td><code>&lt;div th:fragment=&quot;alert&quot;&gt;</code></td></tr> <tr><td>th:include</td> <td>布局标签，替换内容到引入的文件</td> <td><code>&lt;head th:include=&quot;layout :: htmlhead&quot; th:with=&quot;title='xx'&quot;&gt;&lt;/head&gt; /&gt;</code></td></tr> <tr><td>th:replace</td> <td>布局标签，替换整个标签到引入的文件</td> <td><code>&lt;div th:replace=&quot;fragments/header :: title&quot;&gt;&lt;/div&gt;</code></td></tr> <tr><td>th:selected</td> <td>selected选择框 选中</td> <td><code>th:selected=&quot;(${xxx.id} == ${configObj.dd})&quot;</code></td></tr> <tr><td>th:src</td> <td>图片类地址引入</td> <td><code>&lt;img class=&quot;img-responsive&quot; alt=&quot;App Logo&quot; th:src=&quot;@{/img/logo.png}&quot; /&gt;</code></td></tr> <tr><td>th:inline</td> <td>定义js脚本可以使用变量</td> <td><code>&lt;script type=&quot;text/javascript&quot; th:inline=&quot;javascript&quot;&gt;</code></td></tr> <tr><td>th:action</td> <td>表单提交的地址</td> <td><code>&lt;form action=&quot;subscribe.html&quot; th:action=&quot;@{/subscribe}&quot;&gt;</code></td></tr> <tr><td>th:remove</td> <td>删除某个属性</td> <td><code>&lt;tr th:remove=&quot;all&quot;&gt; 1.all:删除包含标签和所有的孩子。2.body:不包含标记删除,但删除其所有的孩子。3.tag:包含标记的删除,但不删除它的孩子。4.all-but-first:删除所有包含标签的孩子,除了第一个。5.none:什么也不做。这个值是有用的动态评估。</code></td></tr> <tr><td>th:attr</td> <td>设置标签属性，多个属性可以用逗号分隔</td> <td>比如<code>th:attr=&quot;src=@{/image/aa.jpg},title=#{logo}&quot;</code>，此标签不太优雅，一般用的比较少。</td></tr></tbody></table> <p>还有非常多的标签，这里只列出最常用的几个,由于一个标签内可以包含多个th:x属性，其生效的优先级顺序为: <code>include,each,if/unless/switch/case,with,attr/attrprepend/attrappend,value/href,src ,etc,text/utext,fragment,remove。</code></p> <h2 id="几种常用的使用方法"><a href="#几种常用的使用方法" class="header-anchor">#</a> 几种常用的使用方法</h2> <h3 id="_1、赋值、字符串拼接"><a href="#_1、赋值、字符串拼接" class="header-anchor">#</a> 1、赋值、字符串拼接</h3> <div class="language- extra-class"><pre class="language-text"><code>&lt;p  th:text=&quot;${collect.description}&quot;&gt;description&lt;/p&gt;
+&lt;span th:text=&quot;'Welcome to our application, ' + ${user.name} + '!'&quot;&gt;
+</code></pre></div><p>字符串拼接还有另外一种简洁的写法</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;span th:text=&quot;|Welcome to our application, ${user.name}!|&quot;&gt;
+</code></pre></div><h3 id="_2、条件判断-if-unless"><a href="#_2、条件判断-if-unless" class="header-anchor">#</a> 2、条件判断 If/Unless</h3> <p>Thymeleaf中使用th:if和th:unless属性进行条件判断，下面的例子中，<code>&lt;a&gt;</code>标签只有在<code>th:if</code>中条件成立时才显示：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;a th:if=&quot;${myself=='yes'}&quot; &gt; &lt;/i&gt; &lt;/a&gt;
+&lt;a th:unless=${session.user != null} th:href=&quot;@{/login}&quot; &gt;Login&lt;/a&gt;
+</code></pre></div><p><code>th:unless</code> 于 <code>th:if</code> 恰好相反，只有表达式中的条件不成立，才会显示其内容。</p> <p>也可以使用 <code>(if) ? (then) : (else)</code>这种语法来判断显示的内容</p> <h3 id="_3、for-循环"><a href="#_3、for-循环" class="header-anchor">#</a> 3、for 循环</h3> <div class="language- extra-class"><pre class="language-text"><code>&lt;tr  th:each=&quot;collect,iterStat : ${collects}&quot;&gt; 
+   &lt;th scope=&quot;row&quot; th:text=&quot;${collect.id}&quot;&gt;1&lt;/th&gt;
+   &lt;td &gt;
+      &lt;img th:src=&quot;${collect.webLogo}&quot;/&gt;
+   &lt;/td&gt;
+   &lt;td th:text=&quot;${collect.url}&quot;&gt;Mark&lt;/td&gt;
+   &lt;td th:text=&quot;${collect.title}&quot;&gt;Otto&lt;/td&gt;
+   &lt;td th:text=&quot;${collect.description}&quot;&gt;@mdo&lt;/td&gt;
+   &lt;td th:text=&quot;${terStat.index}&quot;&gt;index&lt;/td&gt;
+&lt;/tr&gt;
+</code></pre></div><p>iterStat称作状态变量，属性有：</p> <ul><li>index:当前迭代对象的 index（从0开始计算）</li> <li>count: 当前迭代对象的 index(从1开始计算)</li> <li>size:被迭代对象的大小</li> <li>current:当前迭代变量</li> <li>even/odd:布尔值，当前循环是否是偶数/奇数（从0开始计算）</li> <li>first:布尔值，当前循环是否是第一个</li> <li>last:布尔值，当前循环是否是最后一个</li></ul> <h3 id="_4、url"><a href="#_4、url" class="header-anchor">#</a> 4、URL</h3> <p>URL 在 Web 应用模板中占据着十分重要的地位，需要特别注意的是 Thymeleaf 对于 URL 的处理是通过语法 <code>@{...}</code> 来处理的。 如果需要 Thymeleaf 对 URL 进行渲染，那么务必使用 <code>th:href</code>，<code>th:src</code> 等属性，下面是一个例子</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;!-- Will produce 'http://localhost:8080/standard/unread' (plus rewriting) --&gt;
+ &lt;a  th:href=&quot;@{/standard/{type}(type=${type})}&quot;&gt;view&lt;/a&gt;
+
+&lt;!-- Will produce '/gtvg/order/3/details' (plus rewriting) --&gt;
+&lt;a href=&quot;details.html&quot; th:href=&quot;@{/order/{orderId}/details(orderId=${o.id})}&quot;&gt;view&lt;/a&gt;
+</code></pre></div><p>设置背景</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;div th:style=&quot;'background:url(' + @{/&lt;path-to-image&gt;} + ');'&quot;&gt;&lt;/div&gt;
+</code></pre></div><p>根据属性值改变背景</p> <div class="language- extra-class"><pre class="language-text"><code> &lt;div class=&quot;media-object resource-card-image&quot;  th:style=&quot;'background:url(' + @{(${collect.webLogo}=='' ? 'img/favicon.png' : ${collect.webLogo})} + ')'&quot; &gt;&lt;/div&gt;
+</code></pre></div><p>几点说明：</p> <ul><li>上例中 URL 最后的<code>(orderId=${o.id})</code>表示将括号内的内容作为 URL 参数处理，该语法避免使用字符串拼接，大大提高了可读性</li> <li><code>@{...}</code>表达式中可以通过<code>{orderId}</code>访问 Context 中的 orderId 变量</li> <li><code>@{/order}</code>是 Context 相关的相对路径，在渲染时会自动添加上当前 Web 应用的 Context 名字，假设 context 名字为 app，那么结果应该是 <code>/app/order</code></li></ul> <h3 id="_5、内联-js"><a href="#_5、内联-js" class="header-anchor">#</a> 5、内联 js</h3> <p>内联文本：[[…]] 内联文本的表示方式，使用时，必须先用<code>th:inline=&quot;text/javascript/none&quot;</code>激活，<code>th:inline</code>可以在父级标签内使用，甚至作为 body 的标签。内联文本尽管比<code>th:text</code>的代码少，不利于原型显示。</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;script th:inline=&quot;javascript&quot;&gt;
+/*&lt;![CDATA[*/
+...
+var username = /*[[${sesion.user.name}]]*/ 'Sebastian';
+var size = /*[[${size}]]*/ 0;
+...
+/*]]&gt;*/
+&lt;/script&gt;
+</code></pre></div><p>js 附加代码：</p> <div class="language- extra-class"><pre class="language-text"><code>/*[+
+var msg = 'This is a working application';
++]*/
+</code></pre></div><p>js 移除代码：</p> <div class="language- extra-class"><pre class="language-text"><code>/*[- */
+var msg = 'This is a non-working template';
+/* -]*/
+</code></pre></div><h3 id="_6、内嵌变量"><a href="#_6、内嵌变量" class="header-anchor">#</a> 6、内嵌变量</h3> <p>为了模板更加易用，Thymeleaf 还提供了一系列 Utility 对象（内置于 Context 中），可以通过 # 直接访问：</p> <ul><li>dates ： <em>java.util.Date的功能方法类。</em></li> <li>calendars : <em>类似#dates，面向java.util.Calendar</em></li> <li>numbers : <em>格式化数字的功能方法类</em></li> <li>strings : <em>字符串对象的功能类，contains,startWiths,prepending/appending等等。</em></li> <li>objects: <em>对objects的功能类操作。</em></li> <li>bools: <em>对布尔值求值的功能方法。</em></li> <li>arrays：<em>对数组的功能类方法。</em></li> <li>lists: <em>对lists功能类方法</em></li> <li>sets</li> <li>maps
+…</li></ul> <p>下面用一段代码来举例一些常用的方法：</p> <h4 id="dates"><a href="#dates" class="header-anchor">#</a> dates</h4> <div class="language- extra-class"><pre class="language-text"><code>/*
+ * Format date with the specified pattern
+ * Also works with arrays, lists or sets
+ */
+${#dates.format(date, 'dd/MMM/yyyy HH:mm')}
+${#dates.arrayFormat(datesArray, 'dd/MMM/yyyy HH:mm')}
+${#dates.listFormat(datesList, 'dd/MMM/yyyy HH:mm')}
+${#dates.setFormat(datesSet, 'dd/MMM/yyyy HH:mm')}
+
+/*
+ * Create a date (java.util.Date) object for the current date and time
+ */
+${#dates.createNow()}
+
+/*
+ * Create a date (java.util.Date) object for the current date (time set to 00:00)
+ */
+${#dates.createToday()}
+</code></pre></div><h4 id="strings"><a href="#strings" class="header-anchor">#</a> strings</h4> <div class="language- extra-class"><pre class="language-text"><code>/*
+ * Check whether a String is empty (or null). Performs a trim() operation before check
+ * Also works with arrays, lists or sets
+ */
+${#strings.isEmpty(name)}
+${#strings.arrayIsEmpty(nameArr)}
+${#strings.listIsEmpty(nameList)}
+${#strings.setIsEmpty(nameSet)}
+
+/*
+ * Check whether a String starts or ends with a fragment
+ * Also works with arrays, lists or sets
+ */
+${#strings.startsWith(name,'Don')}                  // also array*, list* and set*
+${#strings.endsWith(name,endingFragment)}           // also array*, list* and set*
+
+/*
+ * Compute length
+ * Also works with arrays, lists or sets
+ */
+${#strings.length(str)}
+
+/*
+ * Null-safe comparison and concatenation
+ */
+${#strings.equals(str)}
+${#strings.equalsIgnoreCase(str)}
+${#strings.concat(str)}
+${#strings.concatReplaceNulls(str)}
+
+/*
+ * Random
+ */
+${#strings.randomAlphanumeric(count)}
+</code></pre></div><h2 id="使用-thymeleaf-布局"><a href="#使用-thymeleaf-布局" class="header-anchor">#</a> 使用 Thymeleaf 布局</h2> <p>Spring Boot 2.0 将布局单独提取了出来，需要单独引入依赖：thymeleaf-layout-dialect。</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;nz.net.ultraq.thymeleaf&lt;/groupId&gt;
+    &lt;artifactId&gt;thymeleaf-layout-dialect&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre></div><p>定义代码片段</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;footer th:fragment=&quot;copy&quot;&gt; 
+&amp;copy; 2019
+&lt;/footer&gt;
+</code></pre></div><p>在页面任何地方引入：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;body&gt;
+    &lt;div th:insert=&quot;layout/copyright :: copyright&quot;&gt;&lt;/div&gt;
+    &lt;div th:replace=&quot;layout/copyright :: copyright&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+</code></pre></div><p>th:insert 和 th:replace 区别，insert 只是加载，replace 是替换。Thymeleaf 3.0 推荐使用 th:insert 替换 2.0 的 th:replace。</p> <p>返回的 HTML 如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;body&gt; 
+   &lt;div&gt; &amp;copy; 2019 &lt;/div&gt; 
+  &lt;footer&gt;&amp;copy; 2019 &lt;/footer&gt; 
+&lt;/body&gt;
+</code></pre></div><p>下面是一个常用的后台页面布局，将整个页面分为头部，尾部、菜单栏、隐藏栏，点击菜单只改变 content 区域的页面</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;body class=&quot;layout-fixed&quot;&gt;
+  &lt;div th:fragment=&quot;navbar&quot;  class=&quot;wrapper&quot;  role=&quot;navigation&quot;&gt;
+	&lt;div th:replace=&quot;fragments/header :: header&quot;&gt;Header&lt;/div&gt;
+	&lt;div th:replace=&quot;fragments/left :: left&quot;&gt;left&lt;/div&gt;
+	&lt;div th:replace=&quot;fragments/sidebar :: sidebar&quot;&gt;sidebar&lt;/div&gt;
+	&lt;div layout:fragment=&quot;content&quot; id=&quot;content&quot; &gt;&lt;/div&gt;
+	&lt;div th:replace=&quot;fragments/footer :: footer&quot;&gt;footer&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+</code></pre></div><p>任何页面想使用这样的布局值只需要替换中见的 content 模块即可</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot; layout:decorator=&quot;layout&quot;&gt;
+ &lt;body&gt;
+    &lt;section layout:fragment=&quot;content&quot;&gt;
+  ...
+</code></pre></div><p>也可以在引用模版的时候传参</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;head th:include=&quot;layout :: htmlhead&quot; th:with=&quot;title='Hello'&quot;&gt;&lt;/head&gt;
+</code></pre></div><p>layout 是文件地址，如果有文件夹可以这样写<code>fileName/layout:htmlhead</code>，htmlhead 是指定义的代码片段 如<code>th:fragment=&quot;copy&quot;</code></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="prev">
+        Spring Boot 集成 Memcached
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html">
+        如何优雅的使用 Mybatis
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/49.1295d1cd.js" defer></script>
+  </body>
+</html>

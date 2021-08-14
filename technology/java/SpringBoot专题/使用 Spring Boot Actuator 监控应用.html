@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 Spring Boot Actuator 监控应用 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/54.a4ff0727.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>SpringBoot专题</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/SpringBoot%E4%B8%93%E9%A2%98/" aria-current="page" class="sidebar-link">入门篇</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 2 尝鲜-动态 Banner.html" class="sidebar-link">Spring Boot 2 尝鲜-动态 Banner</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何解决项目启动时初始化资源.html" class="sidebar-link">Spring Boot 如何解决项目启动时初始化资源</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何测试打包部署.html" class="sidebar-link">Spring Boot 如何测试打包部署</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Linux下SpringBoot Jar 如何实现service服务.html" class="sidebar-link">Linux下SpringBoot Jar 如何实现service服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/springboot jar包安装成windows服务.html" class="sidebar-link">springboot jar包安装成windows服务（winsw）</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="sidebar-link">使用 Docker 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html" class="sidebar-link">使用 Jenkins 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Web 综合开发.html" class="sidebar-link">Web 综合开发</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot初始化数据库脚本.html" class="sidebar-link">Spring Boot初始化数据库脚本</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="sidebar-link">Spring Boot 中 Redis 的使用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="sidebar-link">Spring Boot 集成 Memcached</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="sidebar-link">Thymeleaf 使用详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html" class="sidebar-link">如何优雅的使用 Mybatis</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html" class="sidebar-link">如何优雅的使用 MyBatis 之 MyBatis-Plus</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Mybatis 多数据源最简解决方案.html" class="sidebar-link">Mybatis 多数据源最简解决方案</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/RabbitMQ 详解.html" class="sidebar-link">RabbitMQ 详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/定时任务.html" class="sidebar-link">定时任务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="sidebar-link">邮件服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html" class="active sidebar-link">使用 Spring Boot Actuator 监控应用</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#actuator-监控" class="sidebar-link">Actuator 监控</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#actuator-的-rest-接口" class="sidebar-link">Actuator 的 REST 接口</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#快速上手" class="sidebar-link">快速上手</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#相关配置" class="sidebar-link">相关配置</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#命令详解" class="sidebar-link">命令详解</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#health" class="sidebar-link">health</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#info" class="sidebar-link">info</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#beans" class="sidebar-link">beans</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#conditions" class="sidebar-link">conditions</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#heapdump" class="sidebar-link">heapdump</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#shutdown" class="sidebar-link">shutdown</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#mappings" class="sidebar-link">mappings</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html#threaddump" class="sidebar-link">threaddump</a></li></ul></li></ul></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html" class="sidebar-link">使用 spring-boot-admin 对 Spring Boot 服务进行监控</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot、微服务架构和大数据治理三者之间的故事.html" class="sidebar-link">Spring Boot、微服务架构和大数据治理三者之间的故事</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="使用-spring-boot-actuator-监控应用"><a href="#使用-spring-boot-actuator-监控应用" class="header-anchor">#</a> 使用 Spring Boot Actuator 监控应用</h1> <p>微服务的特点决定了功能模块的部署是分布式的，大部分功能模块都是运行在不同的机器上，彼此通过服务调用进行交互，前后台的业务流会经过很多个微服务的处理和传递，出现了异常如何快速定位是哪个环节出现了问题？</p> <p>在这种框架下，微服务的监控显得尤为重要。本文主要结合 Spring Boot Actuator，跟大家一起分享微服务 Spring Boot Actuator 的常见用法，方便我们在日常中对我们的微服务进行监控治理。</p> <h2 id="actuator-监控"><a href="#actuator-监控" class="header-anchor">#</a> Actuator 监控</h2> <p>Spring Boot 使用“习惯优于配置的理念”，采用包扫描和自动化配置的机制来加载依赖 Jar 中的 Spring bean，不需要任何 Xml 配置，就可以实现 Spring 的所有配置。虽然这样做能让我们的代码变得非常简洁，但是整个应用的实例创建和依赖关系等信息都被离散到了各个配置类的注解上，这使得我们分析整个应用中资源和实例的各种关系变得非常的困难。</p> <p>Actuator 是 Spring Boot 提供的对应用系统的自省和监控的集成功能，可以查看应用配置的详细信息，例如自动化配置信息、创建的 Spring beans 以及一些环境属性等。</p> <p>为了保证 actuator 暴露的监控接口的安全性，需要添加安全控制的依赖<code>spring-boot-start-security</code>依赖，访问应用监控端点时，都需要输入验证信息。Security 依赖，可以选择不加，不进行安全管理，但不建议这么做。</p> <h2 id="actuator-的-rest-接口"><a href="#actuator-的-rest-接口" class="header-anchor">#</a> Actuator 的 REST 接口</h2> <p>Actuator 监控分成两类：原生端点和用户自定义端点；自定义端点主要是指扩展性，用户可以根据自己的实际应用，定义一些比较关心的指标，在运行期进行监控。</p> <p>原生端点是在应用程序里提供众多 Web 接口，通过它们了解应用程序运行时的内部状况。原生端点又可以分成三类：</p> <ul><li>应用配置类：可以查看应用在运行期的静态信息：例如自动配置信息、加载的 springbean 信息、yml 文件配置信息、环境信息、请求映射信息；</li> <li>度量指标类：主要是运行期的动态信息，例如堆栈、请求连、一些健康指标、metrics 信息等；</li> <li>操作控制类：主要是指 shutdown,用户可以发送一个请求将应用的监控功能关闭。</li></ul> <p>Actuator 提供了 13 个接口，具体如下表所示。</p> <table><thead><tr><th style="text-align:left;">HTTP 方法</th> <th style="text-align:left;">路径</th> <th style="text-align:left;">描述</th></tr></thead> <tbody><tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/auditevents</td> <td style="text-align:left;">显示应用暴露的审计事件 (比如认证进入、订单失败)</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/beans</td> <td style="text-align:left;">描述应用程序上下文里全部的 Bean，以及它们的关系</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/conditions</td> <td style="text-align:left;">就是 1.0 的 /autoconfig ，提供一份自动配置生效的条件情况，记录哪些自动配置条件通过了，哪些没通过</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/configprops</td> <td style="text-align:left;">描述配置属性(包含默认值)如何注入Bean</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/env</td> <td style="text-align:left;">获取全部环境属性</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/env/{name}</td> <td style="text-align:left;">根据名称获取特定的环境属性值</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/flyway</td> <td style="text-align:left;">提供一份 Flyway 数据库迁移信息</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/liquidbase</td> <td style="text-align:left;">显示Liquibase 数据库迁移的纤细信息</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/health</td> <td style="text-align:left;">报告应用程序的健康指标，这些值由 HealthIndicator 的实现类提供</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/heapdump</td> <td style="text-align:left;">dump 一份应用的 JVM 堆信息</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/httptrace</td> <td style="text-align:left;">显示HTTP足迹，最近100个HTTP request/repsponse</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/info</td> <td style="text-align:left;">获取应用程序的定制信息，这些信息由info打头的属性提供</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/logfile</td> <td style="text-align:left;">返回log file中的内容(如果 logging.file 或者 logging.path 被设置)</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/loggers</td> <td style="text-align:left;">显示和修改配置的loggers</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/metrics</td> <td style="text-align:left;">报告各种应用程序度量信息，比如内存用量和HTTP请求计数</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/metrics/{name}</td> <td style="text-align:left;">报告指定名称的应用程序度量值</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/scheduledtasks</td> <td style="text-align:left;">展示应用中的定时任务信息</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/sessions</td> <td style="text-align:left;">如果我们使用了 Spring Session 展示应用中的 HTTP sessions 信息</td></tr> <tr><td style="text-align:left;">POST</td> <td style="text-align:left;">/shutdown</td> <td style="text-align:left;">关闭应用程序，要求endpoints.shutdown.enabled设置为true</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/mappings</td> <td style="text-align:left;">描述全部的 URI路径，以及它们和控制器(包含Actuator端点)的映射关系</td></tr> <tr><td style="text-align:left;">GET</td> <td style="text-align:left;">/threaddump</td> <td style="text-align:left;">获取线程活动的快照</td></tr></tbody></table> <h2 id="快速上手"><a href="#快速上手" class="header-anchor">#</a> 快速上手</h2> <h3 id="相关配置"><a href="#相关配置" class="header-anchor">#</a> 相关配置</h3> <p><strong>项目依赖</strong></p> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre></div><p><strong>配置文件</strong></p> <div class="language- extra-class"><pre class="language-text"><code>info.app.name=spring-boot-actuator
+info.app.version= 1.0.0
+info.app.test=test
+
+management.endpoints.web.exposure.include=*
+management.endpoint.health.show-details=always
+#management.endpoints.web.base-path=/monitor
+
+management.endpoint.shutdown.enabled=true
+</code></pre></div><ul><li><code>management.endpoints.web.base-path=/monitor</code> 代表启用单独的url地址来监控 Spring Boot 应用，为了安全一般都启用独立的端口来访问后端的监控信息</li> <li><code>management.endpoint.shutdown.enabled=true</code> 启用接口关闭 Spring Boot</li></ul> <p>配置完成之后，启动项目就可以继续验证各个监控功能了。</p> <h2 id="命令详解"><a href="#命令详解" class="header-anchor">#</a> 命令详解</h2> <p>在 Spring Boot 2.x 中为了安全期间，Actuator 只开放了两个端点 <code>/actuator/health</code> 和 <code>/actuator/info</code>。可以在配置文件中设置打开。</p> <p>可以打开所有的监控点</p> <div class="language- extra-class"><pre class="language-text"><code>management.endpoints.web.exposure.include=*
+</code></pre></div><p>也可以选择打开部分</p> <div class="language- extra-class"><pre class="language-text"><code>management.endpoints.web.exposure.exclude=beans,trace
+</code></pre></div><p>Actuator 默认所有的监控点路径都在<code>/actuator/*</code>，当然如果有需要这个路径也支持定制。</p> <div class="language- extra-class"><pre class="language-text"><code>management.endpoints.web.base-path=/manage
+</code></pre></div><p>设置完重启后，再次访问地址就会变成<code>/manage/*</code></p> <p>Actuator 几乎监控了应用涉及的方方面面，我们重点讲述一些经常在项目中常用的命令。</p> <h3 id="health"><a href="#health" class="header-anchor">#</a> health</h3> <p>health 主要用来检查应用的运行状态，这是我们使用最高频的一个监控点。通常使用此接口提醒我们应用实例的运行状态，以及应用不”健康“的原因，比如数据库连接、磁盘空间不够等。</p> <p>默认情况下 health 的状态是开放的，添加依赖后启动项目，访问：<code>http://localhost:8080/actuator/health</code>即可看到应用的状态。</p> <div class="language- extra-class"><pre class="language-text"><code>{
+    &quot;status&quot; : &quot;UP&quot;
+}
+</code></pre></div><p>默认情况下，最终的 Spring Boot 应用的状态是由 HealthAggregator 汇总而成的，汇总的算法是：</p> <ul><li>1 设置状态码顺序：<code>setStatusOrder(Status.DOWN, Status.OUT_OF_SERVICE, Status.UP, Status.UNKNOWN);</code>。</li> <li>2 过滤掉不能识别的状态码。</li> <li>3 如果无任何状态码，整个 Spring Boot 应用的状态是 UNKNOWN。</li> <li>4 将所有收集到的状态码按照 1 中的顺序排序。</li> <li>5 返回有序状态码序列中的第一个状态码，作为整个 Spring Boot 应用的状态。</li></ul> <p>health 通过合并几个健康指数检查应用的健康情况。Spring Boot Actuator 有几个预定义的健康指标比如<code>DataSourceHealthIndicator</code>, <code>DiskSpaceHealthIndicator</code>, <code>MongoHealthIndicator</code>, <code>RedisHealthIndicator</code>等，它使用这些健康指标作为健康检查的一部分。</p> <p>举个例子，如果你的应用使用 Redis，<code>RedisHealthindicator</code> 将被当作检查的一部分；如果使用 MongoDB，那么<code>MongoHealthIndicator</code> 将被当作检查的一部分。</p> <p>可以在配置文件中关闭特定的健康检查指标，比如关闭 redis 的健康检查：</p> <div class="language- extra-class"><pre class="language-text"><code>management.health.redise.enabled=false
+</code></pre></div><p>默认，所有的这些健康指标被当作健康检查的一部分。</p> <h3 id="info"><a href="#info" class="header-anchor">#</a> info</h3> <p>info 就是我们自己配置在配置文件中以 info 开头的配置信息，比如我们在示例项目中的配置是：</p> <div class="language- extra-class"><pre class="language-text"><code>info.app.name=spring-boot-actuator
+info.app.version= 1.0.0
+info.app.test= test
+</code></pre></div><p>启动示例项目，访问：<code>http://localhost:8080/actuator/info</code>返回部分信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;app&quot;: {
+    &quot;name&quot;: &quot;spring-boot-actuator&quot;,
+    &quot;version&quot;: &quot;1.0.0&quot;,
+    &quot;test&quot;:&quot;test&quot;
+  }
+}
+</code></pre></div><h3 id="beans"><a href="#beans" class="header-anchor">#</a> beans</h3> <p>根据示例就可以看出，展示了 bean 的别名、类型、是否单例、类的地址、依赖等信息。</p> <p>启动示例项目，访问：<code>http://localhost:8080/actuator/beans</code>返回部分信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>[
+  {
+    &quot;context&quot;: &quot;application:8080:management&quot;,
+    &quot;parent&quot;: &quot;application:8080&quot;,
+    &quot;beans&quot;: [
+      {
+        &quot;bean&quot;: &quot;embeddedServletContainerFactory&quot;,
+        &quot;aliases&quot;: [
+          
+        ],
+        &quot;scope&quot;: &quot;singleton&quot;,
+        &quot;type&quot;: &quot;org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory&quot;,
+        &quot;resource&quot;: &quot;null&quot;,
+        &quot;dependencies&quot;: [
+          
+        ]
+      },
+      {
+        &quot;bean&quot;: &quot;endpointWebMvcChildContextConfiguration&quot;,
+        &quot;aliases&quot;: [
+          
+        ],
+        &quot;scope&quot;: &quot;singleton&quot;,
+        &quot;type&quot;: &quot;org.springframework.boot.actuate.autoconfigure.EndpointWebMvcChildContextConfiguration$$EnhancerBySpringCGLIB$$a4a10f9d&quot;,
+        &quot;resource&quot;: &quot;null&quot;,
+        &quot;dependencies&quot;: [
+          
+        ]
+      }
+  }
+]
+</code></pre></div><h3 id="conditions"><a href="#conditions" class="header-anchor">#</a> conditions</h3> <p>Spring Boot 的自动配置功能非常便利，但有时候也意味着出问题比较难找出具体的原因。使用 conditions 可以在应用运行时查看代码了某个配置在什么条件下生效，或者某个自动配置为什么没有生效。</p> <p>启动示例项目，访问：<code>http://localhost:8080/actuator/conditions</code>返回部分信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>{
+    &quot;positiveMatches&quot;: {
+     &quot;DevToolsDataSourceAutoConfiguration&quot;: {
+            &quot;notMatched&quot;: [
+                {
+                    &quot;condition&quot;: &quot;DevToolsDataSourceAutoConfiguration.DevToolsDataSourceCondition&quot;, 
+                    &quot;message&quot;: &quot;DevTools DataSource Condition did not find a single DataSource bean&quot;
+                }
+            ], 
+            &quot;matched&quot;: [ ]
+        }, 
+        &quot;RemoteDevToolsAutoConfiguration&quot;: {
+            &quot;notMatched&quot;: [
+                {
+                    &quot;condition&quot;: &quot;OnPropertyCondition&quot;, 
+                    &quot;message&quot;: &quot;@ConditionalOnProperty (spring.devtools.remote.secret) did not find property 'secret'&quot;
+                }
+            ], 
+            &quot;matched&quot;: [
+                {
+                    &quot;condition&quot;: &quot;OnClassCondition&quot;, 
+                    &quot;message&quot;: &quot;@ConditionalOnClass found required classes 'javax.servlet.Filter', 'org.springframework.http.server.ServerHttpRequest'; @ConditionalOnMissingClass did not find unwanted class&quot;
+                }
+            ]
+        }
+    }
+}
+</code></pre></div><h3 id="heapdump"><a href="#heapdump" class="header-anchor">#</a> heapdump</h3> <p>返回一个 GZip 压缩的 JVM 堆 dump</p> <p>启动示例项目，访问：<code>http://localhost:8080/actuator/heapdump</code>会自动生成一个 Jvm 的堆文件 heapdump，我们可以使用 JDK 自带的 Jvm 监控工具 VisualVM 打开此文件查看内存快照。类似如下图：</p> <p><img src="http://favorites.ren/assets/images/2018/springboot/heapdump.png" alt="img"></p> <h3 id="shutdown"><a href="#shutdown" class="header-anchor">#</a> shutdown</h3> <p>开启接口优雅关闭 Spring Boot 应用，要使用这个功能首先需要在配置文件中开启：</p> <div class="language- extra-class"><pre class="language-text"><code>management.endpoint.shutdown.enabled=true
+</code></pre></div><p>配置完成之后，启动示例项目，使用 curl 模拟 post 请求访问 shutdown 接口。</p> <blockquote><p>shutdown 接口默认只支持 post 请求。</p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>curl -X POST &quot;http://localhost:8080/actuator/shutdown&quot; 
+{
+    &quot;message&quot;: &quot;Shutting down, bye...&quot;
+}
+</code></pre></div><p>此时你会发现应用已经被关闭。</p> <h3 id="mappings"><a href="#mappings" class="header-anchor">#</a> mappings</h3> <p>描述全部的 URI 路径，以及它们和控制器的映射关系</p> <p>启动示例项目，访问：<code>http://localhost:8080/actuator/mappings</code>返回部分信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;/**/favicon.ico&quot;: {
+    &quot;bean&quot;: &quot;faviconHandlerMapping&quot;
+  },
+  &quot;{[/hello]}&quot;: {
+    &quot;bean&quot;: &quot;requestMappingHandlerMapping&quot;,
+    &quot;method&quot;: &quot;public java.lang.String com.neo.controller.HelloController.index()&quot;
+  },
+  &quot;{[/error]}&quot;: {
+    &quot;bean&quot;: &quot;requestMappingHandlerMapping&quot;,
+    &quot;method&quot;: &quot;public org.springframework.http.ResponseEntity&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)&quot;
+  }
+}
+</code></pre></div><h3 id="threaddump"><a href="#threaddump" class="header-anchor">#</a> threaddump</h3> <p>/threaddump 接口会生成当前线程活动的快照。这个功能非常好，方便我们在日常定位问题的时候查看线程的情况。 主要展示了线程名、线程ID、线程的状态、是否等待锁资源等信息。</p> <p>启动示例项目，访问：<code>http://localhost:8080/actuator/threaddump</code>返回部分信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>[
+  {
+    &quot;threadName&quot;: &quot;http-nio-8088-exec-6&quot;,
+    &quot;threadId&quot;: 49,
+    &quot;blockedTime&quot;: -1,
+    &quot;blockedCount&quot;: 0,
+    &quot;waitedTime&quot;: -1,
+    &quot;waitedCount&quot;: 2,
+    &quot;lockName&quot;: &quot;java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@1630a501&quot;,
+    &quot;lockOwnerId&quot;: -1,
+    &quot;lockOwnerName&quot;: null,
+    &quot;inNative&quot;: false,
+    &quot;suspended&quot;: false,
+    &quot;threadState&quot;: &quot;WAITING&quot;,
+    &quot;stackTrace&quot;: [
+      {
+        &quot;methodName&quot;: &quot;park&quot;,
+        &quot;fileName&quot;: &quot;Unsafe.java&quot;,
+        &quot;lineNumber&quot;: -2,
+        &quot;className&quot;: &quot;sun.misc.Unsafe&quot;,
+        &quot;nativeMethod&quot;: true
+      },
+      ...
+      {
+        &quot;methodName&quot;: &quot;run&quot;,
+        &quot;fileName&quot;: &quot;TaskThread.java&quot;,
+        &quot;lineNumber&quot;: 61,
+        &quot;className&quot;: &quot;org.apache.tomcat.util.threads.TaskThread$WrappingRunnable&quot;,
+        &quot;nativeMethod&quot;: false
+      }
+      ...
+    ],
+    &quot;lockInfo&quot;: {
+      &quot;className&quot;: &quot;java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject&quot;,
+      &quot;identityHashCode&quot;: 372286721
+    }
+  }
+  ...
+]
+</code></pre></div><p>生产出现问题的时候，可以通过应用的线程快照来检测应用正在执行的任务。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="prev">
+        邮件服务
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html">
+        使用 spring-boot-admin 对 Spring Boot 服务进行监控
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/54.a4ff0727.js" defer></script>
+  </body>
+</html>

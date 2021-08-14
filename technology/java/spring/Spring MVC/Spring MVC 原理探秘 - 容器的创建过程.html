@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring MVC 原理探秘 - 容器的创建过程 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/77.d8c3dd88.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring IOC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="sidebar-link">Spring bean的生命流程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html" class="sidebar-link">Spring IOC 容器源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="sidebar-link">Spring IOC 容器源码分析 - 获取单例 bean</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建单例 bean 的过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建原始 bean 对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="sidebar-link">Spring IOC 容器源码分析 - 循环依赖的解决办法</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html" class="sidebar-link">Spring IOC 容器源码分析 - 余下的初始化工作</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring AOP</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析系列文章导读.html" class="sidebar-link">Spring AOP 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="sidebar-link">Spring AOP 源码分析 - 筛选合适的通知器</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html" class="sidebar-link">Spring AOP 源码分析 - 创建代理对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html" class="sidebar-link">Spring AOP 源码分析 - 拦截器链的执行过程</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring MVC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="sidebar-link">Spring MVC 原理探秘 - 一个请求的旅行过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html" class="active sidebar-link">Spring MVC 原理探秘 - 容器的创建过程</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html#_1-简介" class="sidebar-link">1.简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html#_2-容器的创建过程" class="sidebar-link">2.容器的创建过程</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html#_2-1-业务容器的创建过程" class="sidebar-link">2.1 业务容器的创建过程</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html#_2-2-web-容器的创建过程" class="sidebar-link">2.2 Web 容器的创建过程</a></li></ul></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-mvc-原理探秘-容器的创建过程"><a href="#spring-mvc-原理探秘-容器的创建过程" class="header-anchor">#</a> Spring MVC 原理探秘 - 容器的创建过程</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1.简介</h2> <p>在上一篇<a href="http://www.coolblog.xyz/2018/06/29/Spring-MVC-%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A7%98-%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E6%97%85%E8%A1%8C%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener noreferrer">文章<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>中，我向大家介绍了 Spring MVC 是如何处理 HTTP 请求的。Spring MVC 可对外提供服务时，说明其已经处于了就绪状态。再次之前，Spring MVC 需要进行一系列的初始化操作。正所谓兵马未动，粮草先行。这些操作包括创建容器，加载 DispatcherServlet 中用到的各种组件等。本篇文章就来和大家讨论一下这些初始化操作中的容器创建操作，容器的创建是其他一些初始化过程的基础。那其他的就不多说了，我们直入主题吧。</p> <h2 id="_2-容器的创建过程"><a href="#_2-容器的创建过程" class="header-anchor">#</a> 2.容器的创建过程</h2> <p>一般情况下，我们会在一个 Web 应用中配置两个容器。一个容器用于加载 Web 层的类，比如我们的接口 Controller、HandlerMapping、ViewResolver 等。在本文中，我们把这个容器叫做 web 容器。另一个容器用于加载业务逻辑相关的类，比如 service、dao 层的一些类。在本文中，我们把这个容器叫做业务容器。在容器初始化的过程中，业务容器会先于 web 容器进行初始化。web 容器初始化时，会将业务容器作为父容器。这样做的原因是，web 容器中的一些 bean 会依赖于业务容器中的 bean。比如我们的 controller 层接口通常会依赖 service 层的业务逻辑类。下面举个例子进行说明：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15301816604204.jpg" alt="img"></p> <p>如上，我们将 dao 层的类配置在 application-dao.xml 文件中，将 service 层的类配置在 application-service.xml 文件中。然后我们将这两个配置文件通过标签导入到 application.xml 文件中。此时，我们可以让业务容器去加载 application.xml 配置文件即可。另一方面，我们将 Web 相关的配置放在 application-web.xml 文件中，并将该文件交给 Web 容器去加载。</p> <p>这里我们把配置文件进行分层，结构上看起来清晰了很多，也便于维护。这个其实和代码分层是一个道理，如果我们把所有的代码都放在同一个包下，那看起来会多难受啊。同理，我们用业务容器和 Web 容器去加载不同的类也是一种分层的体现吧。当然，如果应用比较简单，仅用 Web 容器去加载所有的类也不是不可以。</p> <h3 id="_2-1-业务容器的创建过程"><a href="#_2-1-业务容器的创建过程" class="header-anchor">#</a> 2.1 业务容器的创建过程</h3> <p>前面说了一些背景知识作为铺垫，那下面我们开始分析容器的创建过程吧。按照创建顺序，我们先来分析业务容器的创建过程。业务容器的创建入口是 ContextLoaderListener 的 contextInitialized 方法。顾名思义，ContextLoaderListener 是用来监听 ServletContext 加载事件的。当 ServletContext 被加载后，监听器的 contextInitialized 方法就会被 Servlet 容器调用。ContextLoaderListener Spring 框架提供的，它的配置方法如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;web-app&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+    
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:application.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    
+    &lt;!-- 省略其他配置 --&gt;
+&lt;/web-app&gt;
+</code></pre></div><p>如上，ContextLoaderListener 可通过 ServletContext 获取到 contextConfigLocation 配置。这样，业务容器就可以加载 application.xml 配置文件了。那下面我们来分析一下 ContextLoaderListener 的源码吧。</p> <div class="language- extra-class"><pre class="language-text"><code>public class ContextLoaderListener extends ContextLoader implements ServletContextListener {
+
+    // 省略部分代码
+
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+        // 初始化 WebApplicationContext
+        initWebApplicationContext(event.getServletContext());
+    }
+}
+
+public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
+    /*
+     * 如果 ServletContext 中 ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 属性值
+     * 不为空时，表明有其他监听器设置了这个属性。Spring 认为不能替换掉别的监听器设置
+     * 的属性值，所以这里抛出异常。
+     */
+    if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
+        throw new IllegalStateException(
+                &quot;Cannot initialize context because there is already a root application context present - &quot; +
+                &quot;check whether you have multiple ContextLoader* definitions in your web.xml!&quot;);
+    }
+
+    Log logger = LogFactory.getLog(ContextLoader.class);
+    servletContext.log(&quot;Initializing Spring root WebApplicationContext&quot;);
+    if (logger.isInfoEnabled()) {...}
+    long startTime = System.currentTimeMillis();
+
+    try {
+        if (this.context == null) {
+            // 创建 WebApplicationContext
+            this.context = createWebApplicationContext(servletContext);
+        }
+        if (this.context instanceof ConfigurableWebApplicationContext) {
+            ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) this.context;
+            if (!cwac.isActive()) {
+                if (cwac.getParent() == null) {
+                    /*
+                     * 加载父 ApplicationContext，一般情况下，业务容器不会有父容器，
+                     * 除非进行配置
+                     */ 
+                    ApplicationContext parent = loadParentContext(servletContext);
+                    cwac.setParent(parent);
+                }
+                // 配置并刷新 WebApplicationContext
+                configureAndRefreshWebApplicationContext(cwac, servletContext);
+            }
+        }
+
+        // 设置 ApplicationContext 到 servletContext 中
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
+
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        if (ccl == ContextLoader.class.getClassLoader()) {
+            currentContext = this.context;
+        }
+        else if (ccl != null) {
+            currentContextPerThread.put(ccl, this.context);
+        }
+
+        if (logger.isDebugEnabled()) {...}
+        if (logger.isInfoEnabled()) {...}
+
+        return this.context;
+    }
+    catch (RuntimeException ex) {
+        logger.error(&quot;Context initialization failed&quot;, ex);
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, ex);
+        throw ex;
+    }
+    catch (Error err) {
+        logger.error(&quot;Context initialization failed&quot;, err);
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, err);
+        throw err;
+    }
+}
+</code></pre></div><p>如上，我们看一下上面的创建过程。首先 Spring 会检测 ServletContext 中 ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 属性有没有被设置，若被设置过，则抛出异常。若未设置，则调用 createWebApplicationContext 方法创建容器。创建好后，再调用 configureAndRefreshWebApplicationContext 方法配置并刷新容器。最后，调用 setAttribute 方法将容器设置到 ServletContext 中。经过以上几步，整个创建流程就结束了。流程并不复杂，可简单总结为<code>创建容器 → 配置并刷新容器 → 设置容器到 ServletContext 中</code>。这三步流程中，最后一步就不进行分析，接下来分析一下第一步和第二步流程对应的源码。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+    // 判断创建什么类型的容器，默认类型为 XmlWebApplicationContext
+    Class&lt;?&gt; contextClass = determineContextClass(sc);
+    if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
+        throw new ApplicationContextException(&quot;Custom context class [&quot; + contextClass.getName() +
+                &quot;] is not of type [&quot; + ConfigurableWebApplicationContext.class.getName() + &quot;]&quot;);
+    }
+    // 通过反射创建容器
+    return (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
+}
+
+protected Class&lt;?&gt; determineContextClass(ServletContext servletContext) {
+    /*
+     * 读取用户自定义配置，比如：
+     * &lt;context-param&gt;
+     *     &lt;param-name&gt;contextClass&lt;/param-name&gt;
+     *     &lt;param-value&gt;XXXConfigWebApplicationContext&lt;/param-value&gt;
+     * &lt;/context-param&gt;
+     */
+    String contextClassName = servletContext.getInitParameter(CONTEXT_CLASS_PARAM);
+    if (contextClassName != null) {
+        try {
+            return ClassUtils.forName(contextClassName, ClassUtils.getDefaultClassLoader());
+        }
+        catch (ClassNotFoundException ex) {
+            throw new ApplicationContextException(
+                    &quot;Failed to load custom context class [&quot; + contextClassName + &quot;]&quot;, ex);
+        }
+    }
+    else {
+        /*
+         * 若无自定义配置，则获取默认的容器类型，默认类型为 XmlWebApplicationContext。
+         * defaultStrategies 读取的配置文件为 ContextLoader.properties，
+         * 该配置文件内容如下：
+         * org.springframework.web.context.WebApplicationContext =
+         *     org.springframework.web.context.support.XmlWebApplicationContext
+         */
+        contextClassName = defaultStrategies.getProperty(WebApplicationContext.class.getName());
+        try {
+            return ClassUtils.forName(contextClassName, ContextLoader.class.getClassLoader());
+        }
+        catch (ClassNotFoundException ex) {
+            throw new ApplicationContextException(
+                    &quot;Failed to load default context class [&quot; + contextClassName + &quot;]&quot;, ex);
+        }
+    }
+}
+</code></pre></div><p>简单说一下 createWebApplicationContext 方法的流程，该方法首先会调用 determineContextClass 判断创建什么类型的容器，默认为 XmlWebApplicationContext。然后调用 instantiateClass 方法通过反射的方式创建容器实例。instantiateClass 方法就不跟进去分析了，大家可以自己去看看，比较简单。</p> <p>继续往下分析，接下来分析一下 configureAndRefreshWebApplicationContext 方法的源码。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac, ServletContext sc) {
+    if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
+        // 从 ServletContext 中获取用户配置的 contextId 属性
+        String idParam = sc.getInitParameter(CONTEXT_ID_PARAM);
+        if (idParam != null) {
+            // 设置容器 id
+            wac.setId(idParam);
+        }
+        else {
+            // 用户未配置 contextId，则设置一个默认的容器 id
+            wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +
+                    ObjectUtils.getDisplayString(sc.getContextPath()));
+        }
+    }
+
+    wac.setServletContext(sc);
+    // 获取 contextConfigLocation 配置
+    String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
+    if (configLocationParam != null) {
+        wac.setConfigLocation(configLocationParam);
+    }
+    
+    ConfigurableEnvironment env = wac.getEnvironment();
+    if (env instanceof ConfigurableWebEnvironment) {
+        ((ConfigurableWebEnvironment) env).initPropertySources(sc, null);
+    }
+
+    customizeContext(sc, wac);
+
+    // 刷新容器
+    wac.refresh();
+}
+</code></pre></div><p>上面的源码不是很长，逻辑不是很复杂。下面简单总结 configureAndRefreshWebApplicationContext 方法主要做了事情，如下：</p> <ol><li>设置容器 id</li> <li>获取 contextConfigLocation 配置，并设置到容器中</li> <li>刷新容器</li></ol> <p>到此，关于业务容器的创建过程就分析完了，下面我们继续分析 Web 容器的创建过程。</p> <h3 id="_2-2-web-容器的创建过程"><a href="#_2-2-web-容器的创建过程" class="header-anchor">#</a> 2.2 Web 容器的创建过程</h3> <p>前面说了业务容器的创建过程，业务容器是通过 ContextLoaderListener。那 Web 容器是通过什么创建的呢？答案是通过 DispatcherServlet。我在上一篇文章介绍 HttpServletBean 抽象类时，说过该类覆写了父类 HttpServlet 中的 init 方法。这个方法就是创建 Web 容器的入口，那下面我们就从这个方法入手。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>// -☆- org.springframework.web.servlet.HttpServletBean
+public final void init() throws ServletException {
+    if (logger.isDebugEnabled()) {...}
+
+    // 获取 ServletConfig 中的配置信息
+    PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
+    if (!pvs.isEmpty()) {
+        try {
+            /*
+             * 为当前对象（比如 DispatcherServlet 对象）创建一个 BeanWrapper，
+             * 方便读/写对象属性。
+             */ 
+            BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
+            ResourceLoader resourceLoader = new ServletContextResourceLoader(getServletContext());
+            bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));
+            initBeanWrapper(bw);
+            // 设置配置信息到目标对象中
+            bw.setPropertyValues(pvs, true);
+        }
+        catch (BeansException ex) {
+            if (logger.isErrorEnabled()) {...}
+            throw ex;
+        }
+    }
+
+    // 进行后续的初始化
+    initServletBean();
+
+    if (logger.isDebugEnabled()) {...}
+}
+
+protected void initServletBean() throws ServletException {
+}
+</code></pre></div><p>上面的源码主要做的事情是将 ServletConfig 中的配置信息设置到 HttpServletBean 的子类对象中（比如 DispatcherServlet），我们并未从上面的源码中发现创建容器的痕迹。不过如果大家注意看源码的话，会发现 initServletBean 这个方法稍显奇怪，是个空方法。这个方法的访问级别为 protected，子类可进行覆盖。HttpServletBean 子类 FrameworkServlet 覆写了这个方法，下面我们到 FrameworkServlet 中探索一番。</p> <div class="language- extra-class"><pre class="language-text"><code>// -☆- org.springframework.web.servlet.FrameworkServlet
+protected final void initServletBean() throws ServletException {
+    getServletContext().log(&quot;Initializing Spring FrameworkServlet '&quot; + getServletName() + &quot;'&quot;);
+    if (this.logger.isInfoEnabled()) {...}
+    long startTime = System.currentTimeMillis();
+
+    try {
+        // 初始化容器
+        this.webApplicationContext = initWebApplicationContext();
+        initFrameworkServlet();
+    }
+    catch (ServletException ex) {
+        this.logger.error(&quot;Context initialization failed&quot;, ex);
+        throw ex;
+    }
+    catch (RuntimeException ex) {
+        this.logger.error(&quot;Context initialization failed&quot;, ex);
+        throw ex;
+    }
+
+    if (this.logger.isInfoEnabled()) {...}
+}
+
+protected WebApplicationContext initWebApplicationContext() {
+    // 从 ServletContext 中获取容器，也就是 ContextLoaderListener 创建的容器
+    WebApplicationContext rootContext =
+            WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+    WebApplicationContext wac = null;
+
+    /*
+     * 若下面的条件成立，则需要从外部设置 webApplicationContext。有两个途径可以设置 
+     * webApplicationContext，以 DispatcherServlet 为例：
+     *    1. 通过 DispatcherServlet 有参构造方法传入 WebApplicationContext 对象
+     *    2. 将 DispatcherServlet 配置到其他容器中，由其他容器通过 
+     *       setApplicationContext 方法进行设置
+     *       
+     * 途径1 可参考 AbstractDispatcherServletInitializer 中的 
+     * registerDispatcherServlet 方法源码。一般情况下，代码执行到此处，
+     * this.webApplicationContext 为 null，大家可自行调试进行验证。
+     */
+    if (this.webApplicationContext != null) {
+        wac = this.webApplicationContext;
+        if (wac instanceof ConfigurableWebApplicationContext) {
+            ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) wac;
+            if (!cwac.isActive()) {
+                if (cwac.getParent() == null) {
+                    // 设置 rootContext 为父容器
+                    cwac.setParent(rootContext);
+                }
+                // 配置并刷新容器
+                configureAndRefreshWebApplicationContext(cwac);
+            }
+        }
+    }
+    if (wac == null) {
+        // 尝试从 ServletContext 中获取容器
+        wac = findWebApplicationContext();
+    }
+    if (wac == null) {
+        // 创建容器，并将 rootContext 作为父容器
+        wac = createWebApplicationContext(rootContext);
+    }
+
+    if (!this.refreshEventReceived) {
+        onRefresh(wac);
+    }
+
+    if (this.publishContext) {
+        String attrName = getServletContextAttributeName();
+        // 将创建好的容器设置到 ServletContext 中
+        getServletContext().setAttribute(attrName, wac);
+        if (this.logger.isDebugEnabled()) {...}
+    }
+
+    return wac;
+}
+
+protected WebApplicationContext createWebApplicationContext(ApplicationContext parent) {
+    // 获取容器类型，默认为 XmlWebApplicationContext.class
+    Class&lt;?&gt; contextClass = getContextClass();
+    if (this.logger.isDebugEnabled()) {...}
+    if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
+        throw new ApplicationContextException(
+                &quot;Fatal initialization error in servlet with name '&quot; + getServletName() +
+                &quot;': custom WebApplicationContext class [&quot; + contextClass.getName() +
+                &quot;] is not of type ConfigurableWebApplicationContext&quot;);
+    }
+
+    // 通过反射实例化容器
+    ConfigurableWebApplicationContext wac =
+            (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
+
+    wac.setEnvironment(getEnvironment());
+    wac.setParent(parent);
+    wac.setConfigLocation(getContextConfigLocation());
+
+    // 配置并刷新容器
+    configureAndRefreshWebApplicationContext(wac);
+
+    return wac;
+}
+
+protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac) {
+    if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
+        // 设置容器 id
+        if (this.contextId != null) {
+            wac.setId(this.contextId);
+        }
+        else {
+            // 生成默认 id
+            wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +
+                    ObjectUtils.getDisplayString(getServletContext().getContextPath()) + '/' + getServletName());
+        }
+    }
+
+    wac.setServletContext(getServletContext());
+    wac.setServletConfig(getServletConfig());
+    wac.setNamespace(getNamespace());
+    wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
+
+    ConfigurableEnvironment env = wac.getEnvironment();
+    if (env instanceof ConfigurableWebEnvironment) {
+        ((ConfigurableWebEnvironment) env).initPropertySources(getServletContext(), getServletConfig());
+    }
+
+    // 后置处理，子类可以覆盖进行一些自定义操作。在 Spring MVC 未使用到，是个空方法。
+    postProcessWebApplicationContext(wac);
+    applyInitializers(wac);
+    // 刷新容器
+    wac.refresh();
+}
+</code></pre></div><p>以上就是创建 Web 容器的源码，下面总结一下该容器创建的过程。如下：</p> <ol><li>从 ServletContext 中获取 ContextLoaderListener 创建的容器</li> <li>若 this.webApplicationContext != null 条件成立，仅设置父容器和刷新容器即可</li> <li>尝试从 ServletContext 中获取容器，若容器不为空，则无需执行步骤4</li> <li>创建容器，并将 rootContext 作为父容器</li> <li>设置容器到 ServletContext 中</li></ol> <p>到这里，关于 Web 容器的创建过程就讲完了。总的来说，Web 容器的创建过程和业务容器的创建过程大致相同，但是差异也是有的，不能忽略。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="prev">
+        Spring MVC 原理探秘 - 一个请求的旅行过程
+      </a></span> <!----></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/77.d8c3dd88.js" defer></script>
+  </body>
+</html>

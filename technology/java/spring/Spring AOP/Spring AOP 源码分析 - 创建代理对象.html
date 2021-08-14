@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring AOP 源码分析 - 创建代理对象 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/64.852e3204.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring IOC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="sidebar-link">Spring bean的生命流程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html" class="sidebar-link">Spring IOC 容器源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="sidebar-link">Spring IOC 容器源码分析 - 获取单例 bean</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建单例 bean 的过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建原始 bean 对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="sidebar-link">Spring IOC 容器源码分析 - 循环依赖的解决办法</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html" class="sidebar-link">Spring IOC 容器源码分析 - 余下的初始化工作</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring AOP</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析系列文章导读.html" class="sidebar-link">Spring AOP 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="sidebar-link">Spring AOP 源码分析 - 筛选合适的通知器</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html" class="active sidebar-link">Spring AOP 源码分析 - 创建代理对象</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html#_1-简介" class="sidebar-link">1.简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html#_2-背景知识" class="sidebar-link">2.背景知识</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html#_2-1-proxy-target-class" class="sidebar-link">2.1 proxy-target-class</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html#_2-2-动态代理" class="sidebar-link">2.2 动态代理</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html#_3-源码分析" class="sidebar-link">3.源码分析</a></li></ul></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html" class="sidebar-link">Spring AOP 源码分析 - 拦截器链的执行过程</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring MVC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="sidebar-link">Spring MVC 原理探秘 - 一个请求的旅行过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html" class="sidebar-link">Spring MVC 原理探秘 - 容器的创建过程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-aop-源码分析-创建代理对象"><a href="#spring-aop-源码分析-创建代理对象" class="header-anchor">#</a> Spring AOP 源码分析 - 创建代理对象</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1.简介</h2> <p>在上一篇<a href="http://www.coolblog.xyz/2018/06/20/Spring-AOP-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E7%AD%9B%E9%80%89%E5%90%88%E9%80%82%E7%9A%84%E9%80%9A%E7%9F%A5%E5%99%A8/" target="_blank" rel="noopener noreferrer">文章<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>中，我分析了 Spring 是如何为目标 bean 筛选合适的通知器的。现在通知器选好了，接下来就要通过代理的方式将通知器（Advisor）所持有的通知（Advice）织入到 bean 的某些方法前后。与筛选合适的通知器相比，创建代理对象的过程则要简单不少，本文所分析的源码不过100行，相对比较简单。在接下里的章节中，我将会首先向大家介绍一些背景知识，然后再去分析源码。那下面，我们先来了解一下背景知识。</p> <h2 id="_2-背景知识"><a href="#_2-背景知识" class="header-anchor">#</a> 2.背景知识</h2> <h3 id="_2-1-proxy-target-class"><a href="#_2-1-proxy-target-class" class="header-anchor">#</a> 2.1 proxy-target-class</h3> <p>在 Spring AOP 配置中，proxy-target-class 属性可影响 Spring 生成的代理对象的类型。以 XML 配置为例，可进行如下配置：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;aop:aspectj-autoproxy proxy-target-class=&quot;true&quot;/&gt;
+
+&lt;aop:config proxy-target-class=&quot;true&quot;&gt;
+    &lt;aop:aspect id=&quot;xxx&quot; ref=&quot;xxxx&quot;&gt;
+        &lt;!-- 省略 --&gt;
+    &lt;/aop:aspect&gt;
+&lt;/aop:config&gt;
+</code></pre></div><p>如上，默认情况下 proxy-target-class 属性为 false。当目标 bean 实现了接口时，Spring 会基于 JDK 动态代理为目标 bean 创建代理对象。若未实现任何接口，Spring 则会通过 CGLIB 创建代理。而当 proxy-target-class 属性设为 true 时，则会强制 Spring 通过 CGLIB 的方式创建代理对象，即使目标 bean 实现了接口。</p> <p>关于 proxy-target-class 属性的用途这里就说完了，下面我们来看看两种不同创建动态代理的方式。</p> <h3 id="_2-2-动态代理"><a href="#_2-2-动态代理" class="header-anchor">#</a> 2.2 动态代理</h3> <h4 id="_2-2-1-基于-jdk-的动态代理"><a href="#_2-2-1-基于-jdk-的动态代理" class="header-anchor">#</a> 2.2.1 基于 JDK 的动态代理</h4> <p>基于 JDK 的动态代理主要是通过 JDK 提供的代理创建类 Proxy 为目标对象创建代理，下面我们来看一下 Proxy 中创建代理的方法声明。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public static Object newProxyInstance(ClassLoader loader,
+                                          Class&lt;?&gt;[] interfaces,
+                                          InvocationHandler h)
+</code></pre></div><p>简单说一下上面的参数列表：</p> <ul><li>loader - 类加载器</li> <li>interfaces - 目标类所实现的接口列表</li> <li>h - 用于封装代理逻辑</li></ul> <p>JDK 动态代理对目标类是有一定要求的，即要求目标类必须实现了接口，JDK 动态代理只能为实现了接口的目标类生成代理对象。至于 InvocationHandler，是一个接口类型，定义了一个 invoke 方法。使用者需要实现该方法，并在其中封装代理逻辑。</p> <p>关于 JDK 动态代理的介绍，就先说到这。下面我来演示一下 JDK 动态代理的使用方式，如下：</p> <p>目标类定义：</p> <div class="language- extra-class"><pre class="language-text"><code>public interface UserService {
+
+    void save(User user);
+
+    void update(User user);
+}
+
+public class UserServiceImpl implements UserService {
+
+    @Override
+    public void save(User user) {
+        System.out.println(&quot;save user info&quot;);
+    }
+
+    @Override
+    public void update(User user) {
+        System.out.println(&quot;update user info&quot;);
+    }
+}
+</code></pre></div><p>代理创建者定义：</p> <div class="language- extra-class"><pre class="language-text"><code>public interface ProxyCreator {
+
+    Object getProxy();
+}
+
+public class JdkProxyCreator implements ProxyCreator, InvocationHandler {
+
+    private Object target;
+
+    public JdkProxyCreator(Object target) {
+        assert target != null;
+        Class&lt;?&gt;[] interfaces = target.getClass().getInterfaces();
+        if (interfaces.length == 0) {
+            throw new IllegalArgumentException(&quot;target class don`t implement any interface&quot;);
+        }
+        this.target = target;
+    }
+
+    @Override
+    public Object getProxy() {
+        Class&lt;?&gt; clazz = target.getClass();
+        // 生成代理对象
+        return Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        System.out.println(System.currentTimeMillis() + &quot; - &quot; + method.getName() + &quot; method start&quot;);
+        // 调用目标方法
+        Object retVal = method.invoke(target, args);
+        System.out.println(System.currentTimeMillis() + &quot; - &quot; + method.getName() + &quot; method over&quot;);
+
+        return retVal;
+    }
+}
+</code></pre></div><p>如上，invoke 方法中的代理逻辑主要用于记录目标方法的调用时间，和结束时间。下面写点测试代码简单验证一下，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class JdkProxyCreatorTest {
+
+    @Test
+    public void getProxy() throws Exception {
+        ProxyCreator proxyCreator = new JdkProxyCreator(new UserServiceImpl());
+        UserService userService = (UserService) proxyCreator.getProxy();
+        
+        System.out.println(&quot;proxy type = &quot; + userService.getClass());
+        System.out.println();
+        userService.save(null);
+        System.out.println();
+        userService.update(null);
+    }
+}
+</code></pre></div><p>测试结果如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15294833087427.jpg" alt="img"></p> <p>如上，从测试结果中。我们可以看出，我们的代理逻辑正常执行了。另外，注意一下 userService 指向对象的类型，并非是 xyz.coolblog.proxy.UserServiceImpl，而是 com.sun.proxy.$Proxy4。</p> <p>关于 JDK 动态代理，这里先说这么多。下一节，我来演示一下 CGLIB 动态代理，继续往下看吧。</p> <h4 id="_2-2-2-基于-cglib-的动态代理"><a href="#_2-2-2-基于-cglib-的动态代理" class="header-anchor">#</a> 2.2.2 基于 CGLIB 的动态代理</h4> <p>当我们要为未实现接口的类生成代理时，就无法使用 JDK 动态代理了。那么此类的目标对象生成代理时应该怎么办呢？当然是使用 CGLIB 了。在 CGLIB 中，代理逻辑是封装在 MethodInterceptor 实现类中的，代理对象则是通过 Enhancer 类的 create 方法进行创建。下面我来演示一下 CGLIB 创建代理对象的过程，如下：</p> <p>本节的演示环节，打算调侃（无贬低之意）一下<code>59式坦克</code>，这是我们国家大量装备过的一款坦克。59式坦克有很多种改款，一般把改款统称为<code>59改</code>，59改这个梗也正是源于此。下面我们先来一览<code>59式坦克</code>的风采：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15295147963356.jpg" alt="img">
+图片来源：<a href="http://t.cn/RBsOpyi" target="_blank" rel="noopener noreferrer">百度图片搜索<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>下面我们的工作就是为咱们的 59 创建一个代理，即 59改。好了，开始我们的魔改吧。</p> <p>目标类，59式坦克：</p> <div class="language- extra-class"><pre class="language-text"><code>public class Tank59 {
+
+    void run() {
+        System.out.println(&quot;极速前行中....&quot;);
+    }
+
+    void shoot() {
+        System.out.println(&quot;轰...轰...轰...轰...&quot;);
+    }
+}
+</code></pre></div><p>CGLIB 代理创建者</p> <div class="language- extra-class"><pre class="language-text"><code>public class CglibProxyCreator implements ProxyCreator {
+
+    private Object target;
+
+    private MethodInterceptor methodInterceptor;
+
+    public CglibProxyCreator(Object target, MethodInterceptor methodInterceptor) {
+        assert (target != null &amp;&amp; methodInterceptor != null);
+        this.target = target;
+        this.methodInterceptor = methodInterceptor;
+    }
+
+    @Override
+    public Object getProxy() {
+        Enhancer enhancer = new Enhancer();
+        // 设置代理类的父类
+        enhancer.setSuperclass(target.getClass());
+        // 设置代理逻辑
+        enhancer.setCallback(methodInterceptor);
+        // 创建代理对象
+        return enhancer.create();
+    }
+}
+</code></pre></div><p>方法拦截器 - 坦克再制造：</p> <div class="language- extra-class"><pre class="language-text"><code>public class TankRemanufacture implements MethodInterceptor {
+
+    @Override
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        if (method.getName().equals(&quot;run&quot;)) {
+            System.out.println(&quot;正在重造59坦克...&quot;);
+            System.out.println(&quot;重造成功，已获取 ✨59改 之 超音速飞行版✨&quot;);
+            System.out.print(&quot;已起飞，正在突破音障。&quot;);
+
+            methodProxy.invokeSuper(o, objects);
+
+            System.out.println(&quot;已击落黑鸟 SR-71，正在返航...&quot;);
+            return null;
+        }
+
+        return methodProxy.invokeSuper(o, objects);
+    }
+}
+</code></pre></div><p>好了，下面开始演示，测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class CglibProxyCreatorTest {
+
+    @Test
+    public void getProxy() throws Exception {
+        ProxyCreator proxyCreator = new CglibProxyCreator(new Tank59(), new TankRemanufacture());
+        Tank59 tank59 = (Tank59) proxyCreator.getProxy();
+        
+        System.out.println(&quot;proxy class = &quot; + tank59.getClass() + &quot;\n&quot;);
+        tank59.run();
+        System.out.println();
+        System.out.print(&quot;射击测试：&quot;);
+        tank59.shoot();
+    }
+}
+</code></pre></div><p>测试结果如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/152948556087881.jpg" alt="img"></p> <p>如上，“极速前行中…” 和 “轰…轰…轰…轰…” 这两行字符串是目标对象中的方法打印出来的，其他的则是由代理逻辑打印的。由此可知，我们的代理逻辑生效了。</p> <p>好了，最后我们来看一下，经过魔改后的 59，也就是<code>超音速59改</code>的效果图：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/123412931423.jpg" alt="img">
+图片来源：未知</p> <p>本节用59式坦克举例，仅是调侃，并无恶意。作为年轻的一代，我们应感谢那些为国防事业做出贡献的科技人员们。没有他们贡献，我们怕是不会有像今天这样安全的环境了（尽管不完美）。</p> <p>到此，背景知识就介绍完了。下一章，我将开始分析源码。源码不是很长，主逻辑比较容易懂，所以一起往下看吧。</p> <h2 id="_3-源码分析"><a href="#_3-源码分析" class="header-anchor">#</a> 3.源码分析</h2> <p>为目标 bean 创建代理对象前，需要先创建 AopProxy 对象，然后再调用该对象的 getProxy 方法创建实际的代理类。我们先来看看 AopProxy 这个接口的定义，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public interface AopProxy {
+
+    /** 创建代理对象 */
+    Object getProxy();
+    
+    Object getProxy(ClassLoader classLoader);
+}
+</code></pre></div><p>在 Spring 中，有两个类实现了 AopProxy，如下：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15295015982446.jpg" alt="img"></p> <p>Spring 在为目标 bean 创建代理的过程中，要根据 bean 是否实现接口，以及一些其他配置来决定使用 AopProxy 何种实现类为目标 bean 创建代理对象。下面我们就来看一下代理创建的过程，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected Object createProxy(
+        Class&lt;?&gt; beanClass, String beanName, Object[] specificInterceptors, TargetSource targetSource) {
+
+    if (this.beanFactory instanceof ConfigurableListableBeanFactory) {
+        AutoProxyUtils.exposeTargetClass((ConfigurableListableBeanFactory) this.beanFactory, beanName, beanClass);
+    }
+
+    ProxyFactory proxyFactory = new ProxyFactory();
+    proxyFactory.copyFrom(this);
+
+    /*
+     * 默认配置下，或用户显式配置 proxy-target-class = &quot;false&quot; 时，
+     * 这里的 proxyFactory.isProxyTargetClass() 也为 false
+     */
+    if (!proxyFactory.isProxyTargetClass()) {
+        if (shouldProxyTargetClass(beanClass, beanName)) {
+            proxyFactory.setProxyTargetClass(true);
+        }
+        else {
+            /*
+             * 检测 beanClass 是否实现了接口，若未实现，则将 
+             * proxyFactory 的成员变量 proxyTargetClass 设为 true
+             */ 
+            evaluateProxyInterfaces(beanClass, proxyFactory);
+        }
+    }
+
+    // specificInterceptors 中若包含有 Advice，此处将 Advice 转为 Advisor
+    Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
+    proxyFactory.addAdvisors(advisors);
+    proxyFactory.setTargetSource(targetSource);
+    customizeProxyFactory(proxyFactory);
+
+    proxyFactory.setFrozen(this.freezeProxy);
+    if (advisorsPreFiltered()) {
+        proxyFactory.setPreFiltered(true);
+    }
+
+    // 创建代理
+    return proxyFactory.getProxy(getProxyClassLoader());
+}
+
+public Object getProxy(ClassLoader classLoader) {
+    // 先创建 AopProxy 实现类对象，然后再调用 getProxy 为目标 bean 创建代理对象
+    return createAopProxy().getProxy(classLoader);
+}
+</code></pre></div><p>getProxy 这里有两个方法调用，一个是调用 createAopProxy 创建 AopProxy 实现类对象，然后再调用 AopProxy 实现类对象中的 getProxy 创建代理对象。这里我们先来看一下创建 AopProxy 实现类对象的过程，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>protected final synchronized AopProxy createAopProxy() {
+    if (!this.active) {
+        activate();
+    }
+    return getAopProxyFactory().createAopProxy(this);
+}
+
+public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
+
+    @Override
+    public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+        /*
+         * 下面的三个条件简单分析一下：
+         *
+         *   条件1：config.isOptimize() - 是否需要优化，这个属性没怎么用过，
+         *         细节我不是很清楚
+         *   条件2：config.isProxyTargetClass() - 检测 proxyTargetClass 的值，
+         *         前面的代码会设置这个值
+         *   条件3：hasNoUserSuppliedProxyInterfaces(config) 
+         *         - 目标 bean 是否实现了接口
+         */
+        if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+            Class&lt;?&gt; targetClass = config.getTargetClass();
+            if (targetClass == null) {
+                throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +
+                        &quot;Either an interface or a target is required for proxy creation.&quot;);
+            }
+            if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+                return new JdkDynamicAopProxy(config);
+            }
+            // 创建 CGLIB 代理，ObjenesisCglibAopProxy 继承自 CglibAopProxy
+            return new ObjenesisCglibAopProxy(config);
+        }
+        else {
+            // 创建 JDK 动态代理
+            return new JdkDynamicAopProxy(config);
+        }
+    }
+}
+</code></pre></div><p>如上，DefaultAopProxyFactory 根据一些条件决定生成什么类型的 AopProxy 实现类对象。生成好 AopProxy 实现类对象后，下面就要为目标 bean 创建代理对象了。这里以 JdkDynamicAopProxy 为例，我们来看一下，该类的 getProxy 方法的逻辑是怎样的。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public Object getProxy() {
+    return getProxy(ClassUtils.getDefaultClassLoader());
+}
+
+public Object getProxy(ClassLoader classLoader) {
+    if (logger.isDebugEnabled()) {
+        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());
+    }
+    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
+    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
+    
+    // 调用 newProxyInstance 创建代理对象
+    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
+}
+</code></pre></div><p>如上，请把目光移至最后一行有效代码上，会发现 JdkDynamicAopProxy 最终调用 Proxy.newProxyInstance 方法创建代理对象。到此，创建代理对象的整个过程也就分析完了，不知大家看懂了没。好了，关于创建代理的源码分析，就先说到这里吧。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="prev">
+        Spring AOP 源码分析 - 筛选合适的通知器
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html">
+        Spring AOP 源码分析 - 拦截器链的执行过程
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/64.852e3204.js" defer></script>
+  </body>
+</html>

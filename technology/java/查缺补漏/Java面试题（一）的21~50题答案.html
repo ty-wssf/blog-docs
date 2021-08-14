@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Java 面试题（一）的21~50题答案 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/81.952d2f17.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>查缺补漏</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道.html" class="sidebar-link">Java面试题基础系列228道</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（一）的1~20题答案.html" class="sidebar-link">Java 面试题（一）的1~20题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（一）的21~50题答案.html" class="active sidebar-link">Java 面试题（一）的21~50题答案</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（一）的51~95题答案.html" class="sidebar-link">Java 面试题（一）的51~95题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（二）的1~20题答案.html" class="sidebar-link">Java 面试题（二）的1~20题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（二）的21~50题答案.html" class="sidebar-link">Java 面试题（二）的21~50题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（二）的51~80题答案.html" class="sidebar-link">Java 面试题（二）的51~80题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（二）的81~115题答案.html" class="sidebar-link">Java 面试题（二）的81~115题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java面试题（二）的116~133题答案.html" class="sidebar-link">Java 面试题（二）的116~133题答案</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Java并发编程面试题合集.html" class="sidebar-link">Java并发编程面试题合集</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Spring系列面试题129道.html" class="sidebar-link">Spring系列面试题129道</a></li><li><a href="/blog-docs/technology/java/查缺补漏/MyBatis面试题.html" class="sidebar-link">MyBatis面试题</a></li><li><a href="/blog-docs/technology/java/查缺补漏/Redis 面试题.html" class="sidebar-link">Redis 面试题</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="java-面试题-一-的21-50题答案"><a href="#java-面试题-一-的21-50题答案" class="header-anchor">#</a> Java 面试题（一）的21~50题答案</h1> <h3 id="_21、描述一下-jvm-加载-class-文件的原理机制"><a href="#_21、描述一下-jvm-加载-class-文件的原理机制" class="header-anchor">#</a> 21、描述一下 JVM 加载 class 文件的原理机制？</h3> <p>JVM 中类的装载是由类加载器（ClassLoader）和它的子类来实现的，Java 中的类加载器是一个重要的 Java 运行时系统组件，它负责在运行时查找和装入类文件中的类。</p> <p>由于 Java 的跨平台性，经过编译的 Java 源程序并不是一个可执行程序，而是一个或多个类文件。当 Java 程序需要使用某个类时，JVM 会确保这个类已经被加载、连接（验证、准备和解析）和初始化。类的加载是指把类的.class 文件中的数据读入到内存中，通常是创建一个字节数组读入.class 文件，然后产生与所加载类对应的 Class 对象。加载完成后，Class 对象还不完整，所以此时的类还不可用。当类被加载后就进入连接阶段，这一阶段包括验证、准备（为静态变量分配内存并设置默认的初始值）和解析（将符号引用替换为直接引用）三个步骤。最后 JVM 对类进行初始化，包括：1)如果类存在直接的父类并且这个类还没有被初始化，那么就先初始化父类；2)如果类中存在初始化语句，就依次执行这些初始化语句。</p> <p>类的加载是由类加载器完成的，类加载器包括：根加载器（BootStrap）、扩展加载器（Extension）、系统加载器（System）和用户自定义类加载器（java.lang.ClassLoader 的子类）。从 Java 2（JDK 1.2）开始，从 Java 2（JDK 1.2）开始，类加载过程采取了父亲委托机制（PDM）。PDM 更好的保证了 Java 平台的安全性，在该机制中，JVM 自带的 Bootstrap 是根加载器，其他的加载器都有且仅有一个父类加载器。类的加载首先请求父类加载器加载，父类加载器无能为力时才由其子类加载器自行加载。JVM 不会向 Java 程序提供对 Bootstrap 的引用。下面是关于几个类加载器的说明：</p> <p>（1） Bootstrap：一般用本地代码实现，负责加载 JVM 基础核心类库（rt.jar）；</p> <p>（2） Extension：从 java.ext.dirs 系统属性所指定的目录中加载类库，它的父加载器是 Bootstrap；</p> <p>（3） System：又叫应用类加载器，其父类是 Extension。它是应用最广泛的类加载器。它从环境变量 classpath 或者系统属性 java.class.path 所指定的目录中记载类，是用户自定义加载器的默认父加载器。</p> <h3 id="_22、char-型变量中能不能存贮一个中文汉字-为什么"><a href="#_22、char-型变量中能不能存贮一个中文汉字-为什么" class="header-anchor">#</a> 22、char 型变量中能不能存贮一个中文汉字，为什么？</h3> <p>char 类型可以存储一个中文汉字，因为 Java 中使用的编码是 Unicode（不选择任何特定的编码，直接使用字符在字符集中的编号，这是统一的唯一方法），一个 char 类型占 2 个字节（16 比特），所以放一个中文是没问题的。</p> <p>补充：使用 Unicode 意味着字符在 JVM 内部和外部有不同的表现形式，在 JVM内部都是 Unicode，当这个字符被从 JVM 内部转移到外部时（例如存入文件系统中），需要进行编码转换。所以 Java 中有字节流和字符流，以及在字符流和字节流之间进行转换的转换流，如 InputStreamReader 和 OutputStreamReader，这两个类是字节流和字符流之间的适配器类，承担了编码转换的任务；对于 C 程序员来说，要完成这样的编码转换恐怕要依赖于 union（联合体/共用体）共享内存的特征来实现了。</p> <h3 id="_23、抽象类-abstract-class-和接口-interface-有什么异同"><a href="#_23、抽象类-abstract-class-和接口-interface-有什么异同" class="header-anchor">#</a> 23、抽象类（abstract class）和接口（interface）有什么异同？</h3> <p>抽象类和接口都不能够实例化，但可以定义抽象类和接口类型的引用。一个类如果继承了某个抽象类或者实现了某个接口都需要对其中的抽象方法全部进行实现，否则该类仍然需要被声明为抽象类。接口比抽象类更加抽象，因为抽象类中可以定义构造器，可以有抽象方法和具体方法，而接口中不能定义构造器而且其中的方法全部都是抽象方法。抽象类中的成员可以是 private、默认、protected、public 的，而接口中的成员全都是 public 的。抽象类中可以定义成员变量，而接口中定义的成员变量实际上都是常量。有抽象方法的类必须被声明为抽象类，而抽象类未必要有抽象方法。</p> <h3 id="_24、静态嵌套类-static-nested-class-和内部类-inner-class-的不同"><a href="#_24、静态嵌套类-static-nested-class-和内部类-inner-class-的不同" class="header-anchor">#</a> 24、静态嵌套类(Static Nested Class)和内部类（Inner Class）的不同？</h3> <p>Static Nested Class 是被声明为静态（static）的内部类，它可以不依赖于外部类实例被实例化。而通常的内部类需要在外部类实例化后才能实例化，其语法看起来挺诡异的，如下所示。</p> <div class="language- extra-class"><pre class="language-text"><code>/**
+* 扑克类（一副扑克）
+* @author 骆昊
+*
+*/
+public class Poker {
+	private static String[] suites = {&quot;黑桃&quot;, &quot;红桃&quot;, &quot;草花&quot;, &quot;方块&quot;};
+	private static int[] faces = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+	private Card[] cards;
+	/**
+* 构造器
+*
+*/
+	public Poker() {
+		cards = new Card[52];
+		for (int i = 0; i &lt; suites.length; i++) {
+			for (int j = 0; j &lt; faces.length; j++) {
+				cards[i * 13 + j] = new Card(suites[i], faces[j]);
+			}
+		}
+	}
+	/**
+* 洗牌 （随机乱序）
+*
+*/
+	public void shuffle() {
+		for (int i = 0, len = cards.length; i &lt; len; i++) {
+			int index = (int) (Math.random() * len);
+			Card temp = cards[index];
+			cards[index] = cards[i];
+			cards[i] = temp;
+		}
+	}
+	/**
+* 发牌
+* @param index 发牌的位置
+*
+*/
+	public Card deal(int index) {
+		return cards[index];
+	}
+	/**
+* 卡片类（一张扑克）
+* [内部类]
+* @author 骆昊
+*
+*/
+	public class Card {
+		private String suite;
+		// 花色
+		private int face;
+		// 点数
+		public Card(String suite, int face) {
+			this.suite = suite;
+			this.face = face;
+		}
+		@Override
+		public String toString() {
+			String faceStr = &quot;&quot;;
+			switch(face) {
+				case 1: faceStr = &quot;A&quot;;
+				break;
+				case 11: faceStr = &quot;J&quot;;
+				break;
+				case 12: faceStr = &quot;Q&quot;;
+				break;
+				case 13: faceStr = &quot;K&quot;;
+				break;
+				default: faceStr = String.valueOf(face);
+			}
+			return suite + faceStr;
+		}
+	}
+}
+测试代码：
+class PokerTest {
+	public static void main(String[] args) {
+		Poker poker = new Poker();
+		poker.shuffle();
+		// 洗牌
+		Poker.Card c1 = poker.deal(0);
+		// 发第一张牌
+		// 对于非静态内部类 Card
+		// 只有通过其外部类 Poker 对象才能创建 Card 对象
+		Poker.Card c2 = poker.new Card(&quot;红心&quot;, 1);
+		// 自己创建一张牌
+		System.out.println(c1);
+		// 洗牌后的第一张
+		System.out.println(c2);
+		// 打印: 红心 A
+	}
+}
+</code></pre></div><p>面试题 - 下面的代码哪些地方会产生编译错误？</p> <div class="language- extra-class"><pre class="language-text"><code>class Outer {
+	class Inner {
+	}
+	public static void foo() {
+		new Inner();
+	}
+	public void bar() {
+		new Inner();
+	}
+	public static void main(String[] args) {
+		new Inner();
+	}
+}
+</code></pre></div><p><strong>注意：</strong> Java中非静态内部类对象的创建要依赖其外部类对象，上面的面试题中 foo和 main 方法都是静态方法，静态方法中没有 this，也就是说没有所谓的外部类对象，因此无法创建内部类对象，如果要在静态方法中创建内部类对象，可以这样做：</p> <div class="language- extra-class"><pre class="language-text"><code>new Outer().new Inner();
+</code></pre></div><h3 id="_25、java-中会存在内存泄漏吗-请简单描述。"><a href="#_25、java-中会存在内存泄漏吗-请简单描述。" class="header-anchor">#</a> 25、Java 中会存在内存泄漏吗，请简单描述。</h3> <p>理论上 Java 因为有垃圾回收机制（GC）不会存在内存泄露问题（这也是 Java 被广泛使用于服务器端编程的一个重要原因）；然而在实际开发中，可能会存在无用但可达的对象，这些对象不能被 GC 回收，因此也会导致内存泄露的发生。例如Hibernate 的 Session（一级缓存）中的对象属于持久态，垃圾回收器是不会回收这些对象的，然而这些对象中可能存在无用的垃圾对象，如果不及时关闭（close）或清空（flush）一级缓存就可能导致内存泄露。下面例子中的代码也会导致内存泄露。</p> <div class="language- extra-class"><pre class="language-text"><code>import java.util.Arrays;
+import java.util.EmptyStackException;
+public class MyStack&lt;T&gt; {
+	private T[] elements;
+	private int size = 0;
+	private static final int INIT_CAPACITY = 16;
+	public MyStack() {
+		elements = (T[]) new Object[INIT_CAPACITY];
+	}
+	public void push(T elem) {
+		ensureCapacity();
+		elements[size++] = elem;
+	}
+	public T pop() {
+		if(size == 0)
+		throw new EmptyStackException();
+		return elements[--size];
+	}
+	private void ensureCapacity() {
+		if(elements.length == size) {
+			elements = Arrays.copyOf(elements, 2 * size + 1);
+		}
+	}
+}
+</code></pre></div><p>上面的代码实现了一个栈（先进后出（FILO））结构，乍看之下似乎没有什么明显的问题，它甚至可以通过你编写的各种单元测试。然而其中的 pop 方法却存在内存泄露的问题，当我们用 pop 方法弹出栈中的对象时，该对象不会被当作垃圾回收，即使使用栈的程序不再引用这些对象，因为栈内部维护着对这些对象的过期引 用（obsolete reference）。在支持垃圾回收的语言中，内存泄露是很隐蔽的，这种内存泄露其实就是无意识的对象保持。如果一个对象引用被无意识的保留起来了，那么垃圾回收器不会处理这个对象，也不会处理该对象引用的其他对象，即使这样的对象只有少数几个，也可能会导致很多的对象被排除在垃圾回收之外，从而对性能造成重大影响，极端情况下会引发 Disk Paging（物理内存与硬盘的虚拟内存交换数据），甚至造成 OutOfMemoryError。</p> <h3 id="_26、抽象的-abstract-方法是否可同时是静态的-static-是否可同时是本地方法-native-是否可同时被-synchronized修饰"><a href="#_26、抽象的-abstract-方法是否可同时是静态的-static-是否可同时是本地方法-native-是否可同时被-synchronized修饰" class="header-anchor">#</a> 26、抽象的（abstract）方法是否可同时是静态的（static）,是否可同时是本地方法（native），是否可同时被 synchronized修饰？</h3> <p>都不能。抽象方法需要子类重写，而静态的方法是无法被重写的，因此二者是矛盾的。本地方法是由本地代码（如 C 代码）实现的方法，而抽象方法是没有实现的，也是矛盾的。synchronized 和方法的实现细节有关，抽象方法不涉及实现细节，因此也是相互矛盾的。</p> <h3 id="_27、阐述静态变量和实例变量的区别。"><a href="#_27、阐述静态变量和实例变量的区别。" class="header-anchor">#</a> 27、阐述静态变量和实例变量的区别。</h3> <p>静态变量是被 static 修饰符修饰的变量，也称为类变量，它属于类，不属于类的任何一个对象，一个类不管创建多少个对象，静态变量在内存中有且仅有一个拷贝；实例变量必须依存于某一实例，需要先创建对象然后通过对象才能访问到它。静态变量可以实现让多个对象共享内存。</p> <p>补充：在 Java 开发中，上下文类和工具类中通常会有大量的静态成员。</p> <h3 id="_28、是否可以从一个静态-static-方法内部发出对非静态-non-static-方法的调用"><a href="#_28、是否可以从一个静态-static-方法内部发出对非静态-non-static-方法的调用" class="header-anchor">#</a> 28、是否可以从一个静态（static）方法内部发出对非静态（non-static）方法的调用？</h3> <p>不可以，静态方法只能访问静态成员，因为非静态方法的调用要先创建对象，在调用静态方法时可能对象并没有被初始化。</p> <h3 id="_29、如何实现对象克隆"><a href="#_29、如何实现对象克隆" class="header-anchor">#</a> 29、如何实现对象克隆？</h3> <p>有两种方式：</p> <p>1). 实现 Cloneable 接口并重写 Object 类中的 clone()方法；</p> <p>2). 实现 Serializable 接口，通过对象的序列化和反序列化实现克隆，可以实现真正的深度克隆，代码如下。</p> <div class="language- extra-class"><pre class="language-text"><code>import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+public class MyUtil {
+	private MyUtil() {
+		throw new AssertionError();
+	}
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public static &lt;T extends Serializable&gt; T clone(T obj) throws
+	Exception {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bout);
+		oos.writeObject(obj);
+		ByteArrayInputStream bin = new
+		ByteArrayInputStream(bout.toByteArray());
+		ObjectInputStream ois = new ObjectInputStream(bin);
+		return (T) ois.readObject();
+		// 说明：调用 ByteArrayInputStream 或 ByteArrayOutputStream
+		对象的 close 方法没有任何意义
+		// 这两个基于内存的流只要垃圾回收器清理对象就能够释放资源，这
+		一点不同于对外部资源（如文件流）的释放
+	}
+}
+</code></pre></div><p>下面是测试代码：</p> <div class="language- extra-class"><pre class="language-text"><code>import java.io.Serializable;
+/**
+* 人类
+* @author 骆昊
+*
+*/
+class Person implements Serializable {
+	private static final long serialVersionUID = -9102017020286042305L;
+	private String name;
+	// 姓名
+	private int age;
+	// 年龄
+	private Car car;
+	// 座驾
+	public Person(String name, int age, Car car) {
+		this.name = name;
+		this.age = age;
+		this.car = car;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public Car getCar() {
+		return car;
+	}
+	public void setCar(Car car) {
+		this.car = car;
+	}
+	@Override
+	public String toString() {
+		return &quot;Person [name=&quot; + name + &quot;, age=&quot; + age + &quot;, car=&quot; +
+		car + &quot;]&quot;;
+	}
+}
+/**
+* 小汽车类
+* @author 骆昊
+*
+*/
+class Car implements Serializable {
+	private static final long serialVersionUID = -5713945027627603702L;
+	private String brand;
+	// 品牌
+	private int maxSpeed;
+	// 最高时速
+	public Car(String brand, int maxSpeed) {
+		this.brand = brand;
+		this.maxSpeed = maxSpeed;
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+	public void setMaxSpeed(int maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+	@Override
+	public String toString() {
+		return &quot;Car [brand=&quot; + brand + &quot;, maxSpeed=&quot; + maxSpeed +
+		&quot;]&quot;;
+	}
+}
+class CloneTest {
+	public static void main(String[] args) {
+		try {
+			Person p1 = new Person(&quot;Hao LUO&quot;, 33, new Car(&quot;Benz&quot;,
+			300));
+			Person p2 = MyUtil.clone(p1);
+			// 深度克隆
+			p2.getCar().setBrand(&quot;BYD&quot;);
+			// 修改克隆的 Person 对象 p2 关联的汽车对象的品牌属性
+			// 原来的 Person 对象 p1 关联的汽车不会受到任何影响
+			// 因为在克隆 Person 对象时其关联的汽车对象也被克隆了
+			System.out.println(p1);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre></div><p><strong>注意：</strong> 基于序列化和反序列化实现的克隆不仅仅是深度克隆，更重要的是通过泛型限定，可以检查出要克隆的对象是否支持序列化，这项检查是编译器完成的，不是在运行时抛出异常，这种是方案明显优于使用 Object 类的 clone 方法克隆对象。让问题在编译的时候暴露出来总是好过把问题留到运行时。</p> <h3 id="_30、gc-是什么-为什么要有-gc"><a href="#_30、gc-是什么-为什么要有-gc" class="header-anchor">#</a> 30、GC 是什么？为什么要有 GC？</h3> <p>GC 是垃圾收集的意思，内存处理是编程人员容易出现问题的地方，忘记或者错误的内存回收会导致程序或系统的不稳定甚至崩溃，Java 提供的 GC 功能可以自动监测对象是否超过作用域从而达到自动回收内存的目的，Java 语言没有提供释放已分配内存的显示操作方法。Java 程序员不用担心内存管理，因为垃圾收集器会自动进行管理。要请求垃圾收集，可以调用下面的方法之一：System.gc() 或Runtime.getRuntime().gc() ，但 JVM 可以屏蔽掉显示的垃圾回收调用。垃圾回收可以有效的防止内存泄露，有效的使用可以使用的内存。垃圾回收器通常是作为一个单独的低优先级的线程运行，不可预知的情况下对内存堆中已经死亡的或者长时间没有使用的对象进行清除和回收，程序员不能实时的调用垃圾回收器对某个对象或所有对象进行垃圾回收。在 Java 诞生初期，垃圾回收是 Java最大的亮点之一，因为服务器端的编程需要有效的防止内存泄露问题，然而时过境迁，如今 Java 的垃圾回收机制已经成为被诟病的东西。移动智能终端用户通常觉得 iOS 的系统比 Android 系统有更好的用户体验，其中一个深层次的原因就在于 Android 系统中垃圾回收的不可预知性。</p> <p>补充：垃圾回收机制有很多种，包括：分代复制垃圾回收、标记垃圾回收、增量垃圾回收等方式。标准的 Java 进程既有栈又有堆。栈保存了原始型局部变量，堆保存了要创建的对象。Java 平台对堆内存回收和再利用的基本算法被称为标记和清除，但是 Java 对其进行了改进，采用“分代式垃圾收集”。这种方法会跟 Java对象的生命周期将堆内存划分为不同的区域，在垃圾收集过程中，可能会将对象移动到不同区域：</p> <p>（1）伊甸园（Eden）：这是对象最初诞生的区域，并且对大多数对象来说，这里是它们唯一存在过的区域。</p> <p>（2）幸存者乐园（Survivor）：从伊甸园幸存下来的对象会被挪到这里。</p> <p>（3）终身颐养园（Tenured）：这是足够老的幸存对象的归宿。年轻代收集（Minor-GC）过程是不会触及这个地方的。当年轻代收集不能把对象放进终身颐养园时，就会触发一次完全收集（Major-GC），这里可能还会牵扯到压缩，以便为大对象腾出足够的空间。</p> <p>与垃圾回收相关的 JVM 参数：</p> <div class="language- extra-class"><pre class="language-text"><code>-Xms / -Xmx — 堆的初始大小 / 堆的最大大小
+ -Xmn — 堆中年轻代的大小
+ -XX:-DisableExplicitGC — 让 System.gc()不产生任何作用
+ -XX:+PrintGCDetails — 打印 GC 的细节
+ -XX:+PrintGCDateStamps — 打印 GC 操作的时间戳
+ -XX:NewSize / XX:MaxNewSize — 设置新生代大小/新生代最大大小
+ -XX:NewRatio — 可以设置老生代和新生代的比例
+ -XX:PrintTenuringDistribution — 设置每次新生代 GC 后输出幸存者
+乐园中对象年龄的分布
+ -XX:InitialTenuringThreshold / -XX:MaxTenuringThreshold：设置老
+年代阀值的初始值和最大值
+ -XX:TargetSurvivorRatio：设置幸存区的目标使用率 
+</code></pre></div><h3 id="_31、string-s-new-string-xyz-创建了几个字符串对象"><a href="#_31、string-s-new-string-xyz-创建了几个字符串对象" class="header-anchor">#</a> 31、String s = new String(“xyz”);创建了几个字符串对象？</h3> <p>两个对象，一个是静态区的”xyz”，一个是用 new 创建在堆上的对象。</p> <h3 id="_32、接口是否可继承-extends-接口-抽象类是否可实现-implements-接口-抽象类是否可继承具体类-concreteclass"><a href="#_32、接口是否可继承-extends-接口-抽象类是否可实现-implements-接口-抽象类是否可继承具体类-concreteclass" class="header-anchor">#</a> 32、接口是否可继承（extends）接口？抽象类是否可实现（implements）接口？抽象类是否可继承具体类（concreteclass）？</h3> <p>接口可以继承接口，而且支持多重继承。抽象类可以实现(implements)接口，抽象类可继承具体类也可以继承抽象类。</p> <h3 id="_33、一个-java-源文件中是否可以包含多个类-不是内部类-有什么限制"><a href="#_33、一个-java-源文件中是否可以包含多个类-不是内部类-有什么限制" class="header-anchor">#</a> 33、一个”.java”源文件中是否可以包含多个类（不是内部类）？有什么限制？</h3> <p>可以，但一个源文件中最多只能有一个公开类（public class）而且文件名必须和公开类的类名完全保持一致。</p> <h3 id="_34、anonymous-inner-class-匿名内部类-是否可以继承其它类-是否可以实现接口"><a href="#_34、anonymous-inner-class-匿名内部类-是否可以继承其它类-是否可以实现接口" class="header-anchor">#</a> 34、Anonymous Inner Class(匿名内部类)是否可以继承其它类？是否可以实现接口？</h3> <p>可以继承其他类或实现其他接口，在 Swing 编程和 Android 开发中常用此方式来实现事件监听和回调。</p> <h3 id="_35、内部类可以引用它的包含类-外部类-的成员吗-有没有什么限制"><a href="#_35、内部类可以引用它的包含类-外部类-的成员吗-有没有什么限制" class="header-anchor">#</a> 35、内部类可以引用它的包含类（外部类）的成员吗？有没有什么限制？</h3> <p>一个内部类对象可以访问创建它的外部类对象的成员，包括私有成员。</p> <h3 id="_36、java-中的-final-关键字有哪些用法"><a href="#_36、java-中的-final-关键字有哪些用法" class="header-anchor">#</a> 36、Java 中的 final 关键字有哪些用法？</h3> <p>(1)修饰类：表示该类不能被继承；</p> <p>(2)修饰方法：表示方法不能被重写；</p> <p>(3)修饰变量：表示变量只能一次赋值以后值不能被修改（常量）。</p> <h3 id="_37、指出下面程序的运行结果"><a href="#_37、指出下面程序的运行结果" class="header-anchor">#</a> 37、指出下面程序的运行结果</h3> <div class="language- extra-class"><pre class="language-text"><code>class A {
+	static {
+		System.out.print(&quot;1&quot;);
+	}
+	public A() {
+		System.out.print(&quot;2&quot;);
+	}
+}
+class B extends A{
+	static {
+		System.out.print(&quot;a&quot;);
+	}
+	public B() {
+		System.out.print(&quot;b&quot;);
+	}
+}
+public class Hello {
+	public static void main(String[] args) {
+		A ab = new B();
+		ab = new B();
+	}
+}
+
+</code></pre></div><p><strong>执行结果：</strong> 1a2b2b。创建对象时构造器的调用顺序是：先初始化静态成员，然后调用父类构造器，再初始化非静态成员，最后调用自身构造器。</p> <p><strong>提示：</strong> 如果不能给出此题的正确答案，说明之前第 21 题 Java 类加载机制还没有完全理解，赶紧再看看吧。</p> <h3 id="_38、数据类型之间的转换"><a href="#_38、数据类型之间的转换" class="header-anchor">#</a> 38、数据类型之间的转换：</h3> <p>（1） 如何将字符串转换为基本数据类型？</p> <p>（2） 如何将基本数据类型转换为字符串？</p> <p>答：</p> <p>（1）调用基本数据类型对应的包装类中的方法 parseXXX(String)或valueOf(String)即可返回相应基本类型；</p> <p>（2）一种方法是将基本数据类型与空字符串（”“）连接（+）即可获得其所对应的字符串；另一种方法是调用 String 类中的 valueOf()方法返回相应字符串</p> <h3 id="_39、如何实现字符串的反转及替换"><a href="#_39、如何实现字符串的反转及替换" class="header-anchor">#</a> 39、如何实现字符串的反转及替换？</h3> <p>方法很多，可以自己写实现也可以使用 String 或 StringBuffer/StringBuilder 中的方法。有一道很常见的面试题是用递归实现字符串反转，代码如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>public static String reverse(String originStr) {
+	if(originStr == null || originStr.length() &lt;= 1)
+	return originStr;
+	return reverse(originStr.substring(1)) + originStr.charAt(0);
+}
+</code></pre></div><h3 id="_40、怎样将-gb2312-编码的字符串转换为-iso-8859-1-编码的字符串"><a href="#_40、怎样将-gb2312-编码的字符串转换为-iso-8859-1-编码的字符串" class="header-anchor">#</a> 40、怎样将 GB2312 编码的字符串转换为 ISO-8859-1 编码的字符串？</h3> <p>代码如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>String s1 = &quot;你好&quot;;
+String s2 = new String(s1.getBytes(&quot;GB2312&quot;), &quot;ISO-8859-1&quot;);
+</code></pre></div><h3 id="_41、日期和时间"><a href="#_41、日期和时间" class="header-anchor">#</a> 41、日期和时间：</h3> <p>（1）如何取得年月日、小时分钟秒？</p> <p>（2） 如何取得从 1970 年 1 月 1 日 0 时 0 分 0 秒到现在的毫秒数？</p> <p>（3） 如何取得某月的最后一天？</p> <p>（4）如何格式化日期？</p> <p>答：</p> <p><strong>问题 1：</strong> 创建 java.util.Calendar 实例，调用其 get()方法传入不同的参数即可获得参数所对应的值。Java 8 中可以使用 java.time.LocalDateTimel 来获取，代码如下所示。</p> <div class="language- extra-class"><pre class="language-text"><code>public class DateTimeTest {
+	public static void main(String[] args) {
+		Calendar cal = Calendar.getInstance();
+		System.out.println(cal.get(Calendar.YEAR));
+		System.out.println(cal.get(Calendar.MONTH));
+		// 0 - 11
+		System.out.println(cal.get(Calendar.DATE));
+		System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+		System.out.println(cal.get(Calendar.MINUTE));
+		System.out.println(cal.get(Calendar.SECOND));
+		// Java 8
+		LocalDateTime dt = LocalDateTime.now();
+		System.out.println(dt.getYear());
+		System.out.println(dt.getMonthValue());
+		// 1 - 12
+		System.out.println(dt.getDayOfMonth());
+		System.out.println(dt.getHour());
+		System.out.println(dt.getMinute());
+		System.out.println(dt.getSecond());
+	}
+}
+</code></pre></div><p><strong>问题 2：</strong> 以下方法均可获得该毫秒数。</p> <div class="language- extra-class"><pre class="language-text"><code>Calendar.getInstance().getTimeInMillis();
+System.currentTimeMillis();
+Clock.systemDefaultZone().millis();
+// Java 8
+</code></pre></div><p><strong>问题 3：</strong> 代码如下所示。</p> <div class="language- extra-class"><pre class="language-text"><code>Calendar time = Calendar.getInstance();
+time.getActualMaximum(Calendar.DAY_OF_MONTH
+</code></pre></div><p><strong>问题 4：</strong> 利用 java.text.DataFormat 的子类（如 SimpleDateFormat 类）中的format(Date)方法可将日期格式化。Java 8 中可以用java.time.format.DateTimeFormatter 来格式化时间日期，代码如下所示。</p> <div class="language- extra-class"><pre class="language-text"><code>import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+class DateFormatTest {
+	public static void main(String[] args) {
+		SimpleDateFormat oldFormatter = new
+		SimpleDateFormat(&quot;yyyy/MM/dd&quot;);
+		Date date1 = new Date();
+		System.out.println(oldFormatter.format(date1));
+		// Java 8
+		DateTimeFormatter newFormatter =
+		DateTimeFormatter.ofPattern(&quot;yyyy/MM/dd&quot;);
+		LocalDate date2 = LocalDate.now();
+		System.out.println(date2.format(newFormatter));
+	}
+}
+</code></pre></div><p><strong>补充：</strong> Java 的时间日期 API 一直以来都是被诟病的东西，为了解决这一问题，Java8 中引入了新的时间日期 API，其中包括 LocalDate、LocalTime、LocalDateTime、Clock、Instant 等类，这些的类的设计都使用了不变模式，因此是线程安全的设计。</p> <h3 id="_42、打印昨天的当前时刻。"><a href="#_42、打印昨天的当前时刻。" class="header-anchor">#</a> 42、打印昨天的当前时刻。</h3> <div class="language- extra-class"><pre class="language-text"><code>import java.util.Calendar;
+class YesterdayCurrent {
+	public static void main(String[] args){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		System.out.println(cal.getTime());
+	}
+}
+</code></pre></div><p>在 Java 8 中，可以用下面的代码实现相同的功能。</p> <div class="language- extra-class"><pre class="language-text"><code>import java.time.LocalDateTime;
+class YesterdayCurrent {
+	public static void main(String[] args) {
+		LocalDateTime today = LocalDateTime.now();
+		LocalDateTime yesterday = today.minusDays(1);
+		System.out.println(yesterday);
+	}
+}
+</code></pre></div><h3 id="_43、比较一下-java-和-javasciprt。"><a href="#_43、比较一下-java-和-javasciprt。" class="header-anchor">#</a> 43、比较一下 Java 和 JavaSciprt。</h3> <p>JavaScript 与 Java 是两个公司开发的不同的两个产品。Java 是原 SunMicrosystems 公司推出的面向对象的程序设计语言，特别适合于互联网应用程序开发；而 JavaScript 是 Netscape 公司的产品，为了扩展 Netscape 浏览器的功能而开发的一种可以嵌入 Web 页面中运行的基于对象和事件驱动的解释性语言。JavaScript 的前身是 LiveScript；而 Java 的前身是 Oak 语言。</p> <p>下面对两种语言间的异同作如下比较：</p> <p>（1）基于对象和面向对象：Java 是一种真正的面向对象的语言，即使是开发简单的程序，必须设计对象；JavaScript 是种脚本语言，它可以用来制作与网络无关的，与用户交互作用的复杂软件。它是一种基于对象（Object-Based）和事件驱动（Event-Driven）的编程语言，因而它本身提供了非常丰富的内部对象供设计人员使用。</p> <p>（2）解释和编译：Java 的源代码在执行之前，必须经过编译。JavaScript 是一种解释性编程语言，其源代码不需经过编译，由浏览器解释执行。（目前的浏览器几乎都使用了 JIT（即时编译）技术来提升 JavaScript 的运行效率）</p> <p>（3）强类型变量和类型弱变量：Java 采用强类型变量检查，即所有变量在编译之前必须作声明；JavaScript 中变量是弱类型的，甚至在使用变量前可以不作声明，JavaScript 的解释器在运行时检查推断其数据类型。</p> <p>（4）代码格式不一样。</p> <p>补充：上面列出的四点是网上流传的所谓的标准答案。其实 Java 和 JavaScript最重要的区别是一个是静态语言，一个是动态语言。目前的编程语言的发展趋势是函数式语言和动态语言。在 Java 中类（class）是一等公民，而 JavaScript 中函数（function）是一等公民，因此 JavaScript 支持函数式编程，可以使用 Lambda函数和闭包（closure），当然 Java 8 也开始支持函数式编程，提供了对 Lambda表达式以及函数式接口的支持。对于这类问题，在面试的时候最好还是用自己的语言回答会更加靠谱，不要背网上所谓的标准答案。</p> <h3 id="_44、什么时候用断言-assert"><a href="#_44、什么时候用断言-assert" class="header-anchor">#</a> 44、什么时候用断言（assert）？</h3> <p>断言在软件开发中是一种常用的调试方式，很多开发语言中都支持这种机制。一般来说，断言用于保证程序最基本、关键的正确性。断言检查通常在开发和测试时开启。为了保证程序的执行效率，在软件发布后断言检查通常是关闭的。断言是一个包含布尔表达式的语句，在执行这个语句时假定该表达式为 true；如果表达式的值为 false，那么系统会报告一个 AssertionError。断言的使用如下面的代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>assert(a &gt; 0); // throws an AssertionError if a &lt;= 0
+</code></pre></div><p>断言可以有两种形式：</p> <p>assert Expression1;</p> <p>assert Expression1 : Expression2 ;</p> <p>Expression1 应该总是产生一个布尔值。</p> <p>Expression2 可以是得出一个值的任意表达式；这个值用于生成显示更多调试信息的字符串消息。</p> <p>要在运行时启用断言，可以在启动 JVM 时使用-enableassertions 或者-ea 标记。要在运行时选择禁用断言，可以在启动 JVM 时使用-da 或者-disableassertions标记。要在系统类中启用或禁用断言，可使用-esa 或-dsa 标记。还可以在包的基础上启用或者禁用断言。</p> <p>注意：断言不应该以任何方式改变程序的状态。简单的说，如果希望在不满足某些条件时阻止代码的执行，就可以考虑用断言来阻止它。</p> <h3 id="_45、error-和-exception-有什么区别"><a href="#_45、error-和-exception-有什么区别" class="header-anchor">#</a> 45、Error 和 Exception 有什么区别？</h3> <p>Error 表示系统级的错误和程序不必处理的异常，是恢复不是不可能但很困难的情况下的一种严重问题；比如内存溢出，不可能指望程序能处理这样的情况；</p> <p>Exception 表示需要捕捉或者需要程序进行处理的异常，是一种设计或实现问题；也就是说，它表示如果程序运行正常，从不会发生的情况。</p> <h3 id="_46、try-里有一个-return-语句-那么紧跟在这个-try-后的finally-里的代码会不会被执行-什么时候被执行-在-return前还是后"><a href="#_46、try-里有一个-return-语句-那么紧跟在这个-try-后的finally-里的代码会不会被执行-什么时候被执行-在-return前还是后" class="header-anchor">#</a> 46、try{}里有一个 return 语句，那么紧跟在这个 try 后的finally{}里的代码会不会被执行，什么时候被执行，在 return前还是后?</h3> <p>会执行，在方法返回调用者前执行。</p> <p><strong>注意：</strong> 在 finally 中改变返回值的做法是不好的，因为如果存在 finally 代码块，try中的 return 语句不会立马返回调用者，而是记录下返回值待 finally 代码块执行完毕之后再向调用者返回其值，然后如果在 finally 中修改了返回值，就会返回修改后的值。显然，在 finally 中返回或者修改返回值会对程序造成很大的困扰，C#中直接用编译错误的方式来阻止程序员干这种龌龊的事情，Java 中也可以通过提升编译器的语法检查级别来产生警告或错误，Eclipse 中可以在如图所示的地方进行设置，强烈建议将此项设置为编译错误。</p> <h3 id="_47、java-语言如何进行异常处理-关键字-throws、throw、try、catch、finally-分别如何使用"><a href="#_47、java-语言如何进行异常处理-关键字-throws、throw、try、catch、finally-分别如何使用" class="header-anchor">#</a> 47、Java 语言如何进行异常处理，关键字：throws、throw、try、catch、finally 分别如何使用？</h3> <p>Java 通过面向对象的方法进行异常处理，把各种不同的异常进行分类，并提供了良好的接口。在 Java 中，每个异常都是一个对象，它是 Throwable 类或其子类的实例。当一个方法出现异常后便抛出一个异常对象，该对象中包含有异常信息，调用这个对象的方法可以捕获到这个异常并可以对其进行处理。Java 的异常处理是通过 5 个关键词来实现的：try、catch、throw、throws 和 finally。一般情况下是用 try 来执行一段程序，如果系统会抛出（throw）一个异常对象，可以通过它的类型来捕获（catch）它，或通过总是执行代码块（finally）来处理；try 用来指定一块预防所有异常的程序；catch 子句紧跟在 try 块后面，用来指定你想要捕获的异常的类型；throw 语句用来明确地抛出一个异常；throws 用来声明一个方法可能抛出的各种异常（当然声明异常时允许无病呻吟）；finally 为确保一段代码不管发生什么异常状况都要被执行；try 语句可以嵌套，每当遇到一个 try 语句，异常的结构就会被放入异常栈中，直到所有的 try 语句都完成。如果下一级的try 语句没有对某种异常进行处理，异常栈就会执行出栈操作，直到遇到有处理这种异常的 try 语句或者最终将异常抛给 JVM。</p> <h3 id="_48、运行时异常与受检异常有何异同"><a href="#_48、运行时异常与受检异常有何异同" class="header-anchor">#</a> 48、运行时异常与受检异常有何异同？</h3> <p>异常表示程序运行过程中可能出现的非正常状态，运行时异常表示虚拟机的通常操作中可能遇到的异常，是一种常见运行错误，只要程序设计得没有问题通常就不会发生。受检异常跟程序运行的上下文环境有关，即使程序设计无误，仍然可能因使用的问题而引发。Java 编译器要求方法必须声明抛出可能发生的受检异常，但是并不要求必须声明抛出未被捕获的运行时异常。异常和继承一样，是面向对象程序设计中经常被滥用的东西，在 Effective Java 中对异常的使用给出了以下指导原则：</p> <p>（1）不要将异常处理用于正常的控制流（设计良好的 API 不应该强迫它的调用者为了正常的控制流而使用异常）</p> <p>（2）对可以恢复的情况使用受检异常，对编程错误使用运行时异常</p> <p>（3）避免不必要的使用受检异常（可以通过一些状态检测手段来避免异常的发生）</p> <p>（4）优先使用标准的异常</p> <p>（5）每个方法抛出的异常都要有文档</p> <p>（6）保持异常的原子性</p> <p>（7）不要在 catch 中忽略掉捕获到的异常</p> <h3 id="_49、列出一些你常见的运行时异常"><a href="#_49、列出一些你常见的运行时异常" class="header-anchor">#</a> 49、列出一些你常见的运行时异常？</h3> <p>（1）ArithmeticException（算术异常）</p> <p>（2） ClassCastException （类转换异常）</p> <p>（3） IllegalArgumentException （非法参数异常）</p> <p>（4） IndexOutOfBoundsException （下标越界异常）</p> <p>（5） NullPointerException （空指针异常）</p> <p>（6） SecurityException （安全异常）</p> <h3 id="_50、阐述-final、finally、finalize-的区别。"><a href="#_50、阐述-final、finally、finalize-的区别。" class="header-anchor">#</a> 50、阐述 final、finally、finalize 的区别。</h3> <p>（1） final：修饰符（关键字）有三种用法：如果一个类被声明为 final，意味着它不能再派生出新的子类，即不能被继承，因此它和 abstract 是反义词。将变量声明为 final，可以保证它们在使用中不被改变，被声明为 final 的变量必须在声明时给定初值，而在以后的引用中只能读取不可修改。被声明为 final 的方法也同样只能使用，不能在子类中被重写。</p> <p>（2）finally：通常放在 try…catch…的后面构造总是执行代码块，这就意味着程序无论正常执行还是发生异常，这里的代码只要 JVM 不关闭都能执行，可以将释放外部资源的代码写在 finally 块中.</p> <p>（3）finalize：Object 类中定义的方法，Java 中允许使用 finalize()方法在垃圾收集器将对象从内存中清除出去之前做必要的清理工作。这个方法是由垃圾收集器在销毁对象时调用的，通过重写 finalize()方法可以整理系统资源或者执行其他清理工作。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/查缺补漏/Java面试题（一）的1~20题答案.html" class="prev">
+        Java 面试题（一）的1~20题答案
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/查缺补漏/Java面试题（一）的51~95题答案.html">
+        Java 面试题（一）的51~95题答案
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/81.952d2f17.js" defer></script>
+  </body>
+</html>

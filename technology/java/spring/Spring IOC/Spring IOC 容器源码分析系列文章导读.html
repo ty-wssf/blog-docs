@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring IOC 容器源码分析系列文章导读 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/74.2e59ff14.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/71.6a19aaae.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring IOC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="sidebar-link">Spring bean的生命流程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html" class="active sidebar-link">Spring IOC 容器源码分析系列文章导读</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_1-简介" class="sidebar-link">1. 简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_2-spring-模块结构" class="sidebar-link">2. Spring 模块结构</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-spring-ioc-部分特性介绍" class="sidebar-link">3. Spring IOC 部分特性介绍</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-1-alias" class="sidebar-link">3.1 alias</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-2-autowire" class="sidebar-link">3.2 autowire</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-3-factorybean" class="sidebar-link">3.3 FactoryBean</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-4-factory-method" class="sidebar-link">3.4 factory-method</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-5-lookup-method" class="sidebar-link">3.5 lookup-method</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-6-depends-on" class="sidebar-link">3.6 depends-on</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-7-beanpostprocessor" class="sidebar-link">3.7 BeanPostProcessor</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html#_3-8-beanfactoryaware" class="sidebar-link">3.8 BeanFactoryAware</a></li></ul></li></ul></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="sidebar-link">Spring IOC 容器源码分析 - 获取单例 bean</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建单例 bean 的过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建原始 bean 对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="sidebar-link">Spring IOC 容器源码分析 - 循环依赖的解决办法</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html" class="sidebar-link">Spring IOC 容器源码分析 - 余下的初始化工作</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring AOP</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析系列文章导读.html" class="sidebar-link">Spring AOP 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="sidebar-link">Spring AOP 源码分析 - 筛选合适的通知器</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html" class="sidebar-link">Spring AOP 源码分析 - 创建代理对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html" class="sidebar-link">Spring AOP 源码分析 - 拦截器链的执行过程</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring MVC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="sidebar-link">Spring MVC 原理探秘 - 一个请求的旅行过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html" class="sidebar-link">Spring MVC 原理探秘 - 容器的创建过程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-ioc-容器源码分析系列文章导读"><a href="#spring-ioc-容器源码分析系列文章导读" class="header-anchor">#</a> Spring IOC 容器源码分析系列文章导读</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1. 简介</h2> <p>Spring 是一个轻量级的企业级应用开发框架，于 2004 年由 <a href="https://en.wikipedia.org/wiki/Rod_Johnson_(programmer)" target="_blank" rel="noopener noreferrer">Rod Johnson<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 发布了 1.0 版本。经过十几年的迭代，现在的 Spring 框架已经非常成熟了。Spring 包含了众多模块，包括但不限于 Core、Bean、Context、AOP 和 Web 等。在今天，我们完全可以使用 Spring 所提供的一站式解决方案开发出我们所需要的应用。作为 Java 程序员，我们会经常和 Spring 框架打交道，所以还是很有必要弄懂 Spring 的原理。</p> <p>本文是 Spring IOC 容器源码分析系列文章的第一篇文章，将会着重介绍 Spring 的一些使用方法和特性，为后续的源码分析文章做铺垫。另外需要特别说明一下，本系列的源码分析文章是基于<code>Spring 4.3.17.RELEASE</code>版本编写的，而非最新的<code>5.0.6.RELEASE</code>版本。好了，关于简介先说到这里，继续来说说下面的内容。</p> <h2 id="_2-spring-模块结构"><a href="#_2-spring-模块结构" class="header-anchor">#</a> 2. Spring 模块结构</h2> <p>Spring 是分模块开发的，Spring 包含了很多模块，其中最为核心的是 bean 容器相关模块。像 AOP、MVC、Data 等模块都要依赖 bean 容器。这里先看一下 Spring 框架的结构图：</p> <p><img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15276388676426.jpg" alt="img"></p> <p>图片来源：Spring 官方文档</p> <p>从上图中可以看出<code>Core Container</code>处于整个框架的最底层（忽略 Test 模块），在其之上有 AOP、Data、Web 等模块。既然 Spring 容器是最核心的部分，那么大家如果要读 Spring 的源码，容器部分必须先弄懂。本篇文章作为 Spring IOC 容器的开篇文章，就来简单介绍一下容器方面的知识。请继续往下看。</p> <h2 id="_3-spring-ioc-部分特性介绍"><a href="#_3-spring-ioc-部分特性介绍" class="header-anchor">#</a> 3. Spring IOC 部分特性介绍</h2> <p>本章将会介绍 IOC 中的部分特性，这些特性均会在后面的源码分析中悉数到场。如果大家不是很熟悉这些特性，这里可以看一下。</p> <h3 id="_3-1-alias"><a href="#_3-1-alias" class="header-anchor">#</a> 3.1 alias</h3> <p>alias 的中文意思是“别名”，在 Spring 中，我们可以使用 alias 标签给 bean 起个别名。比如下面的配置：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;hello&quot; class=&quot;xyz.coolblog.service.Hello&quot;&gt;
+    &lt;property name=&quot;content&quot; value=&quot;hello&quot;/&gt;
+&lt;/bean&gt;
+&lt;alias name=&quot;hello&quot; alias=&quot;alias-hello&quot;/&gt;
+&lt;alias name=&quot;alias-hello&quot; alias=&quot;double-alias-hello&quot;/&gt;
+</code></pre></div><p>这里我们给<code>hello</code>这个 beanName 起了一个别名<code>alias-hello</code>，然后又给别名<code>alias-hello</code>起了一个别名<code>double-alias-hello</code>。我们可以通过这两个别名获取到<code>hello</code>这个 bean 实例，比如下面的测试代码：</p> <div class="language- extra-class"><pre class="language-text"><code>public class ApplicationContextTest {
+
+    @Test
+    public void testAlias() {
+        String configLocation = &quot;application-alias.xml&quot;;
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+        System.out.println(&quot;    alias-hello -&gt; &quot; + applicationContext.getBean(&quot;alias-hello&quot;));
+        System.out.println(&quot;double-alias-hello -&gt; &quot; + applicationContext.getBean(&quot;double-alias-hello&quot;));
+    }
+}
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275252140497.jpg" alt="img"></p> <h3 id="_3-2-autowire"><a href="#_3-2-autowire" class="header-anchor">#</a> 3.2 autowire</h3> <p>本小节，我们来了解一下 autowire 这个特性。autowire 即自动注入的意思，通过使用 autowire 特性，我们就不用再显示的配置 bean 之间的依赖了。把依赖的发现和注入都交给 Spring 去处理，省时又省力。autowire 几个可选项，比如 byName、byType 和 constructor 等。autowire 是一个常用特性，相信大家都比较熟悉了，所以本节我们就 byName 为例，快速结束 autowire 特性的介绍。</p> <p>当 bean 配置中的 autowire = byName 时，Spring 会首先通过反射获取该 bean 所依赖 bean 的名字（beanName），然后再通过调用 BeanFactory.getName(beanName) 方法即可获取对应的依赖实例。autowire = byName 原理大致就是这样，接下来我们来演示一下。</p> <div class="language- extra-class"><pre class="language-text"><code>public class Service {
+
+    private Dao mysqlDao;
+
+    private Dao mongoDao;
+
+    // 忽略 getter/setter
+
+    @Override
+    public String toString() {
+        return super.toString() + &quot;\n\t\t\t\t\t{&quot; +
+            &quot;mysqlDao=&quot; + mysqlDao +
+            &quot;, mongoDao=&quot; + mongoDao +
+            '}';
+    }
+}
+
+public interface Dao {}
+public class MySqlDao implements Dao {}
+public class MongoDao implements Dao {}
+</code></pre></div><p>配置如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean name=&quot;mongoDao&quot; class=&quot;xyz.coolblog.autowire.MongoDao&quot;/&gt;
+&lt;bean name=&quot;mysqlDao&quot; class=&quot;xyz.coolblog.autowire.MySqlDao&quot;/&gt;
+
+&lt;!-- 非自动注入，手动配置依赖 --&gt;
+&lt;bean name=&quot;service-without-autowire&quot; class=&quot;xyz.coolblog.autowire.Service&quot; autowire=&quot;no&quot;&gt;
+    &lt;property name=&quot;mysqlDao&quot; ref=&quot;mysqlDao&quot;/&gt;
+    &lt;property name=&quot;mongoDao&quot; ref=&quot;mongoDao&quot;/&gt;
+&lt;/bean&gt;
+
+&lt;!-- 通过设置 autowire 属性，我们就不需要像上面那样显式配置依赖了 --&gt;
+&lt;bean name=&quot;service-with-autowire&quot; class=&quot;xyz.coolblog.autowire.Service&quot; autowire=&quot;byName&quot;/&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>String configLocation = &quot;application-autowire.xml&quot;;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+System.out.println(&quot;service-without-autowire -&gt; &quot; + applicationContext.getBean(&quot;service-without-autowire&quot;));
+System.out.println(&quot;service-with-autowire -&gt; &quot; + applicationContext.getBean(&quot;service-with-autowire&quot;));
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15276394476647.jpg" alt="img"></p> <p>从测试结果可以看出，两种方式配置方式都能完成解决 bean 之间的依赖问题。只不过使用 autowire 会更加省力一些，配置文件也不会冗长。这里举的例子比较简单，假使一个 bean 依赖了十几二十个 bean，再手动去配置，恐怕就很难受了。</p> <h3 id="_3-3-factorybean"><a href="#_3-3-factorybean" class="header-anchor">#</a> 3.3 FactoryBean</h3> <p>FactoryBean？看起来是不是很像 BeanFactory 孪生兄弟。不错，他们看起来很像，但是他们是不一样的。FactoryBean 是一种工厂 bean，与普通的 bean 不一样，FactoryBean 是一种可以产生 bean 的 bean，好吧说起来很绕嘴。FactoryBean 是一个接口，我们可以实现这个接口。下面演示一下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class HelloFactoryBean implements FactoryBean&lt;Hello&gt; {
+
+    @Override
+    public Hello getObject() throws Exception {
+        Hello hello = new Hello();
+        hello.setContent(&quot;hello&quot;);
+        return hello;
+    }
+
+    @Override
+    public Class&lt;?&gt; getObjectType() {
+        return Hello.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
+}
+</code></pre></div><p>配置如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;helloFactory&quot; class=&quot;xyz.coolblog.service.HelloFactoryBean&quot;/&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class ApplicationContextTest {
+
+    @Test
+    public void testFactoryBean() {
+        String configLocation = &quot;application-factory-bean.xml&quot;;
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+        System.out.println(&quot;helloFactory -&gt; &quot; + applicationContext.getBean(&quot;helloFactory&quot;));
+        System.out.println(&quot;&amp;helloFactory -&gt; &quot; + applicationContext.getBean(&quot;&amp;helloFactory&quot;));
+    }
+}
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275264045762.jpg" alt="img"></p> <p>由测试结果可以看到，当我们调用 getBean(“helloFactory”) 时，ApplicationContext 会返回一个 Hello 对象，该对象是 HelloFactoryBean 的 getObject 方法所创建的。如果我们想获取 HelloFactoryBean 本身，则可以在 helloFactory 前加上一个前缀<code>&amp;</code>，即<code>&amp;helloFactory</code>。</p> <h3 id="_3-4-factory-method"><a href="#_3-4-factory-method" class="header-anchor">#</a> 3.4 factory-method</h3> <p>介绍完 FactoryBean，本节再来看看了一个和工厂相关的特性 – factory-method。factory-method 可用于标识静态工厂的工厂方法（工厂方法是静态的），直接举例说明吧：</p> <div class="language- extra-class"><pre class="language-text"><code>public class StaticHelloFactory {
+
+    public static Hello getHello() {
+        Hello hello = new Hello();
+        hello.setContent(&quot;created by StaticHelloFactory&quot;);
+        return hello;
+    }
+}
+</code></pre></div><p>配置如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;staticHelloFactory&quot; class=&quot;xyz.coolblog.service.StaticHelloFactory&quot; factory-method=&quot;getHello&quot;/&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class ApplicationContextTest {
+
+    @Test
+    public void testFactoryMethod() {
+        String configLocation = &quot;application-factory-method.xml&quot;;
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+        System.out.println(&quot;staticHelloFactory -&gt; &quot; + applicationContext.getBean(&quot;staticHelloFactory&quot;));
+    }
+}
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275550473129.jpg" alt="img"></p> <p>对于非静态工厂，需要使用 factory-bean 和 factory-method 两个属性配合。关于 factory-bean 这里就不继续说了，留给大家自己去探索吧。</p> <h3 id="_3-5-lookup-method"><a href="#_3-5-lookup-method" class="header-anchor">#</a> 3.5 lookup-method</h3> <p>lookup-method 特性可能大家用的不多（我也没用过），不过它也是个有用的特性。在介绍这个特性前，先介绍一下背景。我们通过 BeanFactory getBean 方法获取 bean 实例时，对于 singleton 类型的 bean，BeanFactory 每次返回的都是同一个 bean。对于 prototype 类型的 bean，BeanFactory 则会返回一个新的 bean。现在考虑这样一种情况，一个 singleton 类型的 bean 中有一个 prototype 类型的成员变量。BeanFactory 在实例化 singleton 类型的 bean 时，会向其注入一个 prototype 类型的实例。但是 singleton 类型的 bean 只会实例化一次，那么它内部的 prototype 类型的成员变量也就不会再被改变。但如果我们每次从 singleton bean 中获取这个 prototype 成员变量时，都想获取一个新的对象。这个时候怎么办？举个例子（该例子源于《Spring 揭秘》一书），我们有一个新闻提供类（NewsProvider），这个类中有一个新闻类（News）成员变量。我们每次调用 getNews 方法都想获取一条新的新闻。这里我们有两种方式实现这个需求，一种方式是让 NewsProvider 类实现 ApplicationContextAware 接口（实现 BeanFactoryAware 接口也是可以的），每次调用 NewsProvider 的 getNews 方法时，都从 ApplicationContext 中获取一个新的 News 实例，返回给调用者。第二种方式就是这里的 lookup-method 了，Spring 会在运行时对 NewsProvider 进行增强，使其 getNews 可以每次都返回一个新的实例。说完了背景和解决方案，接下来就来写点测试代码验证一下。</p> <p>在演示两种处理方式前，我们先来看看不使用任何处理方式，BeanFactory 所返回的 bean 实例情况。相关类定义如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class News {
+    // 仅演示使用，News 类中无成员变量
+}
+
+public class NewsProvider {
+
+    private News news;
+
+    public News getNews() {
+        return news;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
+    }
+}
+</code></pre></div><p>配置信息如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;news&quot; class=&quot;xyz.coolblog.lookupmethod.News&quot; scope=&quot;prototype&quot;/&gt;
+&lt;bean id=&quot;newsProvider&quot; class=&quot;xyz.coolblog.lookupmethod.NewsProvider&quot;&gt;
+    &lt;property name=&quot;news&quot; ref=&quot;news&quot;/&gt;
+&lt;/bean&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>String configLocation = &quot;application-lookup-method.xml&quot;;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+NewsProvider newsProvider = (NewsProvider) applicationContext.getBean(&quot;newsProvider&quot;);
+System.out.println(newsProvider.getNews());
+System.out.println(newsProvider.getNews());
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275701112544.jpg" alt="img"></p> <p>从测试结果中可以看出，newsProvider.getNews() 方法两次返回的结果都是一样的，这个是不满足要求的。</p> <h4 id="_3-5-1-实现-applicationcontextaware-接口"><a href="#_3-5-1-实现-applicationcontextaware-接口" class="header-anchor">#</a> 3.5.1 实现 ApplicationContextAware 接口</h4> <p>我们让 NewsProvider 实现 ApplicationContextAware 接口，实现代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class NewsProvider implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+
+    private News news;
+
+    /** 每次都从 applicationContext 中获取一个新的 bean */
+    public News getNews() {
+        return applicationContext.getBean(&quot;news&quot;, News.class);
+    }
+
+    public void setNews(News news) {
+        this.news = news;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+}
+</code></pre></div><p>配置和测试代码同上，测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275709329463.jpg" alt="img"></p> <p>这里两次获取的 news 并就不是同一个 bean 了，满足了我们的需求。</p> <h4 id="_3-5-2-使用-lookup-method-特性"><a href="#_3-5-2-使用-lookup-method-特性" class="header-anchor">#</a> 3.5.2 使用 lookup-method 特性</h4> <p>使用 lookup-method 特性，配置文件需要改一下。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;news&quot; class=&quot;xyz.coolblog.lookupmethod.News&quot; scope=&quot;prototype&quot;/&gt;
+&lt;bean id=&quot;newsProvider&quot; class=&quot;xyz.coolblog.lookupmethod.NewsProvider&quot;&gt;
+    &lt;lookup-method name=&quot;getNews&quot; bean=&quot;news&quot;/&gt;
+&lt;/bean&gt;
+</code></pre></div><p>NewsProvider 的代码沿用 4.5.1 小节之前贴的代码。测试代码稍微变一下，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>String configLocation = &quot;application-lookup-method.xml&quot;;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+NewsProvider newsProvider = (NewsProvider) applicationContext.getBean(&quot;newsProvider&quot;);
+System.out.println(&quot;newsProvider -&gt; &quot; + newsProvider);
+System.out.println(&quot;news 1 -&gt; &quot; + newsProvider.getNews());
+System.out.println(&quot;news 2 -&gt; &quot; + newsProvider.getNews());
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275713215674.jpg" alt="img"></p> <p>从上面的结果可以看出，new1 和 new2 指向了不同的对象。同时，大家注意看 newsProvider，似乎变的很复杂。由此可看出，NewsProvider 被 CGLIB 增强了。</p> <h3 id="_3-6-depends-on"><a href="#_3-6-depends-on" class="header-anchor">#</a> 3.6 depends-on</h3> <p>当一个 bean 直接依赖另一个 bean，可以使用 <code>&lt;ref/&gt;</code> 标签进行配置。不过如某个 bean 并不直接依赖于其他 bean，但又需要其他 bean 先实例化好，这个时候就需要使用 depends-on 特性了。depends-on 特性比较简单，就不演示了。仅贴一下配置文件的内容，如下：</p> <p>这里有两个简单的类，其中 Hello 需要 World 在其之前完成实例化。相关配置如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean id=&quot;hello&quot; class=&quot;xyz.coolblog.depnedson.Hello&quot; depends-on=&quot;world&quot;/&gt;
+&lt;bean id=&quot;world&quot; class=&quot;xyz.coolblog.depnedson.World&quot; /&gt;
+</code></pre></div><h3 id="_3-7-beanpostprocessor"><a href="#_3-7-beanpostprocessor" class="header-anchor">#</a> 3.7 BeanPostProcessor</h3> <p>BeanPostProcessor 是 bean 实例化时的后置处理器，包含两个方法，其源码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public interface BeanPostProcessor {
+    // bean 初始化前的回调方法
+    Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
+
+    // bean 初始化后的回调方法    
+    Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
+
+}
+</code></pre></div><p>BeanPostProcessor 是 Spring 框架的一个扩展点，通过实现 BeanPostProcessor 接口，我们就可插手 bean 实例化的过程。比如大家熟悉的 AOP 就是在 bean 实例后期间将切面逻辑织入 bean 实例中的，AOP 也正是通过 BeanPostProcessor 和 IOC 容器建立起了联系。这里我来演示一下 BeanPostProcessor 的使用方式，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>/**
+ * 日志后置处理器，将会在 bean 创建前、后打印日志
+ */
+public class LoggerBeanPostProcessor implements BeanPostProcessor {
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println(&quot;Before &quot; + beanName + &quot; Initialization&quot;);
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println(&quot;After &quot; + beanName + &quot; Initialization&quot;);
+        return bean;
+    }
+}
+</code></pre></div><p>配置如下：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;bean class=&quot;xyz.coolblog.beanpostprocessor.LoggerBeanPostProcessor&quot;/&gt;
+    
+&lt;bean id=&quot;hello&quot; class=&quot;xyz.coolblog.service.Hello&quot;/&gt;
+&lt;bean id=&quot;world&quot; class=&quot;xyz.coolblog.service.World&quot;/&gt;
+</code></pre></div><p>测试代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public class ApplicationContextTest {
+
+    @Test
+    public void testBeanPostProcessor() {
+        String configLocation = &quot;application-bean-post-processor.xml&quot;;
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
+    }
+}
+</code></pre></div><p>测试结果如下：
+<img src="https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15275250058336.jpg" alt="img"></p> <p>与 BeanPostProcessor 类似的还有一个叫 BeanFactoryPostProcessor 拓展点，顾名思义，用户可以通过这个拓展点插手容器启动的过程。不过这个不属于本系列文章范畴，暂时先不细说了。</p> <h3 id="_3-8-beanfactoryaware"><a href="#_3-8-beanfactoryaware" class="header-anchor">#</a> 3.8 BeanFactoryAware</h3> <p>Spring 中定义了一些列的 Aware 接口，比如这里的 BeanFactoryAware，以及 BeanNameAware 和 BeanClassLoaderAware 等等。通过实现这些 Aware 接口，我们可以在运行时获取一些配置信息或者其他一些信息。比如实现 BeanNameAware 接口，我们可以获取 bean 的配置名称（beanName）。通过实现 BeanFactoryAware 接口，我们可以在运行时获取 BeanFactory 实例。关于 Aware 类型接口的使用，可以参考<code>4.5.1 实现 ApplicationContextAware 接口</code>一节中的叙述，这里就不演示了。</p> <ul><li><a href="https://book.douban.com/subject/3897837/" target="_blank" rel="noopener noreferrer">《Spring 揭秘》- 王福强著<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://book.douban.com/subject/25866350/" target="_blank" rel="noopener noreferrer">《Spring源码深度解析》- 郝佳著<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="prev">
+        Spring bean的生命流程
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html">
+        Spring IOC 容器源码分析 - 获取单例 bean
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/74.2e59ff14.js" defer></script>
+  </body>
+</html>

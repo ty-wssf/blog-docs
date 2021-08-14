@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring IOC 容器源码分析 - 填充属性到 bean 原始对象 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.bba9cbbd.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.234bb53b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.fea10d22.js" as="script"><link rel="preload" href="/blog-docs/assets/js/71.6a19aaae.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.869602a2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.24e6f4e0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5e3140b8.js"><link rel="prefetch" href="/blog-docs/assets/js/13.d8670a3a.js"><link rel="prefetch" href="/blog-docs/assets/js/14.8daa7da1.js"><link rel="prefetch" href="/blog-docs/assets/js/15.32988ad2.js"><link rel="prefetch" href="/blog-docs/assets/js/16.9e4f5cac.js"><link rel="prefetch" href="/blog-docs/assets/js/17.3c4349fb.js"><link rel="prefetch" href="/blog-docs/assets/js/18.eab2cfbc.js"><link rel="prefetch" href="/blog-docs/assets/js/19.f812e118.js"><link rel="prefetch" href="/blog-docs/assets/js/20.504cbf29.js"><link rel="prefetch" href="/blog-docs/assets/js/21.01d50d83.js"><link rel="prefetch" href="/blog-docs/assets/js/22.96c7a500.js"><link rel="prefetch" href="/blog-docs/assets/js/23.18e5a9af.js"><link rel="prefetch" href="/blog-docs/assets/js/24.54c027da.js"><link rel="prefetch" href="/blog-docs/assets/js/25.a85670cd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.00735372.js"><link rel="prefetch" href="/blog-docs/assets/js/27.41c5f737.js"><link rel="prefetch" href="/blog-docs/assets/js/28.385822f9.js"><link rel="prefetch" href="/blog-docs/assets/js/29.fd59e9bb.js"><link rel="prefetch" href="/blog-docs/assets/js/3.56a95f86.js"><link rel="prefetch" href="/blog-docs/assets/js/30.f45f411e.js"><link rel="prefetch" href="/blog-docs/assets/js/31.2096ade5.js"><link rel="prefetch" href="/blog-docs/assets/js/32.53623b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/33.f5762dd0.js"><link rel="prefetch" href="/blog-docs/assets/js/34.0d2fc035.js"><link rel="prefetch" href="/blog-docs/assets/js/35.98f8accd.js"><link rel="prefetch" href="/blog-docs/assets/js/36.f3303d09.js"><link rel="prefetch" href="/blog-docs/assets/js/37.a5bd1cd3.js"><link rel="prefetch" href="/blog-docs/assets/js/38.8b8f16a8.js"><link rel="prefetch" href="/blog-docs/assets/js/39.df465a23.js"><link rel="prefetch" href="/blog-docs/assets/js/4.662370ab.js"><link rel="prefetch" href="/blog-docs/assets/js/40.2c979f57.js"><link rel="prefetch" href="/blog-docs/assets/js/41.898a7a3e.js"><link rel="prefetch" href="/blog-docs/assets/js/42.c8c7465a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.87c30655.js"><link rel="prefetch" href="/blog-docs/assets/js/44.9b70bae2.js"><link rel="prefetch" href="/blog-docs/assets/js/45.158cef97.js"><link rel="prefetch" href="/blog-docs/assets/js/46.0d187cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/47.d3919e13.js"><link rel="prefetch" href="/blog-docs/assets/js/48.8adb21b5.js"><link rel="prefetch" href="/blog-docs/assets/js/49.1295d1cd.js"><link rel="prefetch" href="/blog-docs/assets/js/5.79a3c063.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c7e716a1.js"><link rel="prefetch" href="/blog-docs/assets/js/51.48a01057.js"><link rel="prefetch" href="/blog-docs/assets/js/52.befda17e.js"><link rel="prefetch" href="/blog-docs/assets/js/53.cb90bd1d.js"><link rel="prefetch" href="/blog-docs/assets/js/54.a4ff0727.js"><link rel="prefetch" href="/blog-docs/assets/js/55.fe697250.js"><link rel="prefetch" href="/blog-docs/assets/js/56.c527a486.js"><link rel="prefetch" href="/blog-docs/assets/js/57.f73e375d.js"><link rel="prefetch" href="/blog-docs/assets/js/58.37ae39cb.js"><link rel="prefetch" href="/blog-docs/assets/js/59.232f60a6.js"><link rel="prefetch" href="/blog-docs/assets/js/6.6e79ab5d.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a5bc0ed5.js"><link rel="prefetch" href="/blog-docs/assets/js/61.305f8b0e.js"><link rel="prefetch" href="/blog-docs/assets/js/62.1c0bd84c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.3255c669.js"><link rel="prefetch" href="/blog-docs/assets/js/64.852e3204.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7a770a8f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.3ee40ca1.js"><link rel="prefetch" href="/blog-docs/assets/js/67.9bddb07f.js"><link rel="prefetch" href="/blog-docs/assets/js/68.8347e864.js"><link rel="prefetch" href="/blog-docs/assets/js/69.6b65e613.js"><link rel="prefetch" href="/blog-docs/assets/js/7.a67c2147.js"><link rel="prefetch" href="/blog-docs/assets/js/70.142c0fd1.js"><link rel="prefetch" href="/blog-docs/assets/js/72.0d2d28ad.js"><link rel="prefetch" href="/blog-docs/assets/js/73.87cb28eb.js"><link rel="prefetch" href="/blog-docs/assets/js/74.2e59ff14.js"><link rel="prefetch" href="/blog-docs/assets/js/75.bbf2f0e3.js"><link rel="prefetch" href="/blog-docs/assets/js/76.b696f23c.js"><link rel="prefetch" href="/blog-docs/assets/js/77.d8c3dd88.js"><link rel="prefetch" href="/blog-docs/assets/js/78.40f5f561.js"><link rel="prefetch" href="/blog-docs/assets/js/79.04e51acf.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4d8cb0f7.js"><link rel="prefetch" href="/blog-docs/assets/js/80.ddc4843b.js"><link rel="prefetch" href="/blog-docs/assets/js/81.952d2f17.js"><link rel="prefetch" href="/blog-docs/assets/js/82.a6cb7891.js"><link rel="prefetch" href="/blog-docs/assets/js/83.2ca9b6d2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.2ff5958e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.eecb86e5.js"><link rel="prefetch" href="/blog-docs/assets/js/86.717326c4.js"><link rel="prefetch" href="/blog-docs/assets/js/87.74324869.js"><link rel="prefetch" href="/blog-docs/assets/js/88.0ef5e80c.js"><link rel="prefetch" href="/blog-docs/assets/js/89.21ddfeb8.js"><link rel="prefetch" href="/blog-docs/assets/js/9.0ec62e71.js"><link rel="prefetch" href="/blog-docs/assets/js/90.ccb12fc1.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cf0d06ff.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.bba9cbbd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring IOC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程.html" class="sidebar-link">Spring bean的生命流程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析系列文章导读.html" class="sidebar-link">Spring IOC 容器源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean.html" class="sidebar-link">Spring IOC 容器源码分析 - 获取单例 bean</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建单例 bean 的过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象.html" class="sidebar-link">Spring IOC 容器源码分析 - 创建原始 bean 对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="sidebar-link">Spring IOC 容器源码分析 - 循环依赖的解决办法</a></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html" class="active sidebar-link">Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_1-简介" class="sidebar-link">1. 简介</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_2-源码分析" class="sidebar-link">2. 源码分析</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_2-1-populatebean-源码一览" class="sidebar-link">2.1 populateBean 源码一览</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_2-2-autowirebyname-方法分析" class="sidebar-link">2.2 autowireByName 方法分析</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_2-3-autowirebytype-方法分析" class="sidebar-link">2.3 autowireByType 方法分析</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象.html#_2-4-applypropertyvalues-方法分析" class="sidebar-link">2.4 applyPropertyValues 方法分析</a></li></ul></li></ul></li><li><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html" class="sidebar-link">Spring IOC 容器源码分析 - 余下的初始化工作</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring AOP</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析系列文章导读.html" class="sidebar-link">Spring AOP 源码分析系列文章导读</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器.html" class="sidebar-link">Spring AOP 源码分析 - 筛选合适的通知器</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 创建代理对象.html" class="sidebar-link">Spring AOP 源码分析 - 创建代理对象</a></li><li><a href="/blog-docs/technology/java/spring/Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程.html" class="sidebar-link">Spring AOP 源码分析 - 拦截器链的执行过程</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Spring MVC</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程.html" class="sidebar-link">Spring MVC 原理探秘 - 一个请求的旅行过程</a></li><li><a href="/blog-docs/technology/java/spring/Spring MVC/Spring MVC 原理探秘 - 容器的创建过程.html" class="sidebar-link">Spring MVC 原理探秘 - 容器的创建过程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-ioc-容器源码分析-填充属性到-bean-原始对象"><a href="#spring-ioc-容器源码分析-填充属性到-bean-原始对象" class="header-anchor">#</a> Spring IOC 容器源码分析 - 填充属性到 bean 原始对象</h1> <h2 id="_1-简介"><a href="#_1-简介" class="header-anchor">#</a> 1. 简介</h2> <p>本篇文章，我们来一起了解一下 Spring 是如何将配置文件中的属性值填充到 bean 对象中的。我在前面几篇文章中介绍过 Spring 创建 bean 的流程，即 Spring 先通过反射创建一个原始的 bean 对象，然后再向这个原始的 bean 对象中填充属性。对于填充属性这个过程，简单点来说，JavaBean 的每个属性通常都有 getter/setter 方法，我们可以直接调用 setter 方法将属性值设置进去。当然，这样做还是太简单了，填充属性的过程中还有许多事情要做。比如在 Spring 配置中，所有属性值都是以字符串的形式进行配置的，我们在将这些属性值赋值给对象的成员变量时，要根据变量类型进行相应的类型转换。对于一些集合类的配置，比如、和，还要将这些配置转换成相应的集合对象才能进行后续的操作。除此之外，如果用户配置了自动注入（autowire = byName/byType），Spring 还要去为自动注入的属性寻找合适的注入项。由此可以见，属性填充的整个过程还是很复杂的，并非是简单调用 setter 方法设置属性值即可。</p> <p>关于属性填充的一些知识，本章先介绍这里。接下来，我们深入到源码中，从源码中了解属性填充的整个过程。</p> <h2 id="_2-源码分析"><a href="#_2-源码分析" class="header-anchor">#</a> 2. 源码分析</h2> <h3 id="_2-1-populatebean-源码一览"><a href="#_2-1-populatebean-源码一览" class="header-anchor">#</a> 2.1 populateBean 源码一览</h3> <p>本节，我们先来看一下填充属性的方法，即 populateBean。该方法并不复杂，但它所调用的一些方法比较复杂。不过好在我们这里只需要知道这些方法都有什么用就行了，暂时不用纠结细节。好了，下面看源码吧。</p> <div class="language- extra-class"><pre class="language-text"><code>protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
+    // 获取属性列表
+    PropertyValues pvs = mbd.getPropertyValues();
+
+    if (bw == null) {
+        if (!pvs.isEmpty()) {
+            throw new BeanCreationException(
+                    mbd.getResourceDescription(), beanName, &quot;Cannot apply property values to null instance&quot;);
+        }
+        else {
+            return;
+        }
+    }
+
+    boolean continueWithPropertyPopulation = true;
+    /*
+     * 在属性被填充前，给 InstantiationAwareBeanPostProcessor 类型的后置处理器一个修改 
+     * bean 状态的机会。关于这段后置引用，官方的解释是：让用户可以自定义属性注入。比如用户实现一
+     * 个 InstantiationAwareBeanPostProcessor 类型的后置处理器，并通过 
+     * postProcessAfterInstantiation 方法向 bean 的成员变量注入自定义的信息。当然，如果无
+     * 特殊需求，直接使用配置中的信息注入即可。另外，Spring 并不建议大家直接实现 
+     * InstantiationAwareBeanPostProcessor 接口，如果想实现这种类型的后置处理器，更建议
+     * 通过继承 InstantiationAwareBeanPostProcessorAdapter 抽象类实现自定义后置处理器。
+     */
+    if (!mbd.isSynthetic() &amp;&amp; hasInstantiationAwareBeanPostProcessors()) {
+        for (BeanPostProcessor bp : getBeanPostProcessors()) {
+            if (bp instanceof InstantiationAwareBeanPostProcessor) {
+                InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+                if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
+                    continueWithPropertyPopulation = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    /* 
+     * 如果上面设置 continueWithPropertyPopulation = false，表明用户可能已经自己填充了
+     * bean 的属性，不需要 Spring 帮忙填充了。此时直接返回即可
+     */
+    if (!continueWithPropertyPopulation) {
+        return;
+    }
+
+    // 根据名称或类型注入依赖
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME ||
+            mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+        MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
+
+        // 通过属性名称注入依赖
+        if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
+            autowireByName(beanName, mbd, bw, newPvs);
+        }
+
+        // 通过属性类型注入依赖
+        if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+            autowireByType(beanName, mbd, bw, newPvs);
+        }
+
+        pvs = newPvs;
+    }
+
+    boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+    boolean needsDepCheck = (mbd.getDependencyCheck() != RootBeanDefinition.DEPENDENCY_CHECK_NONE);
+
+    /*
+     * 这里又是一种后置处理，用于在 Spring 填充属性到 bean 对象前，对属性的值进行相应的处理，
+     * 比如可以修改某些属性的值。这时注入到 bean 中的值就不是配置文件中的内容了，
+     * 而是经过后置处理器修改后的内容
+     */ 
+    if (hasInstAwareBpps || needsDepCheck) {
+        PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
+        if (hasInstAwareBpps) {
+            for (BeanPostProcessor bp : getBeanPostProcessors()) {
+                if (bp instanceof InstantiationAwareBeanPostProcessor) {
+                    InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+                    // 对属性进行后置处理
+                    pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+                    if (pvs == null) {
+                        return;
+                    }
+                }
+            }
+        }
+        if (needsDepCheck) {
+            checkDependencies(beanName, mbd, filteredPds, pvs);
+        }
+    }
+
+    // 应用属性值到 bean 对象中
+    applyPropertyValues(beanName, mbd, bw, pvs);
+}
+</code></pre></div><p>上面的源码注释的比较详细了，下面我们来总结一下这个方法的执行流程。如下：</p> <ol><li>获取属性列表 pvs</li> <li>在属性被填充到 bean 前，应用后置处理自定义属性填充</li> <li>根据名称或类型解析相关依赖</li> <li>再次应用后置处理，用于动态修改属性列表 pvs 的内容</li> <li>将属性应用到 bean 对象中</li></ol> <p>注意第3步，也就是根据名称或类型解析相关依赖（autowire）。该逻辑只会解析依赖，并不会将解析出的依赖立即注入到 bean 对象中。所有的属性值是在 applyPropertyValues 方法中统一被注入到 bean 对象中的。</p> <p>在下面的章节中，我将会对 populateBean 方法中比较重要的几个方法调用进行分析，也就是第3步和第5步中的三个方法。好了，本节先到这里。</p> <h3 id="_2-2-autowirebyname-方法分析"><a href="#_2-2-autowirebyname-方法分析" class="header-anchor">#</a> 2.2 autowireByName 方法分析</h3> <p>本节来分析一下 autowireByName 方法的代码，其实这个方法根据方法名，大家应该知道它有什么用了。所以我也就不啰嗦了，咱们直奔主题，直接分析源码：</p> <div class="language- extra-class"><pre class="language-text"><code>protected void autowireByName(
+        String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) {
+
+    /*
+     * 获取非简单类型属性的名称，且该属性未被配置在配置文件中。这里从反面解释一下什么是&quot;非简单类型&quot;
+     * 属性，我们先来看看 Spring 认为的&quot;简单类型&quot;属性有哪些，如下：
+     *   1. CharSequence 接口的实现类，比如 String
+     *   2. Enum
+     *   3. Date
+     *   4. URI/URL
+     *   5. Number 的继承类，比如 Integer/Long
+     *   6. byte/short/int... 等基本类型
+     *   7. Locale
+     *   8. 以上所有类型的数组形式，比如 String[]、Date[]、int[] 等等
+     * 
+     * 除了要求非简单类型的属性外，还要求属性未在配置文件中配置过，也就是 pvs.contains(pd.getName()) = false。
+     */
+    String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw);
+    for (String propertyName : propertyNames) {
+        // 检测是否存在与 propertyName 相关的 bean 或 BeanDefinition。若存在，则调用 BeanFactory.getBean 方法获取 bean 实例
+        if (containsBean(propertyName)) {
+            // 从容器中获取相应的 bean 实例
+            Object bean = getBean(propertyName);
+            // 将解析出的 bean 存入到属性值列表（pvs）中
+            pvs.add(propertyName, bean);
+            registerDependentBean(propertyName, beanName);
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;Added autowiring by name from bean name '&quot; + beanName +
+                        &quot;' via property '&quot; + propertyName + &quot;' to bean named '&quot; + propertyName + &quot;'&quot;);
+            }
+        }
+        else {
+            if (logger.isTraceEnabled()) {
+                logger.trace(&quot;Not autowiring property '&quot; + propertyName + &quot;' of bean '&quot; + beanName +
+                        &quot;' by name: no matching bean found&quot;);
+            }
+        }
+    }
+}
+</code></pre></div><p>autowireByName 方法的逻辑比较简单，该方法首先获取非简单类型属性的名称，然后再根据名称到容器中获取相应的 bean 实例，最后再将获取到的 bean 添加到属性列表中即可。既然这个方法比较简单，那我也就不多说了，继续下面的分析。</p> <h3 id="_2-3-autowirebytype-方法分析"><a href="#_2-3-autowirebytype-方法分析" class="header-anchor">#</a> 2.3 autowireByType 方法分析</h3> <p>本节我们来分析一下 autowireByName 的孪生兄弟 autowireByType，相较于 autowireByName，autowireByType 则要复杂一些，复杂之处在于解析依赖的过程。不过也没关系，如果我们不过于纠结细节，我们完全可以把一些复杂的地方当做一个黑盒，我们只需要要知道这个黑盒有什么用即可。这样可以在很大程度上降低源码分析的难度。好了，其他的就不多说了，咱们来分析源码吧。</p> <div class="language- extra-class"><pre class="language-text"><code>protected void autowireByType(
+        String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) {
+
+    TypeConverter converter = getCustomTypeConverter();
+    if (converter == null) {
+        converter = bw;
+    }
+
+    Set&lt;String&gt; autowiredBeanNames = new LinkedHashSet&lt;String&gt;(4);
+    // 获取非简单类型的属性
+    String[] propertyNames = unsatisfiedNonSimpleProperties(mbd, bw);
+    for (String propertyName : propertyNames) {
+        try {
+            PropertyDescriptor pd = bw.getPropertyDescriptor(propertyName);
+            // 如果属性类型为 Object，则忽略，不做解析
+            if (Object.class != pd.getPropertyType()) {
+                /*
+                 * 获取 setter 方法（write method）的参数信息，比如参数在参数列表中的
+                 * 位置，参数类型，以及该参数所归属的方法等信息
+                 */
+                MethodParameter methodParam = BeanUtils.getWriteMethodParameter(pd);
+
+                // Do not allow eager init for type matching in case of a prioritized post-processor.
+                boolean eager = !PriorityOrdered.class.isAssignableFrom(bw.getWrappedClass());
+                // 创建依赖描述对象
+                DependencyDescriptor desc = new AutowireByTypeDependencyDescriptor(methodParam, eager);
+                /*
+                 * 下面的方法用于解析依赖。过程比较复杂，先把这里看成一个黑盒，我们只要知道这
+                 * 个方法可以帮我们解析出合适的依赖即可。
+                 */
+                Object autowiredArgument = resolveDependency(desc, beanName, autowiredBeanNames, converter);
+                if (autowiredArgument != null) {
+                    // 将解析出的 bean 存入到属性值列表（pvs）中
+                    pvs.add(propertyName, autowiredArgument);
+                }
+                for (String autowiredBeanName : autowiredBeanNames) {
+                    registerDependentBean(autowiredBeanName, beanName);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(&quot;Autowiring by type from bean name '&quot; + beanName + &quot;' via property '&quot; +
+                                propertyName + &quot;' to bean named '&quot; + autowiredBeanName + &quot;'&quot;);
+                    }
+                }
+                autowiredBeanNames.clear();
+            }
+        }
+        catch (BeansException ex) {
+            throw new UnsatisfiedDependencyException(mbd.getResourceDescription(), beanName, propertyName, ex);
+        }
+    }
+}
+</code></pre></div><p>如上所示，autowireByType 的代码本身并不复杂。和 autowireByName 一样，autowireByType 首先也是获取非简单类型属性的名称。然后再根据属性名获取属性描述符，并由属性描述符获取方法参数对象 MethodParameter，随后再根据 MethodParameter 对象获取依赖描述符对象，整个过程为 <code>beanName → PropertyDescriptor → MethodParameter → DependencyDescriptor</code>。在获取到依赖描述符对象后，再根据依赖描述符解析出合适的依赖。最后将解析出的结果存入属性列表 pvs 中即可。</p> <p>关于 autowireByType 方法中出现的几种描述符对象，大家自己去看一下他们的实现吧，我就不分析了。接下来，我们来分析一下解析依赖的方法 resolveDependency。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public Object resolveDependency(DependencyDescriptor descriptor, String requestingBeanName,
+        Set&lt;String&gt; autowiredBeanNames, TypeConverter typeConverter) throws BeansException {
+
+    descriptor.initParameterNameDiscovery(getParameterNameDiscoverer());
+    if (javaUtilOptionalClass == descriptor.getDependencyType()) {
+        return new OptionalDependencyFactory().createOptionalDependency(descriptor, requestingBeanName);
+    }
+    else if (ObjectFactory.class == descriptor.getDependencyType() ||
+            ObjectProvider.class == descriptor.getDependencyType()) {
+        return new DependencyObjectProvider(descriptor, requestingBeanName);
+    }
+    else if (javaxInjectProviderClass == descriptor.getDependencyType()) {
+        return new Jsr330ProviderFactory().createDependencyProvider(descriptor, requestingBeanName);
+    }
+    else {
+        Object result = getAutowireCandidateResolver().getLazyResolutionProxyIfNecessary(
+                descriptor, requestingBeanName);
+        if (result == null) {
+            // 解析依赖
+            result = doResolveDependency(descriptor, requestingBeanName, autowiredBeanNames, typeConverter);
+        }
+        return result;
+    }
+}
+
+public Object doResolveDependency(DependencyDescriptor descriptor, String beanName,
+        Set&lt;String&gt; autowiredBeanNames, TypeConverter typeConverter) throws BeansException {
+
+    InjectionPoint previousInjectionPoint = ConstructorResolver.setCurrentInjectionPoint(descriptor);
+    try {
+        // 该方法最终调用了 beanFactory.getBean(String, Class)，从容器中获取依赖
+        Object shortcut = descriptor.resolveShortcut(this);
+        // 如果容器中存在所需依赖，这里进行断路操作，提前结束依赖解析逻辑
+        if (shortcut != null) {
+            return shortcut;
+        }
+
+        Class&lt;?&gt; type = descriptor.getDependencyType();
+        // 处理 @value 注解
+        Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
+        if (value != null) {
+            if (value instanceof String) {
+                String strVal = resolveEmbeddedValue((String) value);
+                BeanDefinition bd = (beanName != null &amp;&amp; containsBean(beanName) ? getMergedBeanDefinition(beanName) : null);
+                value = evaluateBeanDefinitionString(strVal, bd);
+            }
+            TypeConverter converter = (typeConverter != null ? typeConverter : getTypeConverter());
+            return (descriptor.getField() != null ?
+                    converter.convertIfNecessary(value, type, descriptor.getField()) :
+                    converter.convertIfNecessary(value, type, descriptor.getMethodParameter()));
+        }
+
+        // 解析数组、list、map 等类型的依赖
+        Object multipleBeans = resolveMultipleBeans(descriptor, beanName, autowiredBeanNames, typeConverter);
+        if (multipleBeans != null) {
+            return multipleBeans;
+        }
+
+        /*
+         * 按类型查找候选列表，如果某个类型已经被实例化，则返回相应的实例。
+         * 比如下面的配置：
+         *
+         *   &lt;bean name=&quot;mongoDao&quot; class=&quot;xyz.coolblog.autowire.MongoDao&quot; primary=&quot;true&quot;/&gt;
+         *   &lt;bean name=&quot;service&quot; class=&quot;xyz.coolblog.autowire.Service&quot; autowire=&quot;byType&quot;/&gt;
+         *   &lt;bean name=&quot;mysqlDao&quot; class=&quot;xyz.coolblog.autowire.MySqlDao&quot;/&gt;
+         *
+         * MongoDao 和 MySqlDao 均实现自 Dao 接口，Service 对象（不是接口）中有一个 Dao 
+         * 类型的属性。现在根据类型自动注入 Dao 的实现类。这里有两个候选 bean，一个是 
+         * mongoDao，另一个是 mysqlDao，其中 mongoDao 在 service 之前实例化，
+         * mysqlDao 在 service 之后实例化。此时 findAutowireCandidates 方法会返回如下的结果：
+         *
+         *   matchingBeans = [ &lt;mongoDao, Object@MongoDao&gt;, &lt;mysqlDao, Class@MySqlDao&gt; ]
+         *
+         * 注意 mysqlDao 还未实例化，所以返回的是 MySqlDao.class。
+         * 
+         * findAutowireCandidates 这个方法逻辑比较复杂，我简单说一下它的工作流程吧，如下：
+         *   1. 从 BeanFactory 中获取某种类型 bean 的名称，比如上面的配置中 
+         *      mongoDao 和 mysqlDao 均实现了 Dao 接口，所以他们是同一种类型的 bean。
+         *   2. 遍历上一步得到的名称列表，并判断 bean 名称对应的 bean 是否是合适的候选项，
+         *      若合适则添加到候选列表中，并在最后返回候选列表
+         *      
+         * findAutowireCandidates 比较复杂，我并未完全搞懂，就不深入分析了。见谅
+         */
+        Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);
+        if (matchingBeans.isEmpty()) {
+            if (isRequired(descriptor)) {
+                // 抛出 NoSuchBeanDefinitionException 异常
+                raiseNoMatchingBeanFound(type, descriptor.getResolvableType(), descriptor);
+            }
+            return null;
+        }
+
+        String autowiredBeanName;
+        Object instanceCandidate;
+
+        if (matchingBeans.size() &gt; 1) {
+            /*
+             * matchingBeans.size() &gt; 1，则表明存在多个可注入的候选项，这里判断使用哪一个
+             * 候选项。比如下面的配置：
+             *
+             *   &lt;bean name=&quot;mongoDao&quot; class=&quot;xyz.coolblog.autowire.MongoDao&quot; primary=&quot;true&quot;/&gt;
+             *   &lt;bean name=&quot;mysqlDao&quot; class=&quot;xyz.coolblog.autowire.MySqlDao&quot;/&gt;
+             *
+             * mongoDao 的配置中存在 primary 属性，所以 mongoDao 会被选为最终的候选项。如
+             * 果两个 bean 配置都没有 primary 属性，则需要根据优先级选择候选项。优先级这一块
+             * 的逻辑没细看，不多说了。
+             */
+            autowiredBeanName = determineAutowireCandidate(matchingBeans, descriptor);
+            if (autowiredBeanName == null) {
+                if (isRequired(descriptor) || !indicatesMultipleBeans(type)) {
+                    // 抛出 NoUniqueBeanDefinitionException 异常
+                    return descriptor.resolveNotUnique(type, matchingBeans);
+                }
+                else {
+                    return null;
+                }
+            }
+            // 根据解析出的 autowiredBeanName，获取相应的候选项
+            instanceCandidate = matchingBeans.get(autowiredBeanName);
+        }
+        else { // 只有一个候选项，直接取出来即可
+            Map.Entry&lt;String, Object&gt; entry = matchingBeans.entrySet().iterator().next();
+            autowiredBeanName = entry.getKey();
+            instanceCandidate = entry.getValue();
+        }
+
+        if (autowiredBeanNames != null) {
+            autowiredBeanNames.add(autowiredBeanName);
+        }
+
+        // 返回候选项实例，如果实例是 Class 类型，则调用 beanFactory.getBean(String, Class) 获取相应的 bean。否则直接返回即可
+        return (instanceCandidate instanceof Class ?
+                descriptor.resolveCandidate(autowiredBeanName, type, this) : instanceCandidate);
+    }
+    finally {
+        ConstructorResolver.setCurrentInjectionPoint(previousInjectionPoint);
+    }
+}
+</code></pre></div><p>由上面的代码可以看出，doResolveDependency 这个方法还是挺复杂的。这里我就不继续分析 doResolveDependency 所调用的方法了，对于这些方法，我也是似懂非懂。好了，本节的最后我们来总结一下 doResolveDependency 的执行流程吧，如下：</p> <ol><li>首先将 beanName 和 requiredType 作为参数，并尝试从 BeanFactory 中获取与此对于的 bean。若获取成功，就可以提前结束 doResolveDependency 的逻辑。</li> <li>处理 @value 注解</li> <li>解析数组、List、Map 等类型的依赖，如果解析结果不为空，则返回结果</li> <li>根据类型查找合适的候选项</li> <li>如果候选项的数量为0，则抛出异常。为1，直接从候选列表中取出即可。若候选项数量 &gt; 1，则在多个候选项中确定最优候选项，若无法确定则抛出异常</li> <li>若候选项是 Class 类型，表明候选项还没实例化，此时通过 BeanFactory.getBean 方法对其进行实例化。若候选项是非 Class 类型，则表明已经完成了实例化，此时直接返回即可。</li></ol> <p>好了，本节的内容先到这里。如果有分析错的地方，欢迎大家指出来。</p> <h3 id="_2-4-applypropertyvalues-方法分析"><a href="#_2-4-applypropertyvalues-方法分析" class="header-anchor">#</a> 2.4 applyPropertyValues 方法分析</h3> <p>经过了上面的流程，现在终于可以将属性值注入到 bean 对象中了。当然，这里还不能立即将属性值注入到对象中，因为在 Spring 配置文件中属性值都是以 String 类型进行配置的，所以 Spring 框架需要对 String 类型进行转换。除此之外，对于 ref 属性，这里还需要根据 ref 属性值解析依赖。还有一些其他操作，这里就不多说了，更多的信息我们一起在源码探寻。</p> <div class="language- extra-class"><pre class="language-text"><code>protected void applyPropertyValues(String beanName, BeanDefinition mbd, BeanWrapper bw, PropertyValues pvs) {
+    if (pvs == null || pvs.isEmpty()) {
+        return;
+    }
+
+    if (System.getSecurityManager() != null &amp;&amp; bw instanceof BeanWrapperImpl) {
+        ((BeanWrapperImpl) bw).setSecurityContext(getAccessControlContext());
+    }
+
+    MutablePropertyValues mpvs = null;
+    List&lt;PropertyValue&gt; original;
+
+    if (pvs instanceof MutablePropertyValues) {
+        mpvs = (MutablePropertyValues) pvs;
+        // 如果属性列表 pvs 被转换过，则直接返回即可
+        if (mpvs.isConverted()) {
+            try {
+                bw.setPropertyValues(mpvs);
+                return;
+            }
+            catch (BeansException ex) {
+                throw new BeanCreationException(
+                        mbd.getResourceDescription(), beanName, &quot;Error setting property values&quot;, ex);
+            }
+        }
+        original = mpvs.getPropertyValueList();
+    }
+    else {
+        original = Arrays.asList(pvs.getPropertyValues());
+    }
+
+    TypeConverter converter = getCustomTypeConverter();
+    if (converter == null) {
+        converter = bw;
+    }
+    BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this, beanName, mbd, converter);
+
+    List&lt;PropertyValue&gt; deepCopy = new ArrayList&lt;PropertyValue&gt;(original.size());
+    boolean resolveNecessary = false;
+    // 遍历属性列表
+    for (PropertyValue pv : original) {
+        // 如果属性值被转换过，则就不需要再次转换
+        if (pv.isConverted()) {
+            deepCopy.add(pv);
+        }
+        else {
+            String propertyName = pv.getName();
+            Object originalValue = pv.getValue();
+            /*
+             * 解析属性值。举例说明，先看下面的配置：
+             * 
+             *   &lt;bean id=&quot;macbook&quot; class=&quot;MacBookPro&quot;&gt;
+             *       &lt;property name=&quot;manufacturer&quot; value=&quot;Apple&quot;/&gt;
+             *       &lt;property name=&quot;width&quot; value=&quot;280&quot;/&gt;
+             *       &lt;property name=&quot;cpu&quot; ref=&quot;cpu&quot;/&gt;
+             *       &lt;property name=&quot;interface&quot;&gt;
+             *           &lt;list&gt;
+             *               &lt;value&gt;USB&lt;/value&gt;
+             *               &lt;value&gt;HDMI&lt;/value&gt;
+             *               &lt;value&gt;Thunderbolt&lt;/value&gt;
+             *           &lt;/list&gt;
+             *       &lt;/property&gt;
+             *   &lt;/bean&gt;
+             *
+             * 上面是一款电脑的配置信息，每个 property 配置经过下面的方法解析后，返回如下结果：
+             *   propertyName = &quot;manufacturer&quot;, resolvedValue = &quot;Apple&quot;
+             *   propertyName = &quot;width&quot;, resolvedValue = &quot;280&quot;
+             *   propertyName = &quot;cpu&quot;, resolvedValue = &quot;CPU@1234&quot;  注：resolvedValue 是一个对象
+             *   propertyName = &quot;interface&quot;, resolvedValue = [&quot;USB&quot;, &quot;HDMI&quot;, &quot;Thunderbolt&quot;]
+             *
+             * 如上所示，resolveValueIfNecessary 会将 ref 解析为具体的对象，将 &lt;list&gt; 
+             * 标签转换为 List 对象等。对于 int 类型的配置，这里并未做转换，所以 
+             * width = &quot;280&quot;，还是字符串。除了解析上面几种类型，该方法还会解析 &lt;set/&gt;、
+             * &lt;map/&gt;、&lt;array/&gt; 等集合配置
+             */
+            Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
+            Object convertedValue = resolvedValue;
+
+            /*
+             * convertible 表示属性值是否可转换，由两个条件合成而来。第一个条件不难理解，解释
+             * 一下第二个条件。第二个条件用于检测 propertyName 是否是 nested 或者 indexed，
+             * 直接举例说明吧：
+             * 
+             *   public class Room {
+             *       private Door door = new Door();
+             *   }
+             *
+             * room 对象里面包含了 door 对象，如果我们想向 door 对象中注入属性值，则可以这样配置：
+             *
+             *   &lt;bean id=&quot;room&quot; class=&quot;xyz.coolblog.Room&quot;&gt;
+             *      &lt;property name=&quot;door.width&quot; value=&quot;123&quot;/&gt;
+             *   &lt;/bean&gt;
+             * 
+             * isNestedOrIndexedProperty 会根据 propertyName 中是否包含 . 或 [  返回 
+             * true 和 false。包含则返回 true，否则返回 false。关于 nested 类型的属性，我
+             * 没在实践中用过，所以不知道上面举的例子是不是合理。若不合理，欢迎指正，也请多多指教。
+             * 关于 nested 类型的属性，大家还可以参考 Spring 的官方文档：
+             *     https://docs.spring.io/spring/docs/4.3.17.RELEASE/spring-framework-reference/htmlsingle/#beans-beans-conventions
+             */
+            boolean convertible = bw.isWritableProperty(propertyName) &amp;&amp;
+                    !PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName);
+            // 对于一般的属性，convertible 通常为 true
+            if (convertible) {
+                // 对属性值的类型进行转换，比如将 String 类型的属性值 &quot;123&quot; 转为 Integer 类型的 123
+                convertedValue = convertForProperty(resolvedValue, propertyName, bw, converter);
+            }
+
+            /*
+             * 如果 originalValue 是通过 autowireByType 或 autowireByName 解析而来，
+             * 那么此处条件成立，即 (resolvedValue == originalValue) = true
+             */
+            if (resolvedValue == originalValue) {
+                if (convertible) {
+                    // 将 convertedValue 设置到 pv 中，后续再次创建同一个 bean 时，就无需再次进行转换了
+                    pv.setConvertedValue(convertedValue);
+                }
+                deepCopy.add(pv);
+            }
+            /*
+             * 如果原始值 originalValue 是 TypedStringValue，且转换后的值 
+             * convertedValue 不是 Collection 或数组类型，则将转换后的值存入到 pv 中。
+             */
+            else if (convertible &amp;&amp; originalValue instanceof TypedStringValue &amp;&amp;
+                    !((TypedStringValue) originalValue).isDynamic() &amp;&amp;
+                    !(convertedValue instanceof Collection || ObjectUtils.isArray(convertedValue))) {
+                pv.setConvertedValue(convertedValue);
+                deepCopy.add(pv);
+            }
+            else {
+                resolveNecessary = true;
+                deepCopy.add(new PropertyValue(pv, convertedValue));
+            }
+        }
+    }
+    if (mpvs != null &amp;&amp; !resolveNecessary) {
+        mpvs.setConverted();
+    }
+
+    try {
+        // 将所有的属性值设置到 bean 实例中
+        bw.setPropertyValues(new MutablePropertyValues(deepCopy));
+    }
+    catch (BeansException ex) {
+        throw new BeanCreationException(
+                mbd.getResourceDescription(), beanName, &quot;Error setting property values&quot;, ex);
+    }
+}
+</code></pre></div><p>以上就是 applyPropertyValues 方法的源码，配合着我写的注释，应该可以理解这个方法的流程。这个方法也调用了很多其他的方法，如果大家跟下去的话，会发现这些方法的调用栈也是很深的，比较复杂。这里说一下 bw.setPropertyValues 这个方法，如果大家跟到这个方法的调用栈的最底部，会发现这个方法是通过调用对象的 setter 方法进行属性设置的。这里贴一下简化后的代码：</p> <div class="language- extra-class"><pre class="language-text"><code>public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements BeanWrapper {
+
+    // 省略部分代码
+
+    private class BeanPropertyHandler extends PropertyHandler {
+        @Override
+        public void setValue(final Object object, Object valueToApply) throws Exception {
+            // 获取 writeMethod，也就是 setter 方法
+            final Method writeMethod = this.pd.getWriteMethod();
+            if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers()) &amp;&amp; !writeMethod.isAccessible()) {
+                writeMethod.setAccessible(true);
+            }
+            final Object value = valueToApply;
+            // 调用 setter 方法，getWrappedInstance() 返回的是 bean 对象
+            writeMethod.invoke(getWrappedInstance(), value);
+        }
+    }
+}
+</code></pre></div><p>好了，本节的最后来总结一下 applyPropertyValues 方法的执行流程吧，如下：</p> <ol><li>检测属性值列表是否已转换过的，若转换过，则直接填充属性，无需再次转换</li> <li>遍历属性值列表 pvs，解析原始值 originalValue，得到解析值 resolvedValue</li> <li>对解析后的属性值 resolvedValue 进行类型转换</li> <li>将类型转换后的属性值设置到 PropertyValue 对象中，并将 PropertyValue 对象存入 deepCopy 集合中</li> <li>将 deepCopy 中的属性信息注入到 bean 对象中</li></ol></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法.html" class="prev">
+        Spring IOC 容器源码分析 - 循环依赖的解决办法
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/spring/Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作.html">
+        Spring IOC 容器源码分析 - 余下的初始化工作
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.234bb53b.js" defer></script><script src="/blog-docs/assets/js/2.fea10d22.js" defer></script><script src="/blog-docs/assets/js/71.6a19aaae.js" defer></script>
+  </body>
+</html>
