@@ -42,6 +42,7 @@ jobs:
         repositoryName: ${{github.repository}}
         REF: github.com/${{github.repository}}
         MYEMAIL: 791128058@qq.com                  # ！！记得修改为自己github设置的邮箱
+        PASSWORD: wu@fang@top
         MYNAME: ${{github.repository_owner}}          
       run: |
         cd docs/.vuepress/dist
@@ -50,7 +51,8 @@ jobs:
         git init
         git add .
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
-        git push -f git@github.com:ty-wssf/blog-docs.git master:pages
+        git remote set-url origin https://${MYEMAIL}:${PASSWORD}@github.com/ty-wssf/blog-wssf.git
+        git push -u origin master:pages
 
     - name: Sync Github Repos To Gitee  # 名字随便起
       uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
