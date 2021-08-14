@@ -43,7 +43,7 @@ jobs:
         MYEMAIL: 791128058@qq.com                  # ！！记得修改为自己github设置的邮箱
         MYNAME: ${{github.repository_owner}}          
       run: |
-        cd _book
+        cd docs/.vuepress/dist
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
         git init
