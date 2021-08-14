@@ -2,8 +2,8 @@
 ```$xslt
 yarn docs:dev # npm run docs:dev
 ```
-# githup pages
-
+# pages
+- GitHub pages
 https://ty-wssf.github.io/
 
  # 页面添加评论功能

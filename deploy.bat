@@ -13,7 +13,7 @@ git add -A
 git commit -m 'deploy'
 
 echo 如果发布到 https://<USERNAME>.github.io
-git push -f git@github.com:ty-wssf/blog-docs pages
+git push -f git@github.com:ty-wssf/blog-docs.git master:pages
 echo 发布完成
 
 echo 返回根目录
