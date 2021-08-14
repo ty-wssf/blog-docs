@@ -49,8 +49,8 @@ jobs:
         git config --global user.name "${MYNAME}"
         git init
         git add .
-        git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
-        git push -f git@github.com:${MYNAME}/${repositoryName}.git master:pages
+        git branch -M master
+        git push --force --quiet "https://${TOKEN}@${REF}" master:pages
 
     - name: Sync Github Repos To Gitee  # 名字随便起
       uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
