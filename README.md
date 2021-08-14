@@ -4,7 +4,7 @@ yarn docs:dev # npm run docs:dev
 ```
 # pages
 - GitHub pages
-https://ty-wssf.github.io/
+https://ty-wssf.github.io/blog-docs/
 
  # 页面添加评论功能
 

@@ -49,6 +49,17 @@ module.exports = {
                     },
                 ]
             },
+            {
+                text: '常用网站', items: [
+                    {text: '掘金', link: 'https://juejin.cn/'},
+                ]
+            },
+            {
+                text: 'GitHub', link: 'https://github.com/ty-wssf/blog-docs'
+            },
+            {
+                text: 'gitee', link: 'https://gitee.com/wuyilong/blog-docs'
+            },
         ],
         // 侧边栏
         sidebar: {
@@ -214,6 +225,10 @@ module.exports = {
                         'Spring系列面试题129道',
                         'MyBatis面试题',
                         'Redis 面试题',
+                        'ZooKeeper面试题',
+                        'Spring Boot 面试题',
+                        'SpringCloud面试题',
+                        'Java微服务面试题',
                     ]
                 },
 

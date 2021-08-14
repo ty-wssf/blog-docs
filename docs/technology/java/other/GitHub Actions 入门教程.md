@@ -218,6 +218,6 @@ workflow 文件的主体是`jobs`字段，表示要执行的一项或多项任�
 
 GitHub 发现了 workflow 文件以后，就会自动运行。你可以在网站上实时查看[运行日志](https://github.com/ruanyf/github-actions-demo/commit/24fbf6a875351297f31434fd44bc3146accf9e59/checks)，日志默认保存30天。
 
-![img](https://www.wangbase.com/blogimg/asset/201909/bg2019091108.jpg)
+![img](https://gitee.com/wuyilong/picture-bed/raw/master/img/bg2019091108.jpg)
 
 等到 workflow 运行结束，访问 [GitHub Page](https://ty-wssf.github.io/blog-docs/)，会看到构建成果已经发上网了。
