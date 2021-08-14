@@ -14,6 +14,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
       with:
+        debug: true  # 启用后会显示所有执行命令
         # 来源仓库
         source-repo: "git@github.com:ty-wssf/blog-docs.git"
         # 目标仓库
