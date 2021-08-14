@@ -1,11 +1,12 @@
 module.exports = {
     title: '吴益龙的博客',
     description: '吴益龙的博客',
-    base: 'blog-docs',
+    base: '/blog-docs/',
     // 主题配置
     themeConfig: {
         // 默认主题
         /*theme: "@vuepress/theme-default",*/
+        theme: '@vuepress/blog',
         // 顶部导航栏
         nav: [
             {text: '安装文档', link: '/install/'},
