@@ -1,7 +1,7 @@
 module.exports = {
     title: '吴益龙的博客',
     description: '吴益龙的博客',
-    base: 'blog-docs1',
+    base: 'blog-docs',
     // 主题配置
     themeConfig: {
         // 默认主题
