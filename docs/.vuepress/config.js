@@ -4,9 +4,8 @@ module.exports = {
     base: '/blog-docs/',
     // 主题配置
     themeConfig: {
-        // 默认主题
-        /*theme: "@vuepress/theme-default",*/
-        theme: '@vuepress/blog',
+        // 最后更新时间
+        lastUpdated: '最后更新时间', // string | boolean
         // 顶部导航栏
         nav: [
             {text: '安装文档', link: '/install/'},
@@ -52,6 +51,7 @@ module.exports = {
             {
                 text: '常用网站', items: [
                     {text: '掘金', link: 'https://juejin.cn/'},
+                    {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
                 ]
             },
             {
@@ -245,6 +245,7 @@ module.exports = {
                         'vue使用nginx部署配置',
                         'ShardingSphere分表分库解决方案',
                         'GitHub Actions 入门教程',
+                        'VuePress 基于 Vue 的静态网站生成器',
                     ]
                 },
 
