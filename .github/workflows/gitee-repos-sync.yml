@@ -37,9 +37,9 @@ jobs:
           npm run docs:build
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@master
+        uses: JamesIves/github-pages-deploy-action@v2
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.GITEE_PRIVATE_KEY }}
           BRANCH: pages
           FOLDER: docs/.vuepress/dist
 
