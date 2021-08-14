@@ -1,0 +1,53 @@
+name: deploy blog to gitee
+ 
+on:
+  push:
+    branches:
+      - master    # master 分支 push 的时候触发
+      
+jobs:
+  deploy: #执行部署生成静态代码
+    name: Hblog-docs build & deploy
+    runs-on: ubuntu-18.04 #使用最新的 Ubuntu 系统作为编译部署的环境
+    
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      
+      - name: Setup node
+        # 设置 node.js 环境
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+        
+      - name: Cache node modules
+        # 设置包缓存目录，避免每次下载
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      
+      - name: Install dependencies
+        # 下载脚手架及相关安装包
+        run: |
+          npm install
+          
+      - name: Generate files
+        # 编译 markdown 文件
+        run: |
+          npm run docs:build
+      
+  sync: #同步到gitee仓库
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Sync to Gitee
+      uses: wearerequired/git-mirror-action@master
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+      with:
+        # 来源仓库
+        source-repo: "git@github.com:ty-wssf/blog-docs.git"
+        # 目标仓库
+        destination-repo: "git@gitee.com:wuyilong/blog-docs.git
+     
