@@ -229,6 +229,7 @@ module.exports = {
                         '常用脚本',
                         'vue使用nginx部署配置',
                         'ShardingSphere分表分库解决方案',
+                        'GitHub Actions 入门教程',
                     ]
                 },
 
