@@ -2,12 +2,6 @@ name: Sync Github Repos To Gitee
 
 on:
   push:
-    branches: 
-      - master
-name: Sync Github Repos To Gitee
-
-on:
-  push:
     branches:
       - master
 
@@ -38,12 +32,9 @@ jobs:
           npm install
 
       - name: Generate files
-          uses: JamesIves/github-pages-deploy-action@master
-          env:
-            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-            BRANCH: pages
-            FOLDER: docs/.vuepress/dist
-            BUILD_SCRIPT: npm run docs:build # 下载脚手架及相关安装包 && # 编译 markdown 文件
+        # 编译 markdown 文件
+        run: |
+          npm run docs:build
 
       - name: Sync Github Repos To Gitee  # 名字随便起
         uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
