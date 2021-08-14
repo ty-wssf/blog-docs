@@ -9,7 +9,33 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
+    
+    - name: Checkout codes
+      uses: actions/checkout@v2
 
+    - name: Setup node
+      # 设置 node.js 环境
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Cache node modules
+      # 设置包缓存目录，避免每次下载
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      # 下载脚手架及相关安装包
+      run: |
+        npm install
+
+    - name: Generate files
+      # 编译 markdown 文件
+      run: |
+        ./deploy.sh
+          
     - name: Sync Github Repos To Gitee  # 名字随便起
       uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
       with:
