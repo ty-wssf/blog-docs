@@ -21,6 +21,7 @@ module.exports = {
                             },
                             {text: 'MyBatis', link: '/technology/java/MyBatis/MyBatis 源码分析系列文章导读/'},
                             {text: 'Dubbo', link: '/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/'},
+                            {text: 'Docker', link: '/technology/java/Docker/Docker入门教程/'},
                             {text: '查缺补漏', link: '/technology/java/查缺补漏/Java面试题基础系列228道/'},
                             {text: '其它', link: '/technology/java/other/基于canal的mysql数据同步/'},
                         ]
@@ -254,6 +255,17 @@ module.exports = {
                         'VuePress 基于 Vue 的静态网站生成器',
                         '数据同步kettle详解',
                         'github国内加速解决方案',
+                    ]
+                },
+            ],
+            '/technology/java/Docker/': [
+                {
+                    title: 'Docker',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Docker入门教程',
                     ]
                 },
 
