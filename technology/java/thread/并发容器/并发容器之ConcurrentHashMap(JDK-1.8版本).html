@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>并发容器之ConcurrentHashMap(JDK 1.8版本) | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.4367deb4.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/123.bd77a272.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.460cf24c.js"><link rel="prefetch" href="/blog-docs/assets/js/101.f8aeddd3.js"><link rel="prefetch" href="/blog-docs/assets/js/102.b4f3d188.js"><link rel="prefetch" href="/blog-docs/assets/js/103.3e4aa5da.js"><link rel="prefetch" href="/blog-docs/assets/js/104.41da0a25.js"><link rel="prefetch" href="/blog-docs/assets/js/105.9326fba0.js"><link rel="prefetch" href="/blog-docs/assets/js/106.5da8e3e2.js"><link rel="prefetch" href="/blog-docs/assets/js/107.8caa27f3.js"><link rel="prefetch" href="/blog-docs/assets/js/108.661e95c1.js"><link rel="prefetch" href="/blog-docs/assets/js/109.4d775337.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.8287502f.js"><link rel="prefetch" href="/blog-docs/assets/js/111.398505f9.js"><link rel="prefetch" href="/blog-docs/assets/js/112.26f5c356.js"><link rel="prefetch" href="/blog-docs/assets/js/113.0884e7c3.js"><link rel="prefetch" href="/blog-docs/assets/js/114.8fff225a.js"><link rel="prefetch" href="/blog-docs/assets/js/115.967848d7.js"><link rel="prefetch" href="/blog-docs/assets/js/116.0a3bc0d6.js"><link rel="prefetch" href="/blog-docs/assets/js/117.9f310404.js"><link rel="prefetch" href="/blog-docs/assets/js/118.1faa07e5.js"><link rel="prefetch" href="/blog-docs/assets/js/119.682dc470.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/120.9e428cca.js"><link rel="prefetch" href="/blog-docs/assets/js/121.45e445e8.js"><link rel="prefetch" href="/blog-docs/assets/js/122.346b9564.js"><link rel="prefetch" href="/blog-docs/assets/js/124.456d0ed0.js"><link rel="prefetch" href="/blog-docs/assets/js/125.a9ad0392.js"><link rel="prefetch" href="/blog-docs/assets/js/126.bd9becc2.js"><link rel="prefetch" href="/blog-docs/assets/js/127.b3443c2b.js"><link rel="prefetch" href="/blog-docs/assets/js/128.f6d9f255.js"><link rel="prefetch" href="/blog-docs/assets/js/129.ed348135.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/130.f4ab0cfd.js"><link rel="prefetch" href="/blog-docs/assets/js/131.78df3143.js"><link rel="prefetch" href="/blog-docs/assets/js/132.1c5c50d4.js"><link rel="prefetch" href="/blog-docs/assets/js/133.633a8449.js"><link rel="prefetch" href="/blog-docs/assets/js/134.277801b7.js"><link rel="prefetch" href="/blog-docs/assets/js/135.f49d13be.js"><link rel="prefetch" href="/blog-docs/assets/js/136.1dd5e533.js"><link rel="prefetch" href="/blog-docs/assets/js/137.afd93d4a.js"><link rel="prefetch" href="/blog-docs/assets/js/138.d492b71b.js"><link rel="prefetch" href="/blog-docs/assets/js/139.35aae156.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/140.e37d85f3.js"><link rel="prefetch" href="/blog-docs/assets/js/141.12f6e61d.js"><link rel="prefetch" href="/blog-docs/assets/js/142.c6bef786.js"><link rel="prefetch" href="/blog-docs/assets/js/143.333c53d9.js"><link rel="prefetch" href="/blog-docs/assets/js/144.23ea2f88.js"><link rel="prefetch" href="/blog-docs/assets/js/145.3e3ebc86.js"><link rel="prefetch" href="/blog-docs/assets/js/146.977bcd06.js"><link rel="prefetch" href="/blog-docs/assets/js/147.de3742a3.js"><link rel="prefetch" href="/blog-docs/assets/js/148.59aeccca.js"><link rel="prefetch" href="/blog-docs/assets/js/149.d3eb040e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/150.7e902441.js"><link rel="prefetch" href="/blog-docs/assets/js/151.a9ba807e.js"><link rel="prefetch" href="/blog-docs/assets/js/152.ba7d50c5.js"><link rel="prefetch" href="/blog-docs/assets/js/153.d3ce4666.js"><link rel="prefetch" href="/blog-docs/assets/js/154.681e8f9c.js"><link rel="prefetch" href="/blog-docs/assets/js/155.008ebe19.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.73246f81.js"><link rel="prefetch" href="/blog-docs/assets/js/28.b5188281.js"><link rel="prefetch" href="/blog-docs/assets/js/29.e1da9556.js"><link rel="prefetch" href="/blog-docs/assets/js/3.7288e49f.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e12a04a6.js"><link rel="prefetch" href="/blog-docs/assets/js/31.4f9a45f6.js"><link rel="prefetch" href="/blog-docs/assets/js/32.826df14b.js"><link rel="prefetch" href="/blog-docs/assets/js/33.b89706ff.js"><link rel="prefetch" href="/blog-docs/assets/js/34.70cdf10f.js"><link rel="prefetch" href="/blog-docs/assets/js/35.c6aeff16.js"><link rel="prefetch" href="/blog-docs/assets/js/36.df8333d8.js"><link rel="prefetch" href="/blog-docs/assets/js/37.f7d20cb4.js"><link rel="prefetch" href="/blog-docs/assets/js/38.51f1d8bf.js"><link rel="prefetch" href="/blog-docs/assets/js/39.3628eb1a.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.9503463f.js"><link rel="prefetch" href="/blog-docs/assets/js/41.033baec3.js"><link rel="prefetch" href="/blog-docs/assets/js/42.947a9cbc.js"><link rel="prefetch" href="/blog-docs/assets/js/43.288c335f.js"><link rel="prefetch" href="/blog-docs/assets/js/44.f2d40737.js"><link rel="prefetch" href="/blog-docs/assets/js/45.6f582921.js"><link rel="prefetch" href="/blog-docs/assets/js/46.67f9b38c.js"><link rel="prefetch" href="/blog-docs/assets/js/47.5653e794.js"><link rel="prefetch" href="/blog-docs/assets/js/48.a7a8334d.js"><link rel="prefetch" href="/blog-docs/assets/js/49.0e75b0df.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c00cef28.js"><link rel="prefetch" href="/blog-docs/assets/js/51.a18d30ce.js"><link rel="prefetch" href="/blog-docs/assets/js/52.5ee0b676.js"><link rel="prefetch" href="/blog-docs/assets/js/53.3a8f4134.js"><link rel="prefetch" href="/blog-docs/assets/js/54.5ec0f281.js"><link rel="prefetch" href="/blog-docs/assets/js/55.b54c4cce.js"><link rel="prefetch" href="/blog-docs/assets/js/56.fe569b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/57.e88f7ff8.js"><link rel="prefetch" href="/blog-docs/assets/js/58.b51a8ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/59.4ec5382b.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.8dd8efd6.js"><link rel="prefetch" href="/blog-docs/assets/js/61.2bf40aa8.js"><link rel="prefetch" href="/blog-docs/assets/js/62.a7f65626.js"><link rel="prefetch" href="/blog-docs/assets/js/63.750a244a.js"><link rel="prefetch" href="/blog-docs/assets/js/64.18d04687.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7e8d5e45.js"><link rel="prefetch" href="/blog-docs/assets/js/66.ab659c07.js"><link rel="prefetch" href="/blog-docs/assets/js/67.105a4696.js"><link rel="prefetch" href="/blog-docs/assets/js/68.2524615c.js"><link rel="prefetch" href="/blog-docs/assets/js/69.baaa5f55.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.0deadb91.js"><link rel="prefetch" href="/blog-docs/assets/js/71.7a47ced0.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df303f6b.js"><link rel="prefetch" href="/blog-docs/assets/js/73.39e10828.js"><link rel="prefetch" href="/blog-docs/assets/js/74.86126d96.js"><link rel="prefetch" href="/blog-docs/assets/js/75.3c0dc65a.js"><link rel="prefetch" href="/blog-docs/assets/js/76.7ba24ace.js"><link rel="prefetch" href="/blog-docs/assets/js/77.e802ff4c.js"><link rel="prefetch" href="/blog-docs/assets/js/78.4f4894d4.js"><link rel="prefetch" href="/blog-docs/assets/js/79.6c1d5b08.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4ec88365.js"><link rel="prefetch" href="/blog-docs/assets/js/80.15f580eb.js"><link rel="prefetch" href="/blog-docs/assets/js/81.14e1b6ad.js"><link rel="prefetch" href="/blog-docs/assets/js/82.95da7dba.js"><link rel="prefetch" href="/blog-docs/assets/js/83.40ca2c09.js"><link rel="prefetch" href="/blog-docs/assets/js/84.d5da1d67.js"><link rel="prefetch" href="/blog-docs/assets/js/85.5515fd0c.js"><link rel="prefetch" href="/blog-docs/assets/js/86.932f6159.js"><link rel="prefetch" href="/blog-docs/assets/js/87.361fe08e.js"><link rel="prefetch" href="/blog-docs/assets/js/88.18ca48e1.js"><link rel="prefetch" href="/blog-docs/assets/js/89.c61d8e5c.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.60d31b53.js"><link rel="prefetch" href="/blog-docs/assets/js/91.d36b5c65.js"><link rel="prefetch" href="/blog-docs/assets/js/92.bc0b5ecb.js"><link rel="prefetch" href="/blog-docs/assets/js/93.45edbbdc.js"><link rel="prefetch" href="/blog-docs/assets/js/94.cf678b5c.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e25a7d37.js"><link rel="prefetch" href="/blog-docs/assets/js/96.95be2a42.js"><link rel="prefetch" href="/blog-docs/assets/js/97.e4e798cf.js"><link rel="prefetch" href="/blog-docs/assets/js/98.b32554de.js"><link rel="prefetch" href="/blog-docs/assets/js/99.698799aa.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="content__default"><h1 id="并发容器之concurrenthashmap-jdk-1-8版本"><a href="#并发容器之concurrenthashmap-jdk-1-8版本" class="header-anchor">#</a> 并发容器之ConcurrentHashMap(JDK 1.8版本)</h1> <h1 id="_1-concurrenthashmap-简介"><a href="#_1-concurrenthashmap-简介" class="header-anchor">#</a> 1.ConcurrentHashmap 简介</h1> <p>在使用 HashMap 时在多线程情况下扩容会出现 CPU 接近 100%的情况，因为 hashmap 并不是线程安全的，通常我们可以使用在 java 体系中古老的 hashtable 类，该类基本上所有的方法都采用 synchronized 进行线程安全的控制，可想而知，在高并发的情况下，每次只有一个线程能够获取对象监视器锁，这样的并发性能的确不令人满意。另外一种方式通过 Collections 的<code>Map&lt;K,V&gt; synchronizedMap(Map&lt;K,V&gt; m)</code>将 hashmap 包装成一个线程安全的 map。比如 SynchronzedMap 的 put 方法源码为：</p> <div class="language- extra-class"><pre class="language-text"><code>public V put(K key, V value) {
+    synchronized (mutex) {return m.put(key, value);}
+}
+</code></pre></div><p>实际上 SynchronizedMap 实现依然是采用 synchronized 独占式锁进行线程安全的并发控制的。同样，这种方案的性能也是令人不太满意的。针对这种境况，Doug Lea 大师不遗余力的为我们创造了一些线程安全的并发容器，让每一个 java 开发人员倍感幸福。相对于 hashmap 来说，ConcurrentHashMap 就是线程安全的 map，其中<strong>利用了锁分段的思想提高了并发度</strong>。</p> <p>ConcurrentHashMap 在 JDK1.6 的版本网上资料很多，有兴趣的可以去看看。 JDK 1.6 版本关键要素：</p> <ol><li>segment 继承了 ReentrantLock 充当锁的角色，为每一个 segment 提供了线程安全的保障；</li> <li>segment 维护了哈希散列表的若干个桶，每个桶由 HashEntry 构成的链表。</li></ol> <p>而到了 JDK 1.8 的 ConcurrentHashMap 就有了很大的变化，光是代码量就足足增加了很多。1.8 版本舍弃了 segment，并且大量使用了 synchronized，以及 CAS 无锁操作以保证 ConcurrentHashMap 操作的线程安全性。至于为什么不用 ReentrantLock 而是 Synchronzied 呢？实际上，synchronzied 做了很多的优化，包括偏向锁，轻量级锁，重量级锁，可以依次向上升级锁状态，但不能降级（关于 synchronized 可以看这篇文章[2]），因此，使用 synchronized 相较于 ReentrantLock 的性能会持平甚至在某些情况更优，具体的性能测试可以去网上查阅一些资料。另外，底层数据结构改变为采用数组+链表+红黑树的数据形式。</p> <h1 id="_2-关键属性及类"><a href="#_2-关键属性及类" class="header-anchor">#</a> 2.关键属性及类</h1> <p>在了解 ConcurrentHashMap 的具体方法实现前，我们需要系统的来看一下几个关键的地方。</p> <blockquote><p><strong>ConcurrentHashMap 的关键属性</strong></p></blockquote> <ol><li><p><strong>table</strong> volatile Node&lt;K,V&gt;[] table://装载 Node 的数组，作为 ConcurrentHashMap 的数据容器，采用懒加载的方式，直到第一次插入数据的时候才会进行初始化操作，数组的大小总是为 2 的幂次方。</p></li> <li><p><strong>nextTable</strong> volatile Node&lt;K,V&gt;[] nextTable; //扩容时使用，平时为 null，只有在扩容的时候才为非 null</p></li> <li><p><strong>sizeCtl</strong> volatile int sizeCtl; 该属性用来控制 table 数组的大小，根据是否初始化和是否正在扩容有几种情况： **当值为负数时：**如果为-1 表示正在初始化，如果为-N 则表示当前正有 N-1 个线程进行扩容操作； **当值为正数时：**如果当前数组为 null 的话表示 table 在初始化过程中，sizeCtl 表示为需要新建数组的长度； 若已经初始化了，表示当前数据容器（table 数组）可用容量也可以理解成临界值（插入节点数超过了该临界值就需要扩容），具体指为数组的长度 n 乘以 加载因子 loadFactor； 当值为 0 时，即数组长度为默认初始值。</p></li> <li><p><strong>sun.misc.Unsafe U</strong> 在 ConcurrentHashMapde 的实现中可以看到大量的 U.compareAndSwapXXXX 的方法去修改 ConcurrentHashMap 的一些属性。这些方法实际上是利用了 CAS 算法保证了线程安全性，这是一种乐观策略，假设每一次操作都不会产生冲突，当且仅当冲突发生的时候再去尝试。而 CAS 操作依赖于现代处理器指令集，通过底层<strong>CMPXCHG</strong>指令实现。CAS(V,O,N)核心思想为：<strong>若当前变量实际值 V 与期望的旧值 O 相同，则表明该变量没被其他线程进行修改，因此可以安全的将新值 N 赋值给变量；若当前变量实际值 V 与期望的旧值 O 不相同，则表明该变量已经被其他线程做了处理，此时将新值 N 赋给变量操作就是不安全的，在进行重试</strong>。而在大量的同步组件和并发容器的实现中使用 CAS 是通过<code>sun.misc.Unsafe</code>类实现的，该类提供了一些可以直接操控内存和线程的底层操作，可以理解为 java 中的“指针”。该成员变量的获取是在静态代码块中：</p> <div class="language- extra-class"><pre class="language-text"><code>	static {
+	    try {
+	        U = sun.misc.Unsafe.getUnsafe();
+			.......
+	    } catch (Exception e) {
+	        throw new Error(e);
+	    }
+	}
+</code></pre></div></li></ol> <blockquote><p><strong>ConcurrentHashMap 中关键内部类</strong></p></blockquote> <ol><li><p><strong>Node</strong> Node 类实现了 Map.Entry 接口，主要存放 key-value 对，并且具有 next 域</p> <div class="language- extra-class"><pre class="language-text"><code>	static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+	        final int hash;
+	        final K key;
+	        volatile V val;
+	        volatile Node&lt;K,V&gt; next;
+			......
+	}
+</code></pre></div></li></ol> <p>另外可以看出很多属性都是用 volatile 进行修饰的，也就是为了保证内存可见性。</p> <ol><li><p><strong>TreeNode</strong> 树节点，继承于承载数据的 Node 类。而红黑树的操作是针对 TreeBin 类的，从该类的注释也可以看出，也就是 TreeBin 会将 TreeNode 进行再一次封装</p> <div class="language- extra-class"><pre class="language-text"><code>	**
+	 * Nodes for use in TreeBins
+	 */
+	static final class TreeNode&lt;K,V&gt; extends Node&lt;K,V&gt; {
+	        TreeNode&lt;K,V&gt; parent;  // red-black tree links
+	        TreeNode&lt;K,V&gt; left;
+	        TreeNode&lt;K,V&gt; right;
+	        TreeNode&lt;K,V&gt; prev;    // needed to unlink next upon deletion
+	        boolean red;
+			......
+	}
+</code></pre></div></li> <li><p><strong>TreeBin</strong> 这个类并不负责包装用户的 key、value 信息，而是包装的很多 TreeNode 节点。实际的 ConcurrentHashMap“数组”中，存放的是 TreeBin 对象，而不是 TreeNode 对象。</p> <div class="language- extra-class"><pre class="language-text"><code>	static final class TreeBin&lt;K,V&gt; extends Node&lt;K,V&gt; {
+	        TreeNode&lt;K,V&gt; root;
+	        volatile TreeNode&lt;K,V&gt; first;
+	        volatile Thread waiter;
+	        volatile int lockState;
+	        // values for lockState
+	        static final int WRITER = 1; // set while holding write lock
+	        static final int WAITER = 2; // set when waiting for write lock
+	        static final int READER = 4; // increment value for setting read lock
+			......
+	}
+</code></pre></div></li> <li><p><strong>ForwardingNode</strong> 在扩容时才会出现的特殊节点，其 key,value,hash 全部为 null。并拥有 nextTable 指针引用新的 table 数组。</p> <div class="language- extra-class"><pre class="language-text"><code>	static final class ForwardingNode&lt;K,V&gt; extends Node&lt;K,V&gt; {
+	    final Node&lt;K,V&gt;[] nextTable;
+	    ForwardingNode(Node&lt;K,V&gt;[] tab) {
+	        super(MOVED, null, null, null);
+	        this.nextTable = tab;
+	    }
+	   .....
+	}
+</code></pre></div></li></ol> <blockquote><p><strong>CAS 关键操作</strong></p></blockquote> <p>在上面我们提及到在 ConcurrentHashMap 中会大量使用 CAS 修改它的属性和一些操作。因此，在理解 ConcurrentHashMap 的方法前我们需要了解下面几个常用的利用 CAS 算法来保障线程安全的操作。</p> <ol><li><p><strong>tabAt</strong></p> <div class="language- extra-class"><pre class="language-text"><code>	static final &lt;K,V&gt; Node&lt;K,V&gt; tabAt(Node&lt;K,V&gt;[] tab, int i) {
+	    return (Node&lt;K,V&gt;)U.getObjectVolatile(tab, ((long)i &lt;&lt; ASHIFT) + ABASE);
+	}
+</code></pre></div><p>该方法用来获取 table 数组中索引为 i 的 Node 元素。</p></li> <li><p><strong>casTabAt</strong></p> <div class="language- extra-class"><pre class="language-text"><code>static final &lt;K,V&gt; boolean casTabAt(Node&lt;K,V&gt;[] tab, int i,
+                                    Node&lt;K,V&gt; c, Node&lt;K,V&gt; v) {
+    return U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v);
+}
+</code></pre></div><p>利用 CAS 操作设置 table 数组中索引为 i 的元素</p></li> <li><p><strong>setTabAt</strong></p> <div class="language- extra-class"><pre class="language-text"><code>static final &lt;K,V&gt; void setTabAt(Node&lt;K,V&gt;[] tab, int i, Node&lt;K,V&gt; v) {
+    U.putObjectVolatile(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, v);
+}
+</code></pre></div><p>该方法用来设置 table 数组中索引为 i 的元素</p></li></ol> <h1 id="_3-重点方法讲解"><a href="#_3-重点方法讲解" class="header-anchor">#</a> 3.重点方法讲解</h1> <p>在熟悉上面的这核心信息之后，我们接下来就来依次看看几个常用的方法是怎样实现的。</p> <h2 id="_3-1-实例构造器方法"><a href="#_3-1-实例构造器方法" class="header-anchor">#</a> 3.1 实例构造器方法</h2> <p>在使用 ConcurrentHashMap 第一件事自然而然就是 new 出来一个 ConcurrentHashMap 对象，一共提供了如下几个构造器方法：</p> <div class="language- extra-class"><pre class="language-text"><code>// 1. 构造一个空的map，即table数组还未初始化，初始化放在第一次插入数据时，默认大小为16
+ConcurrentHashMap()
+// 2. 给定map的大小
+ConcurrentHashMap(int initialCapacity)
+// 3. 给定一个map
+ConcurrentHashMap(Map&lt;? extends K, ? extends V&gt; m)
+// 4. 给定map的大小以及加载因子
+ConcurrentHashMap(int initialCapacity, float loadFactor)
+// 5. 给定map大小，加载因子以及并发度（预计同时操作数据的线程）
+ConcurrentHashMap(int initialCapacity,float loadFactor, int concurrencyLevel)
+</code></pre></div><p>ConcurrentHashMap 一共给我们提供了 5 中构造器方法，具体使用请看注释，我们来看看第 2 种构造器，传入指定大小时的情况，该构造器源码为：</p> <div class="language- extra-class"><pre class="language-text"><code>public ConcurrentHashMap(int initialCapacity) {
+	//1. 小于0直接抛异常
+    if (initialCapacity &lt; 0)
+        throw new IllegalArgumentException();
+	//2. 判断是否超过了允许的最大值，超过了话则取最大值，否则再对该值进一步处理
+    int cap = ((initialCapacity &gt;= (MAXIMUM_CAPACITY &gt;&gt;&gt; 1)) ?
+               MAXIMUM_CAPACITY :
+               tableSizeFor(initialCapacity + (initialCapacity &gt;&gt;&gt; 1) + 1));
+	//3. 赋值给sizeCtl
+    this.sizeCtl = cap;
+}
+</code></pre></div><p>这段代码的逻辑请看注释，很容易理解，如果小于 0 就直接抛出异常，如果指定值大于了所允许的最大值的话就取最大值，否则，在对指定值做进一步处理。最后将 cap 赋值给 sizeCtl,关于 sizeCtl 的说明请看上面的说明，<strong>当调用构造器方法之后，sizeCtl 的大小应该就代表了 ConcurrentHashMap 的大小，即 table 数组长度</strong>。tableSizeFor 做了哪些事情了？源码为：</p> <div class="language- extra-class"><pre class="language-text"><code>/**
+ * Returns a power of two table size for the given desired capacity.
+ * See Hackers Delight, sec 3.2
+ */
+private static final int tableSizeFor(int c) {
+    int n = c - 1;
+    n |= n &gt;&gt;&gt; 1;
+    n |= n &gt;&gt;&gt; 2;
+    n |= n &gt;&gt;&gt; 4;
+    n |= n &gt;&gt;&gt; 8;
+    n |= n &gt;&gt;&gt; 16;
+    return (n &lt; 0) ? 1 : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+}
+</code></pre></div><p>通过注释就很清楚了，该方法会将调用构造器方法时指定的大小转换成一个 2 的幂次方数，也就是说 ConcurrentHashMap 的大小一定是 2 的幂次方，比如，当指定大小为 18 时，为了满足 2 的幂次方特性，实际上 concurrentHashMapd 的大小为 2 的 5 次方（32）。另外，需要注意的是，<strong>调用构造器方法的时候并未构造出 table 数组（可以理解为 ConcurrentHashMap 的数据容器），只是算出 table 数组的长度，当第一次向 ConcurrentHashMap 插入数据的时候才真正的完成初始化创建 table 数组的工作</strong>。</p> <h2 id="_3-2-inittable-方法"><a href="#_3-2-inittable-方法" class="header-anchor">#</a> 3.2 initTable 方法</h2> <p>直接上源码：</p> <div class="language- extra-class"><pre class="language-text"><code>private final Node&lt;K,V&gt;[] initTable() {
+    Node&lt;K,V&gt;[] tab; int sc;
+    while ((tab = table) == null || tab.length == 0) {
+        if ((sc = sizeCtl) &lt; 0)
+			// 1. 保证只有一个线程正在进行初始化操作
+            Thread.yield(); // lost initialization race; just spin
+        else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
+            try {
+                if ((tab = table) == null || tab.length == 0) {
+					// 2. 得出数组的大小
+                    int n = (sc &gt; 0) ? sc : DEFAULT_CAPACITY;
+                    @SuppressWarnings(&quot;unchecked&quot;)
+					// 3. 这里才真正的初始化数组
+                    Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n];
+                    table = tab = nt;
+					// 4. 计算数组中可用的大小：实际大小n*0.75（加载因子）
+                    sc = n - (n &gt;&gt;&gt; 2);
+                }
+            } finally {
+                sizeCtl = sc;
+            }
+            break;
+        }
+    }
+    return tab;
+}
+</code></pre></div><p>代码的逻辑请见注释，有可能存在一个情况是多个线程同时走到这个方法中，为了保证能够正确初始化，在第 1 步中会先通过 if 进行判断，若当前已经有一个线程正在初始化即 sizeCtl 值变为-1，这个时候其他线程在 If 判断为 true 从而调用 Thread.yield()让出 CPU 时间片。正在进行初始化的线程会调用 U.compareAndSwapInt 方法将 sizeCtl 改为-1 即正在初始化的状态。另外还需要注意的事情是，在第四步中会进一步计算数组中可用的大小即为数组实际大小 n 乘以加载因子 0.75.可以看看这里乘以 0.75 是怎么算的，0.75 为四分之三，这里<code>n - (n &gt;&gt;&gt; 2)</code>是不是刚好是 n-(1/4)n=(3/4)n，挺有意思的吧:)。如果选择是无参的构造器的话，这里在 new Node 数组的时候会使用默认大小为<code>DEFAULT_CAPACITY</code>（16），然后乘以加载因子 0.75 为 12，也就是说数组的可用大小为 12。</p> <h2 id="_3-3-put-方法"><a href="#_3-3-put-方法" class="header-anchor">#</a> 3.3 put 方法</h2> <p>使用 ConcurrentHashMap 最长用的也应该是 put 和 get 方法了吧，我们先来看看 put 方法是怎样实现的。调用 put 方法时实际具体实现是 putVal 方法，源码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>/** Implementation for put and putIfAbsent */
+final V putVal(K key, V value, boolean onlyIfAbsent) {
+    if (key == null || value == null) throw new NullPointerException();
+	//1. 计算key的hash值
+    int hash = spread(key.hashCode());
+    int binCount = 0;
+    for (Node&lt;K,V&gt;[] tab = table;;) {
+        Node&lt;K,V&gt; f; int n, i, fh;
+		//2. 如果当前table还没有初始化先调用initTable方法将tab进行初始化
+        if (tab == null || (n = tab.length) == 0)
+            tab = initTable();
+		//3. tab中索引为i的位置的元素为null，则直接使用CAS将值插入即可
+        else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) {
+            if (casTabAt(tab, i, null,
+                         new Node&lt;K,V&gt;(hash, key, value, null)))
+                break;                   // no lock when adding to empty bin
+        }
+		//4. 当前正在扩容
+        else if ((fh = f.hash) == MOVED)
+            tab = helpTransfer(tab, f);
+        else {
+            V oldVal = null;
+            synchronized (f) {
+                if (tabAt(tab, i) == f) {
+					//5. 当前为链表，在链表中插入新的键值对
+                    if (fh &gt;= 0) {
+                        binCount = 1;
+                        for (Node&lt;K,V&gt; e = f;; ++binCount) {
+                            K ek;
+                            if (e.hash == hash &amp;&amp;
+                                ((ek = e.key) == key ||
+                                 (ek != null &amp;&amp; key.equals(ek)))) {
+                                oldVal = e.val;
+                                if (!onlyIfAbsent)
+                                    e.val = value;
+                                break;
+                            }
+                            Node&lt;K,V&gt; pred = e;
+                            if ((e = e.next) == null) {
+                                pred.next = new Node&lt;K,V&gt;(hash, key,
+                                                          value, null);
+                                break;
+                            }
+                        }
+                    }
+					// 6.当前为红黑树，将新的键值对插入到红黑树中
+                    else if (f instanceof TreeBin) {
+                        Node&lt;K,V&gt; p;
+                        binCount = 2;
+                        if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
+                                                       value)) != null) {
+                            oldVal = p.val;
+                            if (!onlyIfAbsent)
+                                p.val = value;
+                        }
+                    }
+                }
+            }
+			// 7.插入完键值对后再根据实际大小看是否需要转换成红黑树
+            if (binCount != 0) {
+                if (binCount &gt;= TREEIFY_THRESHOLD)
+                    treeifyBin(tab, i);
+                if (oldVal != null)
+                    return oldVal;
+                break;
+            }
+        }
+    }
+	//8.对当前容量大小进行检查，如果超过了临界值（实际大小*加载因子）就需要扩容
+    addCount(1L, binCount);
+    return null;
+}
+</code></pre></div><p>put 方法的代码量有点长，我们按照上面的分解的步骤一步步来看。<strong>从整体而言，为了解决线程安全的问题，ConcurrentHashMap 使用了 synchronzied 和 CAS 的方式</strong>。在之前了解过 HashMap 以及 1.8 版本之前的 ConcurrenHashMap 都应该知道 ConcurrentHashMap 结构图，为了方面下面的讲解这里先直接给出，如果对这有疑问的话，可以在网上随便搜搜即可。</p> <p><img src="https://user-gold-cdn.xitu.io/2018/5/6/163344e982f9eed4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="ConcurrentHashMap散列桶数组结构示意图">
+ConcurrentHashMap散列桶数组结构示意图</p> <p>如图（图片摘自网络），ConcurrentHashMap 是一个哈希桶数组，如果不出现哈希冲突的时候，每个元素均匀的分布在哈希桶数组中。当出现哈希冲突的时候，是<strong>标准的链地址的解决方式</strong>，将 hash 值相同的节点构成链表的形式，称为“拉链法”，另外，在 1.8 版本中为了防止拉链过长，当链表的长度大于 8 的时候会将链表转换成红黑树。table 数组中的每个元素实际上是单链表的头结点或者红黑树的根节点。当插入键值对时首先应该定位到要插入的桶，即插入 table 数组的索引 i 处。那么，怎样计算得出索引 i 呢？当然是根据 key 的 hashCode 值。</p> <blockquote><ol><li>spread()重哈希，以减小 Hash 冲突</li></ol></blockquote> <p>我们知道对于一个 hash 表来说，hash 值分散的不够均匀的话会大大增加哈希冲突的概率，从而影响到 hash 表的性能。因此通过 spread 方法进行了一次重 hash 从而大大减小哈希冲突的可能性。spread 方法为：</p> <div class="language- extra-class"><pre class="language-text"><code>static final int spread(int h) {
+    return (h ^ (h &gt;&gt;&gt; 16)) &amp; HASH_BITS;
+}
+</code></pre></div><p>该方法主要是<strong>将 key 的 hashCode 的低 16 位于高 16 位进行异或运算</strong>，这样不仅能够使得 hash 值能够分散能够均匀减小 hash 冲突的概率，另外只用到了异或运算，在性能开销上也能兼顾，做到平衡的 trade-off。</p> <blockquote><p>2.初始化 table</p></blockquote> <p>紧接着到第 2 步，会判断当前 table 数组是否初始化了，没有的话就调用 initTable 进行初始化，该方法在上面已经讲过了。</p> <blockquote><p>3.能否直接将新值插入到 table 数组中</p></blockquote> <p>从上面的结构示意图就可以看出存在这样一种情况，如果插入值待插入的位置刚好所在的 table 数组为 null 的话就可以直接将值插入即可。那么怎样根据 hash 确定在 table 中待插入的索引 i 呢？很显然可以通过 hash 值与数组的长度取模操作，从而确定新值插入到数组的哪个位置。而之前我们提过 ConcurrentHashMap 的大小总是 2 的幂次方，(n - 1) &amp; hash 运算等价于对长度 n 取模，也就是 hash%n，但是位运算比取模运算的效率要高很多，Doug lea 大师在设计并发容器的时候也是将性能优化到了极致，令人钦佩。</p> <p>确定好数组的索引 i 后，就可以可以 tabAt()方法（该方法在上面已经说明了，有疑问可以回过头去看看）获取该位置上的元素，如果当前 Node f 为 null 的话，就可以直接用 casTabAt 方法将新值插入即可。</p> <blockquote><p>4.当前是否正在扩容</p></blockquote> <p>如果当前节点不为 null，且该节点为特殊节点（forwardingNode）的话，就说明当前 concurrentHashMap 正在进行扩容操作，关于扩容操作，下面会作为一个具体的方法进行讲解。那么怎样确定当前的这个 Node 是不是特殊的节点了？是通过判断该节点的 hash 值是不是等于-1（MOVED）,代码为(fh = f.hash) == MOVED，对 MOVED 的解释在源码上也写的很清楚了：</p> <div class="language- extra-class"><pre class="language-text"><code>static final int MOVED     = -1; // hash for forwarding nodes
+</code></pre></div><blockquote><p>5.当 table[i]为链表的头结点，在链表中插入新值</p></blockquote> <p>在 table[i]不为 null 并且不为 forwardingNode 时，并且当前 Node f 的 hash 值大于 0（fh &gt;= 0）的话说明当前节点 f 为当前桶的所有的节点组成的链表的头结点。那么接下来，要想向 ConcurrentHashMap 插入新值的话就是向这个链表插入新值。通过 synchronized (f)的方式进行加锁以实现线程安全性。往链表中插入节点的部分代码为：</p> <div class="language- extra-class"><pre class="language-text"><code>if (fh &gt;= 0) {
+    binCount = 1;
+    for (Node&lt;K,V&gt; e = f;; ++binCount) {
+        K ek;
+		// 找到hash值相同的key,覆盖旧值即可
+        if (e.hash == hash &amp;&amp;
+            ((ek = e.key) == key ||
+             (ek != null &amp;&amp; key.equals(ek)))) {
+            oldVal = e.val;
+            if (!onlyIfAbsent)
+                e.val = value;
+            break;
+        }
+        Node&lt;K,V&gt; pred = e;
+        if ((e = e.next) == null) {
+			//如果到链表末尾仍未找到，则直接将新值插入到链表末尾即可
+            pred.next = new Node&lt;K,V&gt;(hash, key,
+                                      value, null);
+            break;
+        }
+    }
+}
+</code></pre></div><p>这部分代码很好理解，就是两种情况：1. 在链表中如果找到了与待插入的键值对的 key 相同的节点，就直接覆盖即可；2. 如果直到找到了链表的末尾都没有找到的话，就直接将待插入的键值对追加到链表的末尾即可</p> <blockquote><p>6.当 table[i]为红黑树的根节点，在红黑树中插入新值</p></blockquote> <p>按照之前的数组+链表的设计方案，这里存在一个问题，即使负载因子和 Hash 算法设计的再合理，也免不了会出现拉链过长的情况，一旦出现拉链过长，甚至在极端情况下，查找一个节点会出现时间复杂度为 O(n)的情况，则会严重影响 ConcurrentHashMap 的性能，于是，在 JDK1.8 版本中，对数据结构做了进一步的优化，引入了红黑树。而当链表长度太长（默认超过 8）时，链表就转换为红黑树，利用红黑树快速增删改查的特点提高 ConcurrentHashMap 的性能，其中会用到红黑树的插入、删除、查找等算法。当 table[i]为红黑树的树节点时的操作为：</p> <div class="language- extra-class"><pre class="language-text"><code>if (f instanceof TreeBin) {
+    Node&lt;K,V&gt; p;
+    binCount = 2;
+    if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
+                                   value)) != null) {
+        oldVal = p.val;
+        if (!onlyIfAbsent)
+            p.val = value;
+    }
+}
+</code></pre></div><p>首先在 if 中通过<code>f instanceof TreeBin</code>判断当前 table[i]是否是树节点，这下也正好验证了我们在最上面介绍时说的 TreeBin 会对 TreeNode 做进一步封装，对红黑树进行操作的时候针对的是 TreeBin 而不是 TreeNode。这段代码很简单，调用 putTreeVal 方法完成向红黑树插入新节点，同样的逻辑，<strong>如果在红黑树中存在于待插入键值对的 Key 相同（hash 值相等并且 equals 方法判断为 true）的节点的话，就覆盖旧值，否则就向红黑树追加新节点</strong>。</p> <blockquote><p>7.根据当前节点个数进行调整</p></blockquote> <p>当完成数据新节点插入之后，会进一步对当前链表大小进行调整，这部分代码为：</p> <div class="language- extra-class"><pre class="language-text"><code>if (binCount != 0) {
+    if (binCount &gt;= TREEIFY_THRESHOLD)
+        treeifyBin(tab, i);
+    if (oldVal != null)
+        return oldVal;
+    break;
+}
+</code></pre></div><p>很容易理解，如果当前链表节点个数大于等于 8（TREEIFY_THRESHOLD）的时候，就会调用 treeifyBin 方法将 tabel[i]（第 i 个散列桶）拉链转换成红黑树。</p> <p>至此，关于 Put 方法的逻辑就基本说的差不多了，现在来做一些总结：</p> <p>整体流程：</p> <ol><li>首先对于每一个放入的值，首先利用 spread 方法对 key 的 hashcode 进行一次 hash 计算，由此来确定这个值在 table 中的位置；</li> <li>如果当前 table 数组还未初始化，先将 table 数组进行初始化操作；</li> <li>如果这个位置是 null 的，那么使用 CAS 操作直接放入；</li> <li>如果这个位置存在结点，说明发生了 hash 碰撞，首先判断这个节点的类型。如果该节点 fh==MOVED(代表 forwardingNode,数组正在进行扩容)的话，说明正在进行扩容；</li> <li>如果是链表节点（fh&gt;0）,则得到的结点就是 hash 值相同的节点组成的链表的头节点。需要依次向后遍历确定这个新加入的值所在位置。如果遇到 key 相同的节点，则只需要覆盖该结点的 value 值即可。否则依次向后遍历，直到链表尾插入这个结点；</li> <li>如果这个节点的类型是 TreeBin 的话，直接调用红黑树的插入方法进行插入新的节点；</li> <li>插入完节点之后再次检查链表长度，如果长度大于 8，就把这个链表转换成红黑树；</li> <li>对当前容量大小进行检查，如果超过了临界值（实际大小*加载因子）就需要扩容。</li></ol> <h2 id="_3-4-get-方法"><a href="#_3-4-get-方法" class="header-anchor">#</a> 3.4 get 方法</h2> <p>看完了 put 方法再来看 get 方法就很容易了，用逆向思维去看就好，这样存的话我反过来这么取就好了。get 方法源码为：</p> <div class="language- extra-class"><pre class="language-text"><code>public V get(Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; e, p; int n, eh; K ek;
+	// 1. 重hash
+    int h = spread(key.hashCode());
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+        (e = tabAt(tab, (n - 1) &amp; h)) != null) {
+        // 2. table[i]桶节点的key与查找的key相同，则直接返回
+		if ((eh = e.hash) == h) {
+            if ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek)))
+                return e.val;
+        }
+		// 3. 当前节点hash小于0说明为树节点，在红黑树中查找即可
+        else if (eh &lt; 0)
+            return (p = e.find(h, key)) != null ? p.val : null;
+        while ((e = e.next) != null) {
+		//4. 从链表中查找，查找到则返回该节点的value，否则就返回null即可
+            if (e.hash == h &amp;&amp;
+                ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek))))
+                return e.val;
+        }
+    }
+    return null;
+}
+</code></pre></div><p>代码的逻辑请看注释，首先先看当前的 hash 桶数组节点即 table[i]是否为查找的节点，若是则直接返回；若不是，则继续再看当前是不是树节点？通过看节点的 hash 值是否为小于 0，如果小于 0 则为树节点。如果是树节点在红黑树中查找节点；如果不是树节点，那就只剩下为链表的形式的一种可能性了，就向后遍历查找节点，若查找到则返回节点的 value 即可，若没有找到就返回 null。</p> <h2 id="_3-5-transfer-方法"><a href="#_3-5-transfer-方法" class="header-anchor">#</a> 3.5 transfer 方法</h2> <p>当 ConcurrentHashMap 容量不足的时候，需要对 table 进行扩容。这个方法的基本思想跟 HashMap 是很像的，但是由于它是支持并发扩容的，所以要复杂的多。原因是它支持多线程进行扩容操作，而并没有加锁。我想这样做的目的不仅仅是为了满足 concurrent 的要求，而是希望利用并发处理去减少扩容带来的时间影响。transfer 方法源码为：</p> <div class="language- extra-class"><pre class="language-text"><code>private final void transfer(Node&lt;K,V&gt;[] tab, Node&lt;K,V&gt;[] nextTab) {
+    int n = tab.length, stride;
+    if ((stride = (NCPU &gt; 1) ? (n &gt;&gt;&gt; 3) / NCPU : n) &lt; MIN_TRANSFER_STRIDE)
+        stride = MIN_TRANSFER_STRIDE; // subdivide range
+	//1. 新建Node数组，容量为之前的两倍
+    if (nextTab == null) {            // initiating
+        try {
+            @SuppressWarnings(&quot;unchecked&quot;)
+            Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n &lt;&lt; 1];
+            nextTab = nt;
+        } catch (Throwable ex) {      // try to cope with OOME
+            sizeCtl = Integer.MAX_VALUE;
+            return;
+        }
+        nextTable = nextTab;
+        transferIndex = n;
+    }
+    int nextn = nextTab.length;
+	//2. 新建forwardingNode引用，在之后会用到
+    ForwardingNode&lt;K,V&gt; fwd = new ForwardingNode&lt;K,V&gt;(nextTab);
+    boolean advance = true;
+    boolean finishing = false; // to ensure sweep before committing nextTab
+    for (int i = 0, bound = 0;;) {
+        Node&lt;K,V&gt; f; int fh;
+        // 3. 确定遍历中的索引i
+		while (advance) {
+            int nextIndex, nextBound;
+            if (--i &gt;= bound || finishing)
+                advance = false;
+            else if ((nextIndex = transferIndex) &lt;= 0) {
+                i = -1;
+                advance = false;
+            }
+            else if (U.compareAndSwapInt
+                     (this, TRANSFERINDEX, nextIndex,
+                      nextBound = (nextIndex &gt; stride ?
+                                   nextIndex - stride : 0))) {
+                bound = nextBound;
+                i = nextIndex - 1;
+                advance = false;
+            }
+        }
+		//4.将原数组中的元素复制到新数组中去
+		//4.5 for循环退出，扩容结束修改sizeCtl属性
+        if (i &lt; 0 || i &gt;= n || i + n &gt;= nextn) {
+            int sc;
+            if (finishing) {
+                nextTable = null;
+                table = nextTab;
+                sizeCtl = (n &lt;&lt; 1) - (n &gt;&gt;&gt; 1);
+                return;
+            }
+            if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) {
+                if ((sc - 2) != resizeStamp(n) &lt;&lt; RESIZE_STAMP_SHIFT)
+                    return;
+                finishing = advance = true;
+                i = n; // recheck before commit
+            }
+        }
+		//4.1 当前数组中第i个元素为null，用CAS设置成特殊节点forwardingNode(可以理解成占位符)
+        else if ((f = tabAt(tab, i)) == null)
+            advance = casTabAt(tab, i, null, fwd);
+		//4.2 如果遍历到ForwardingNode节点  说明这个点已经被处理过了 直接跳过  这里是控制并发扩容的核心
+        else if ((fh = f.hash) == MOVED)
+            advance = true; // already processed
+        else {
+            synchronized (f) {
+                if (tabAt(tab, i) == f) {
+                    Node&lt;K,V&gt; ln, hn;
+                    if (fh &gt;= 0) {
+						//4.3 处理当前节点为链表的头结点的情况，构造两个链表，一个是原链表  另一个是原链表的反序排列
+                        int runBit = fh &amp; n;
+                        Node&lt;K,V&gt; lastRun = f;
+                        for (Node&lt;K,V&gt; p = f.next; p != null; p = p.next) {
+                            int b = p.hash &amp; n;
+                            if (b != runBit) {
+                                runBit = b;
+                                lastRun = p;
+                            }
+                        }
+                        if (runBit == 0) {
+                            ln = lastRun;
+                            hn = null;
+                        }
+                        else {
+                            hn = lastRun;
+                            ln = null;
+                        }
+                        for (Node&lt;K,V&gt; p = f; p != lastRun; p = p.next) {
+                            int ph = p.hash; K pk = p.key; V pv = p.val;
+                            if ((ph &amp; n) == 0)
+                                ln = new Node&lt;K,V&gt;(ph, pk, pv, ln);
+                            else
+                                hn = new Node&lt;K,V&gt;(ph, pk, pv, hn);
+                        }
+                       //在nextTable的i位置上插入一个链表
+                       setTabAt(nextTab, i, ln);
+                       //在nextTable的i+n的位置上插入另一个链表
+                       setTabAt(nextTab, i + n, hn);
+                       //在table的i位置上插入forwardNode节点  表示已经处理过该节点
+                       setTabAt(tab, i, fwd);
+                       //设置advance为true 返回到上面的while循环中 就可以执行i--操作
+                       advance = true;
+                    }
+					//4.4 处理当前节点是TreeBin时的情况，操作和上面的类似
+                    else if (f instanceof TreeBin) {
+                        TreeBin&lt;K,V&gt; t = (TreeBin&lt;K,V&gt;)f;
+                        TreeNode&lt;K,V&gt; lo = null, loTail = null;
+                        TreeNode&lt;K,V&gt; hi = null, hiTail = null;
+                        int lc = 0, hc = 0;
+                        for (Node&lt;K,V&gt; e = t.first; e != null; e = e.next) {
+                            int h = e.hash;
+                            TreeNode&lt;K,V&gt; p = new TreeNode&lt;K,V&gt;
+                                (h, e.key, e.val, null, null);
+                            if ((h &amp; n) == 0) {
+                                if ((p.prev = loTail) == null)
+                                    lo = p;
+                                else
+                                    loTail.next = p;
+                                loTail = p;
+                                ++lc;
+                            }
+                            else {
+                                if ((p.prev = hiTail) == null)
+                                    hi = p;
+                                else
+                                    hiTail.next = p;
+                                hiTail = p;
+                                ++hc;
+                            }
+                        }
+                        ln = (lc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(lo) :
+                            (hc != 0) ? new TreeBin&lt;K,V&gt;(lo) : t;
+                        hn = (hc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(hi) :
+                            (lc != 0) ? new TreeBin&lt;K,V&gt;(hi) : t;
+                        setTabAt(nextTab, i, ln);
+                        setTabAt(nextTab, i + n, hn);
+                        setTabAt(tab, i, fwd);
+                        advance = true;
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre></div><p>代码逻辑请看注释,整个扩容操作分为<strong>两个部分</strong>：</p> <p><strong>第一部分</strong>是构建一个 nextTable,它的容量是原来的两倍，这个操作是单线程完成的。新建 table 数组的代码为:<code>Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n &lt;&lt; 1]</code>,在原容量大小的基础上右移一位。</p> <p><strong>第二个部分</strong>就是将原来 table 中的元素复制到 nextTable 中，主要是遍历复制的过程。 根据运算得到当前遍历的数组的位置 i，然后利用 tabAt 方法获得 i 位置的元素再进行判断：</p> <ol><li>如果这个位置为空，就在原 table 中的 i 位置放入 forwardNode 节点，这个也是触发并发扩容的关键点；</li> <li>如果这个位置是 Node 节点（fh&gt;=0），如果它是一个链表的头节点，就构造一个反序链表，把他们分别放在 nextTable 的 i 和 i+n 的位置上</li> <li>如果这个位置是 TreeBin 节点（fh&lt;0），也做一个反序处理，并且判断是否需要 untreefi，把处理的结果分别放在 nextTable 的 i 和 i+n 的位置上</li> <li>遍历过所有的节点以后就完成了复制工作，这时让 nextTable 作为新的 table，并且更新 sizeCtl 为新容量的 0.75 倍 ，完成扩容。设置为新容量的 0.75 倍代码为 <code>sizeCtl = (n &lt;&lt; 1) - (n &gt;&gt;&gt; 1)</code>，仔细体会下是不是很巧妙，n&lt;&lt;1 相当于 n 左移一位表示 n 的两倍即 2n,n&gt;&gt;&gt;1，n 右移相当于 n 除以 2 即 0.5n,然后两者相减为 2n-0.5n=1.5n,是不是刚好等于新容量的 0.75 倍即 2n*0.75=1.5n。最后用一个示意图来进行总结（图片摘自网络）：</li></ol> <p><img src="https://user-gold-cdn.xitu.io/2018/5/6/163344e9830954bd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="ConcurrentHashMap扩容示意图">ConcurrentHashMap扩容示意图</p> <h2 id="_3-6-与-size-相关的一些方法"><a href="#_3-6-与-size-相关的一些方法" class="header-anchor">#</a> 3.6 与 size 相关的一些方法</h2> <p>对于 ConcurrentHashMap 来说，这个 table 里到底装了多少东西其实是个不确定的数量，因为<strong>不可能在调用 size()方法的时候像 GC 的“stop the world”一样让其他线程都停下来让你去统计，因此只能说这个数量是个估计值。对于这个估计值</strong>，ConcurrentHashMap 也是大费周章才计算出来的。</p> <p>为了统计元素个数，ConcurrentHashMap 定义了一些变量和一个内部类</p> <div class="language- extra-class"><pre class="language-text"><code>/**
+ * A padded cell for distributing counts.  Adapted from LongAdder
+ * and Striped64.  See their internal docs for explanation.
+ */
+@sun.misc.Contended static final class CounterCell {
+    volatile long value;
+    CounterCell(long x) { value = x; }
+}
+/******************************************/
+/**
+
+实际上保存的是hashmap中的元素个数  利用CAS锁进行更新
+但它并不用返回当前hashmap的元素个数
+
+/
+private transient volatile long baseCount;
+/*
+
+Spinlock (locked via CAS) used when resizing and/or creating CounterCells.
+*/
+private transient volatile int cellsBusy;
+
+/**
+Table of counter cells. When non-null, size is a power of 2.
+*/
+private transient volatile CounterCell[] counterCells;
+</code></pre></div><blockquote><p><strong>mappingCount 与 size 方法</strong></p></blockquote> <p><strong>mappingCount</strong>与<strong>size</strong>方法的类似 从给出的注释来看，应该使用 mappingCount 代替 size 方法 两个方法都没有直接返回 basecount 而是统计一次这个值，而这个值其实也是一个大概的数值，因此可能在统计的时候有其他线程正在执行插入或删除操作。</p> <div class="language- extra-class"><pre class="language-text"><code>public int size() {
+    long n = sumCount();
+    return ((n &lt; 0L) ? 0 :
+            (n &gt; (long)Integer.MAX_VALUE) ? Integer.MAX_VALUE :
+            (int)n);
+}
+ /**
+ * Returns the number of mappings. This method should be used
+ * instead of {@link #size} because a ConcurrentHashMap may
+ * contain more mappings than can be represented as an int. The
+ * value returned is an estimate; the actual count may differ if
+ * there are concurrent insertions or removals.
+ *
+ * @return the number of mappings
+ * @since 1.8
+ */
+public long mappingCount() {
+    long n = sumCount();
+    return (n &lt; 0L) ? 0L : n; // ignore transient negative values
+}
+ final long sumCount() {
+    CounterCell[] as = counterCells; CounterCell a;
+    long sum = baseCount;
+    if (as != null) {
+        for (int i = 0; i &lt; as.length; ++i) {
+            if ((a = as[i]) != null)
+                sum += a.value;//所有counter的值求和
+        }
+    }
+    return sum;
+}
+</code></pre></div><blockquote><p><strong>addCount 方法</strong></p></blockquote> <p>在 put 方法结尾处调用了 addCount 方法，把当前 ConcurrentHashMap 的元素个数+1 这个方法一共做了两件事,更新 baseCount 的值，检测是否进行扩容。</p> <div class="language- extra-class"><pre class="language-text"><code>private final void addCount(long x, int check) {
+    CounterCell[] as; long b, s;
+    //利用CAS方法更新baseCount的值
+    if ((as = counterCells) != null ||
+        !U.compareAndSwapLong(this, BASECOUNT, b = baseCount, s = b + x)) {
+        CounterCell a; long v; int m;
+        boolean uncontended = true;
+        if (as == null || (m = as.length - 1) &lt; 0 ||
+            (a = as[ThreadLocalRandom.getProbe() &amp; m]) == null ||
+            !(uncontended =
+              U.compareAndSwapLong(a, CELLVALUE, v = a.value, v + x))) {
+            fullAddCount(x, uncontended);
+            return;
+        }
+        if (check &lt;= 1)
+            return;
+        s = sumCount();
+    }
+    //如果check值大于等于0 则需要检验是否需要进行扩容操作
+    if (check &gt;= 0) {
+        Node&lt;K,V&gt;[] tab, nt; int n, sc;
+        while (s &gt;= (long)(sc = sizeCtl) &amp;&amp; (tab = table) != null &amp;&amp;
+               (n = tab.length) &lt; MAXIMUM_CAPACITY) {
+            int rs = resizeStamp(n);
+            //
+            if (sc &lt; 0) {
+                if ((sc &gt;&gt;&gt; RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
+                    sc == rs + MAX_RESIZERS || (nt = nextTable) == null ||
+                    transferIndex &lt;= 0)
+                    break;
+                 //如果已经有其他线程在执行扩容操作
+                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1))
+                    transfer(tab, nt);
+            }
+            //当前线程是唯一的或是第一个发起扩容的线程  此时nextTable=null
+            else if (U.compareAndSwapInt(this, SIZECTL, sc,
+                                         (rs &lt;&lt; RESIZE_STAMP_SHIFT) + 2))
+                transfer(tab, null);
+            s = sumCount();
+        }
+    }
+}
+</code></pre></div><h1 id="_4-总结"><a href="#_4-总结" class="header-anchor">#</a> 4. 总结</h1> <p>JDK6,7 中的 ConcurrentHashmap 主要使用 Segment 来实现减小锁粒度，分割成若干个 Segment，在 put 的时候需要锁住 Segment，get 时候不加锁，使用 volatile 来保证可见性，当要统计全局时（比如 size），首先会尝试多次计算 modcount 来确定，这几次尝试中，是否有其他线程进行了修改操作，如果没有，则直接返回 size。如果有，则需要依次锁住所有的 Segment 来计算。</p> <p>1.8 之前 put 定位节点时要先定位到具体的 segment，然后再在 segment 中定位到具体的桶。而在 1.8 的时候摒弃了 segment 臃肿的设计，直接针对的是 Node[] tale 数组中的每一个桶，进一步减小了锁粒度。并且防止拉链过长导致性能下降，当链表长度大于 8 的时候采用红黑树的设计。</p> <p>主要设计上的变化有以下几点:</p> <ol><li>不采用 segment 而采用 node，锁住 node 来实现减小锁粒度。</li> <li>设计了 MOVED 状态 当 resize 的中过程中 线程 2 还在 put 数据，线程 2 会帮助 resize。</li> <li>使用 3 个 CAS 操作来确保 node 的一些操作的原子性，这种方式代替了锁。</li> <li>sizeCtl 的不同值来代表不同含义，起到了控制的作用。</li> <li>采用 synchronized 而不是 ReentrantLock</li></ol> <p>来源于 https://juejin.cn/post/6844903602423595015</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 1:26:06 PM</span></div></footer> <!----> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.4367deb4.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/123.bd77a272.js" defer></script>
+  </body>
+</html>

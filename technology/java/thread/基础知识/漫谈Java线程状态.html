@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1. 漫谈Java线程状态 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.4367deb4.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/111.398505f9.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.460cf24c.js"><link rel="prefetch" href="/blog-docs/assets/js/101.f8aeddd3.js"><link rel="prefetch" href="/blog-docs/assets/js/102.b4f3d188.js"><link rel="prefetch" href="/blog-docs/assets/js/103.3e4aa5da.js"><link rel="prefetch" href="/blog-docs/assets/js/104.41da0a25.js"><link rel="prefetch" href="/blog-docs/assets/js/105.9326fba0.js"><link rel="prefetch" href="/blog-docs/assets/js/106.5da8e3e2.js"><link rel="prefetch" href="/blog-docs/assets/js/107.8caa27f3.js"><link rel="prefetch" href="/blog-docs/assets/js/108.661e95c1.js"><link rel="prefetch" href="/blog-docs/assets/js/109.4d775337.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.8287502f.js"><link rel="prefetch" href="/blog-docs/assets/js/112.26f5c356.js"><link rel="prefetch" href="/blog-docs/assets/js/113.0884e7c3.js"><link rel="prefetch" href="/blog-docs/assets/js/114.8fff225a.js"><link rel="prefetch" href="/blog-docs/assets/js/115.967848d7.js"><link rel="prefetch" href="/blog-docs/assets/js/116.0a3bc0d6.js"><link rel="prefetch" href="/blog-docs/assets/js/117.9f310404.js"><link rel="prefetch" href="/blog-docs/assets/js/118.1faa07e5.js"><link rel="prefetch" href="/blog-docs/assets/js/119.682dc470.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/120.9e428cca.js"><link rel="prefetch" href="/blog-docs/assets/js/121.45e445e8.js"><link rel="prefetch" href="/blog-docs/assets/js/122.346b9564.js"><link rel="prefetch" href="/blog-docs/assets/js/123.bd77a272.js"><link rel="prefetch" href="/blog-docs/assets/js/124.456d0ed0.js"><link rel="prefetch" href="/blog-docs/assets/js/125.a9ad0392.js"><link rel="prefetch" href="/blog-docs/assets/js/126.bd9becc2.js"><link rel="prefetch" href="/blog-docs/assets/js/127.b3443c2b.js"><link rel="prefetch" href="/blog-docs/assets/js/128.f6d9f255.js"><link rel="prefetch" href="/blog-docs/assets/js/129.ed348135.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/130.f4ab0cfd.js"><link rel="prefetch" href="/blog-docs/assets/js/131.78df3143.js"><link rel="prefetch" href="/blog-docs/assets/js/132.1c5c50d4.js"><link rel="prefetch" href="/blog-docs/assets/js/133.633a8449.js"><link rel="prefetch" href="/blog-docs/assets/js/134.277801b7.js"><link rel="prefetch" href="/blog-docs/assets/js/135.f49d13be.js"><link rel="prefetch" href="/blog-docs/assets/js/136.1dd5e533.js"><link rel="prefetch" href="/blog-docs/assets/js/137.afd93d4a.js"><link rel="prefetch" href="/blog-docs/assets/js/138.d492b71b.js"><link rel="prefetch" href="/blog-docs/assets/js/139.35aae156.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/140.e37d85f3.js"><link rel="prefetch" href="/blog-docs/assets/js/141.12f6e61d.js"><link rel="prefetch" href="/blog-docs/assets/js/142.c6bef786.js"><link rel="prefetch" href="/blog-docs/assets/js/143.333c53d9.js"><link rel="prefetch" href="/blog-docs/assets/js/144.23ea2f88.js"><link rel="prefetch" href="/blog-docs/assets/js/145.3e3ebc86.js"><link rel="prefetch" href="/blog-docs/assets/js/146.977bcd06.js"><link rel="prefetch" href="/blog-docs/assets/js/147.de3742a3.js"><link rel="prefetch" href="/blog-docs/assets/js/148.59aeccca.js"><link rel="prefetch" href="/blog-docs/assets/js/149.d3eb040e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/150.7e902441.js"><link rel="prefetch" href="/blog-docs/assets/js/151.a9ba807e.js"><link rel="prefetch" href="/blog-docs/assets/js/152.ba7d50c5.js"><link rel="prefetch" href="/blog-docs/assets/js/153.d3ce4666.js"><link rel="prefetch" href="/blog-docs/assets/js/154.681e8f9c.js"><link rel="prefetch" href="/blog-docs/assets/js/155.008ebe19.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.73246f81.js"><link rel="prefetch" href="/blog-docs/assets/js/28.b5188281.js"><link rel="prefetch" href="/blog-docs/assets/js/29.e1da9556.js"><link rel="prefetch" href="/blog-docs/assets/js/3.7288e49f.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e12a04a6.js"><link rel="prefetch" href="/blog-docs/assets/js/31.4f9a45f6.js"><link rel="prefetch" href="/blog-docs/assets/js/32.826df14b.js"><link rel="prefetch" href="/blog-docs/assets/js/33.b89706ff.js"><link rel="prefetch" href="/blog-docs/assets/js/34.70cdf10f.js"><link rel="prefetch" href="/blog-docs/assets/js/35.c6aeff16.js"><link rel="prefetch" href="/blog-docs/assets/js/36.df8333d8.js"><link rel="prefetch" href="/blog-docs/assets/js/37.f7d20cb4.js"><link rel="prefetch" href="/blog-docs/assets/js/38.51f1d8bf.js"><link rel="prefetch" href="/blog-docs/assets/js/39.3628eb1a.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.9503463f.js"><link rel="prefetch" href="/blog-docs/assets/js/41.033baec3.js"><link rel="prefetch" href="/blog-docs/assets/js/42.947a9cbc.js"><link rel="prefetch" href="/blog-docs/assets/js/43.288c335f.js"><link rel="prefetch" href="/blog-docs/assets/js/44.f2d40737.js"><link rel="prefetch" href="/blog-docs/assets/js/45.6f582921.js"><link rel="prefetch" href="/blog-docs/assets/js/46.67f9b38c.js"><link rel="prefetch" href="/blog-docs/assets/js/47.5653e794.js"><link rel="prefetch" href="/blog-docs/assets/js/48.a7a8334d.js"><link rel="prefetch" href="/blog-docs/assets/js/49.0e75b0df.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c00cef28.js"><link rel="prefetch" href="/blog-docs/assets/js/51.a18d30ce.js"><link rel="prefetch" href="/blog-docs/assets/js/52.5ee0b676.js"><link rel="prefetch" href="/blog-docs/assets/js/53.3a8f4134.js"><link rel="prefetch" href="/blog-docs/assets/js/54.5ec0f281.js"><link rel="prefetch" href="/blog-docs/assets/js/55.b54c4cce.js"><link rel="prefetch" href="/blog-docs/assets/js/56.fe569b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/57.e88f7ff8.js"><link rel="prefetch" href="/blog-docs/assets/js/58.b51a8ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/59.4ec5382b.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.8dd8efd6.js"><link rel="prefetch" href="/blog-docs/assets/js/61.2bf40aa8.js"><link rel="prefetch" href="/blog-docs/assets/js/62.a7f65626.js"><link rel="prefetch" href="/blog-docs/assets/js/63.750a244a.js"><link rel="prefetch" href="/blog-docs/assets/js/64.18d04687.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7e8d5e45.js"><link rel="prefetch" href="/blog-docs/assets/js/66.ab659c07.js"><link rel="prefetch" href="/blog-docs/assets/js/67.105a4696.js"><link rel="prefetch" href="/blog-docs/assets/js/68.2524615c.js"><link rel="prefetch" href="/blog-docs/assets/js/69.baaa5f55.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.0deadb91.js"><link rel="prefetch" href="/blog-docs/assets/js/71.7a47ced0.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df303f6b.js"><link rel="prefetch" href="/blog-docs/assets/js/73.39e10828.js"><link rel="prefetch" href="/blog-docs/assets/js/74.86126d96.js"><link rel="prefetch" href="/blog-docs/assets/js/75.3c0dc65a.js"><link rel="prefetch" href="/blog-docs/assets/js/76.7ba24ace.js"><link rel="prefetch" href="/blog-docs/assets/js/77.e802ff4c.js"><link rel="prefetch" href="/blog-docs/assets/js/78.4f4894d4.js"><link rel="prefetch" href="/blog-docs/assets/js/79.6c1d5b08.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4ec88365.js"><link rel="prefetch" href="/blog-docs/assets/js/80.15f580eb.js"><link rel="prefetch" href="/blog-docs/assets/js/81.14e1b6ad.js"><link rel="prefetch" href="/blog-docs/assets/js/82.95da7dba.js"><link rel="prefetch" href="/blog-docs/assets/js/83.40ca2c09.js"><link rel="prefetch" href="/blog-docs/assets/js/84.d5da1d67.js"><link rel="prefetch" href="/blog-docs/assets/js/85.5515fd0c.js"><link rel="prefetch" href="/blog-docs/assets/js/86.932f6159.js"><link rel="prefetch" href="/blog-docs/assets/js/87.361fe08e.js"><link rel="prefetch" href="/blog-docs/assets/js/88.18ca48e1.js"><link rel="prefetch" href="/blog-docs/assets/js/89.c61d8e5c.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.60d31b53.js"><link rel="prefetch" href="/blog-docs/assets/js/91.d36b5c65.js"><link rel="prefetch" href="/blog-docs/assets/js/92.bc0b5ecb.js"><link rel="prefetch" href="/blog-docs/assets/js/93.45edbbdc.js"><link rel="prefetch" href="/blog-docs/assets/js/94.cf678b5c.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e25a7d37.js"><link rel="prefetch" href="/blog-docs/assets/js/96.95be2a42.js"><link rel="prefetch" href="/blog-docs/assets/js/97.e4e798cf.js"><link rel="prefetch" href="/blog-docs/assets/js/98.b32554de.js"><link rel="prefetch" href="/blog-docs/assets/js/99.698799aa.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="_1-漫谈java线程状态"><a href="#_1-漫谈java线程状态" class="header-anchor">#</a> 1. 漫谈Java线程状态</h1> <h2 id="_1-1-前言"><a href="#_1-1-前言" class="header-anchor">#</a> 1.1 前言</h2> <p>Java语言定义了 6 种线程状态，在任意一个时间点中，一个线程只能只且只有其中的一种状态，并且可以通过特定的方法在不同状态之间进行转换。</p> <p>今天，我们就详细聊聊这几种状态，以及在什么情况下会发生转换。</p> <h2 id="_1-2-线程状态"><a href="#_1-2-线程状态" class="header-anchor">#</a> 1.2 线程状态</h2> <p>要想知道Java线程都有哪些状态，我们可以直接来看 Thread，它有一个枚举类 State。</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">State</span> <span class="token punctuation">{</span>
+
+        <span class="token comment">/**
+         * 新建状态
+         * 创建后尚未启动的线程
+         */</span>
+        NEW<span class="token punctuation">,</span>
+
+        <span class="token comment">/**
+         * 运行状态
+         * 包括正在执行，也可能正在等待操作系统为它分配执行时间
+         */</span>
+        RUNNABLE<span class="token punctuation">,</span>
+
+        <span class="token comment">/**
+         * 阻塞状态
+         * 一个线程因为等待临界区的锁被阻塞产生的状态
+         */</span>
+        BLOCKED<span class="token punctuation">,</span>
+
+        <span class="token comment">/**
+         * 无限期等待状态
+         * 线程不会被分配处理器执行时间，需要等待其他线程显式唤醒
+         */</span>
+        WAITING<span class="token punctuation">,</span>
+
+        <span class="token comment">/**
+         * 限期等待状态
+         * 线程不会被分配处理器执行时间，但也无需等待被其他线程显式唤醒
+         * 在一定时间之后，它们会由操作系统自动唤醒
+         */</span>
+        TIMED_WAITING<span class="token punctuation">,</span>
+
+        <span class="token comment">/**
+         * 结束状态
+         * 线程退出或已经执行完成
+         */</span>
+        TERMINATED<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_1-3-状态转换"><a href="#_1-3-状态转换" class="header-anchor">#</a> 1.3 状态转换</h2> <p>我们说，线程状态并非是一成不变的，可以通过特定的方法在不同状态之间进行转换。那么接下来，我们通过代码，具体来看看这些个状态是怎么形成的。</p> <h3 id="_1-3-1-新建"><a href="#_1-3-1-新建" class="header-anchor">#</a> 1.3.1 新建</h3> <p>新建状态最为简单，创建一个线程后，尚未启动的时候就处于此种状态。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) {
+    Thread thread = new Thread(&quot;新建线程&quot;);
+    System.out.println(&quot;线程状态：&quot;+thread.getState());
+}
+-- 输出：线程状态：NEW
+</code></pre></div><h3 id="_1-3-2-运行"><a href="#_1-3-2-运行" class="header-anchor">#</a> 1.3.2 运行</h3> <p>可运行线程的状态，当我们调用了start()方法，线程正在Java虚拟机中执行，但它可能正在等待来自操作系统（如处理器）的其他资源。</p> <p>所以，这里实际上包含了两种状态：Running 和 Ready，统称为 Runnable。这是为什么呢？</p> <p>这里涉及到一个Java线程调度的问题：</p> <blockquote><p>线程调度，是指系统为线程分配处理器使用权的过程。调度主要方式有两种，协同式线程调度和抢占式线程调度。</p></blockquote> <ul><li>协同式线程调度</li></ul> <p>线程的执行时间由线程本身来控制，线程把自己的工作执行完毕之后，要主动通知系统切换到另外一个线程上去。</p> <ul><li>抢占式线程调度</li></ul> <p>每个线程将由系统来自动分配执行时间，线程的切换不由线程本身来决定，是基于CPU时间分片的方式。</p> <p>它们孰优孰劣，不在本文讨论范围之内。我们只需要知道，Java使用的线程调度方式就是抢占式调度。</p> <p>通常，这个时间分片是很小的，可能只有几毫秒或几十毫秒。所以，线程的实际状态可能会在Running 和 Ready状态之间不断变化。所以，再去区分它们意义不大。</p> <p>那么，我们再多想一下，如果Java线程调度方式是协同式调度，也许再去区分这两个状态就很有必要了。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) {
+	
+    Thread thread = new Thread(() -&gt; {
+        for (;;){}
+    });
+    thread.start();
+    System.out.println(&quot;线程状态：&quot;+thread.getState());
+}
+-- 输出：线程状态：RUNNABLE
+</code></pre></div><p>简单来看，上面的代码就使线程处于Runnable状态。但值得我们注意的是，如果一个线程在等待阻塞I/O的操作时，它的状态也是Runnable的。</p> <p>我们来看两个经典阻塞IO的例子：</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+    Thread t1 = new Thread(() -&gt; {
+        try {
+            ServerSocket serverSocket = new ServerSocket(9999);
+            while (true){
+                Socket socket = serverSocket.accept();
+                OutputStream outputStream = socket.getOutputStream();
+                outputStream.write(&quot;Hello&quot;.getBytes());
+                outputStream.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    },&quot;accept&quot;);
+    t1.start();
+
+    Thread t2 = new Thread(() -&gt; {
+        try {
+            Socket socket = new Socket(&quot;127.0.0.1&quot;,9999);
+            for (;;){
+                InputStream inputStream = socket.getInputStream();
+                byte[] bytes = new byte[5];
+                inputStream.read(bytes);
+                System.out.println(new String(bytes));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    },&quot;read&quot;);
+    t2.start();
+}
+</code></pre></div><p>上面的代码中，我们知道，serverSocket.accept()和inputStream.read(bytes);都是阻塞式方法。</p> <p>它们一个在等待客户端的连接；一个在等待数据的到来。但是，这两个线程的状态却是 RUNNABLE的。</p> <div class="language- extra-class"><pre class="language-text"><code>&quot;read&quot; #13 prio=5 os_prio=0 tid=0x0000000023f6c800 nid=0x1cd0 runnable [0x0000000024b3e000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+&quot;accept&quot; #12 prio=5 os_prio=0 tid=0x0000000023f68000 nid=0x4cec runnable [0x0000000024a3e000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.DualStackPlainSocketImpl.accept0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketAccept(DualStackPlainSocketImpl.java:131)
+	at java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:409)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:199)
+</code></pre></div><p>这又是为什么呢 ？</p> <p>我们前面说过，处于 Runnable 状态下的线程，正在 Java 虚拟机中执行，但它可能正在等待来自操作系统（如处理器）的其他资源。</p> <p>不管是CPU、网卡还是硬盘，这些都是操作系统的资源而已。当进行阻塞式的IO操作时，或许底层的操作系统线程确实处在阻塞状态，但在这里我们的 Java 虚拟机线程的状态还是 Runnable。</p> <p>不要小看这个问题，很具有迷惑性。有些面试官如果问到，如果一个线程正在进行阻塞式 I/O 操作时，它处于什么状态？是Blocked还是Waiting？</p> <p>那这时候，我们就要义正言辞的告诉他：亲，都不是哦~</p> <h3 id="_1-3-3-无限期等待"><a href="#_1-3-3-无限期等待" class="header-anchor">#</a> 1.3.3 无限期等待</h3> <p>处于无限期等待状态下的线程，不会被分配处理器执行时间，除非其他线程显式的唤醒它。</p> <p>最简单的场景就是调用了 Object.wait() 方法。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+    Object object = new Object();
+    new Thread(() -&gt; {
+        synchronized (object){
+        try {
+            object.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }}).start();
+}
+-- 输出：线程状态：WAITING
+</code></pre></div><p>此时这个线程就处于无限期等待状态，除非有别的线程显式的调用object.notifyAll();来唤醒它。</p> <p>然后，就是Thread.join()方法，当主线程调用了此方法，就必须等待子线程结束之后才能继续进行。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+    Thread mainThread = new Thread(() -&gt; {
+        Thread subThread = new Thread(() -&gt; {
+            for (;;){}
+        });
+        subThread.start();
+        try {
+            subThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    });
+    mainThread.start();
+    System.out.println(&quot;线程状态：&quot;+mainThread.getState());
+}
+//输出：线程状态：WAITING
+</code></pre></div><p>如上代码，在主线程 mainThread 中调用了子线程的join()方法，那么主线程就要等待子线程结束运行。所以此时主线程mainThread的状态就是无限期等待。</p> <p>多说一句，其实join()方法内部，调用的也是Object.wait()。
+最后，我们说说LockSupport.park()方法，它同样会使线程进入无限期等待状态。也许有的朋友对它很陌生，没有用过，我们来看一个阻塞队列的例子。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+    ArrayBlockingQueue&lt;Long&gt; queue = new ArrayBlockingQueue(1);
+    Thread thread = new Thread(() -&gt; {
+        while (true){
+            try {
+                queue.put(System.currentTimeMillis());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    thread.start();
+}
+</code></pre></div><p>如上代码，往往我们会通过阻塞队列的方式来做生产者-消费者模型的代码。</p> <p>这里，ArrayBlockingQueue长度为1，当我们第二次往里面添加数据的时候，发现队列已满，线程就会等待这里，它的源码里面正是调用了LockSupport.park()。</p> <p>同样的，这里也比较具有迷惑性，我来问你：阻塞队列中，如果队列为空或者队列已满，这时候执行take或者put操作的时候，线程的状态是 Blocked 吗？</p> <p>那这时候，我们需要谨记这里的线程状态还是 WAITING。它们之间的区别和联系，我们后文再看。</p> <h3 id="_1-3-4-限期等待"><a href="#_1-3-4-限期等待" class="header-anchor">#</a> 1.3.4 限期等待</h3> <p>同样的，处于限期等待状态下的线程，也不会被分配处理器执行时间，但是它在一定时间之后可以自动的被操作系统唤醒。</p> <p>这个跟无限期等待的区别，仅仅就是有没有带有超时时间参数。</p> <p>比如：</p> <div class="language- extra-class"><pre class="language-text"><code>object.wait(3000);
+thread.join(3000);
+LockSupport.parkNanos(5000000L);
+Thread.sleep(1000);
+</code></pre></div><p>像这种操作，都会使线程处于限期等待的状态 TIMED_WAITING。因为Thread.sleep()必须带有时间参数，所以它不在无限期等待行列中。</p> <h3 id="_1-3-5-阻塞"><a href="#_1-3-5-阻塞" class="header-anchor">#</a> 1.3.5 阻塞</h3> <p>一个线程因为等待临界区的锁被阻塞产生的状态，也就是说，阻塞状态的产生是因为它正在等待着获取一个排它锁。</p> <p>这里，我们来看一个 synchronized的例子。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+    Object object = new Object();
+    Thread t1 = new Thread(() -&gt; {
+        synchronized (object){
+            for (;;){}
+        }
+    });
+    t1.start();
+
+    Thread t2 = new Thread(() -&gt; {
+        synchronized (object){
+            System.out.println(&quot;获取到object锁，线程执行。&quot;);
+        }
+    });
+    t2.start();
+    System.out.println(&quot;线程状态：&quot;+t2.getState());
+}
+//输出：线程状态：BLOCKED
+</code></pre></div><p>我们看上面的代码，object对象锁一直被线程 t1 持有，所以线程 t2 的状态一直会是阻塞状态。</p> <p>我们接着再来看一个锁的例子：</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args){
+
+    Lock lock = new ReentrantLock();
+    lock.lock();
+    Thread t1 = new Thread(() -&gt; {
+        lock.lock();
+        System.out.println(&quot;已获取lock锁，线程执行&quot;);
+        lock.unlock();
+    });
+    t1.start();
+    System.out.println(&quot;线程状态：&quot;+t1.getState());
+}
+</code></pre></div><p>如上代码，我们有一个ReentrantLock，main线程已经持有了这个锁，t1 线程会一直等待在lock.lock();。</p> <p>那么，此时 t1 线程的状态是什么呢 ？</p> <p>其实答案是WAITING，即无限期等待状态。这又是为什么呢 ？</p> <p>原因在于，Lock接口是Java API实现的锁，它的底层实现其实是抽象同步队列，简称AQS。</p> <p>在通过lock.lock()获取锁的时候，如果锁正在被其他线程持有，那么线程会被放入AQS队列后，阻塞挂起。</p> <div class="language- extra-class"><pre class="language-text"><code>public final void acquire(int arg) {
+    if (!tryAcquire(arg) &amp;&amp;
+        如果tryAcquire返回false，会把当前线程放入AQS阻塞队列
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+</code></pre></div><p>acquireQueued方法会将当前线程放入 AQS 阻塞队列，然后调用LockSupport.park(this);挂起线程。</p> <p>所以，这也就解释了为什么lock.lock()获取锁的时候，当前的线程状态会是 WAITING。</p> <p>常常有人会问，synchronized和Lock的区别，除了一般性的答案，此时你也可以说一下线程状态的差异，我猜可能很少有人会意识到这一点。</p> <h3 id="_1-3-6-结束"><a href="#_1-3-6-结束" class="header-anchor">#</a> 1.3.6 结束</h3> <p>一个线程，当它退出或已经执行完成的时候，就是结束状态。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+    
+    Thread thread = new Thread(() -&gt; System.out.println(&quot;线程已执行&quot;));
+    thread.start();
+    Thread.sleep(1000);
+    System.out.println(&quot;线程状态：&quot;+thread.getState());
+}
+//输出：  线程已执行
+线程状态：TERMINATED
+</code></pre></div><h2 id="_1-4-总结"><a href="#_1-4-总结" class="header-anchor">#</a> 1.4 总结</h2> <p>本文介绍了 Java 线程的不同状态，以及在何种情况下发生转换。</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/17185f48d25fe5bc.jpg" alt="线程状态啊"></p> <p>来源于 https://juejin.cn/post/6844904129551138824#heading-1</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 1:26:06 PM</span></div></footer> <!----> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.4367deb4.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/111.398505f9.js" defer></script>
+  </body>
+</html>

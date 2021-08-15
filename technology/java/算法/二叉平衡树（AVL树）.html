@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>二叉平衡树（AVL树） | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.4367deb4.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/154.681e8f9c.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.460cf24c.js"><link rel="prefetch" href="/blog-docs/assets/js/101.f8aeddd3.js"><link rel="prefetch" href="/blog-docs/assets/js/102.b4f3d188.js"><link rel="prefetch" href="/blog-docs/assets/js/103.3e4aa5da.js"><link rel="prefetch" href="/blog-docs/assets/js/104.41da0a25.js"><link rel="prefetch" href="/blog-docs/assets/js/105.9326fba0.js"><link rel="prefetch" href="/blog-docs/assets/js/106.5da8e3e2.js"><link rel="prefetch" href="/blog-docs/assets/js/107.8caa27f3.js"><link rel="prefetch" href="/blog-docs/assets/js/108.661e95c1.js"><link rel="prefetch" href="/blog-docs/assets/js/109.4d775337.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.8287502f.js"><link rel="prefetch" href="/blog-docs/assets/js/111.398505f9.js"><link rel="prefetch" href="/blog-docs/assets/js/112.26f5c356.js"><link rel="prefetch" href="/blog-docs/assets/js/113.0884e7c3.js"><link rel="prefetch" href="/blog-docs/assets/js/114.8fff225a.js"><link rel="prefetch" href="/blog-docs/assets/js/115.967848d7.js"><link rel="prefetch" href="/blog-docs/assets/js/116.0a3bc0d6.js"><link rel="prefetch" href="/blog-docs/assets/js/117.9f310404.js"><link rel="prefetch" href="/blog-docs/assets/js/118.1faa07e5.js"><link rel="prefetch" href="/blog-docs/assets/js/119.682dc470.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/120.9e428cca.js"><link rel="prefetch" href="/blog-docs/assets/js/121.45e445e8.js"><link rel="prefetch" href="/blog-docs/assets/js/122.346b9564.js"><link rel="prefetch" href="/blog-docs/assets/js/123.bd77a272.js"><link rel="prefetch" href="/blog-docs/assets/js/124.456d0ed0.js"><link rel="prefetch" href="/blog-docs/assets/js/125.a9ad0392.js"><link rel="prefetch" href="/blog-docs/assets/js/126.bd9becc2.js"><link rel="prefetch" href="/blog-docs/assets/js/127.b3443c2b.js"><link rel="prefetch" href="/blog-docs/assets/js/128.f6d9f255.js"><link rel="prefetch" href="/blog-docs/assets/js/129.ed348135.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/130.f4ab0cfd.js"><link rel="prefetch" href="/blog-docs/assets/js/131.78df3143.js"><link rel="prefetch" href="/blog-docs/assets/js/132.1c5c50d4.js"><link rel="prefetch" href="/blog-docs/assets/js/133.633a8449.js"><link rel="prefetch" href="/blog-docs/assets/js/134.277801b7.js"><link rel="prefetch" href="/blog-docs/assets/js/135.f49d13be.js"><link rel="prefetch" href="/blog-docs/assets/js/136.1dd5e533.js"><link rel="prefetch" href="/blog-docs/assets/js/137.afd93d4a.js"><link rel="prefetch" href="/blog-docs/assets/js/138.d492b71b.js"><link rel="prefetch" href="/blog-docs/assets/js/139.35aae156.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/140.e37d85f3.js"><link rel="prefetch" href="/blog-docs/assets/js/141.12f6e61d.js"><link rel="prefetch" href="/blog-docs/assets/js/142.c6bef786.js"><link rel="prefetch" href="/blog-docs/assets/js/143.333c53d9.js"><link rel="prefetch" href="/blog-docs/assets/js/144.23ea2f88.js"><link rel="prefetch" href="/blog-docs/assets/js/145.3e3ebc86.js"><link rel="prefetch" href="/blog-docs/assets/js/146.977bcd06.js"><link rel="prefetch" href="/blog-docs/assets/js/147.de3742a3.js"><link rel="prefetch" href="/blog-docs/assets/js/148.59aeccca.js"><link rel="prefetch" href="/blog-docs/assets/js/149.d3eb040e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/150.7e902441.js"><link rel="prefetch" href="/blog-docs/assets/js/151.a9ba807e.js"><link rel="prefetch" href="/blog-docs/assets/js/152.ba7d50c5.js"><link rel="prefetch" href="/blog-docs/assets/js/153.d3ce4666.js"><link rel="prefetch" href="/blog-docs/assets/js/155.008ebe19.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.73246f81.js"><link rel="prefetch" href="/blog-docs/assets/js/28.b5188281.js"><link rel="prefetch" href="/blog-docs/assets/js/29.e1da9556.js"><link rel="prefetch" href="/blog-docs/assets/js/3.7288e49f.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e12a04a6.js"><link rel="prefetch" href="/blog-docs/assets/js/31.4f9a45f6.js"><link rel="prefetch" href="/blog-docs/assets/js/32.826df14b.js"><link rel="prefetch" href="/blog-docs/assets/js/33.b89706ff.js"><link rel="prefetch" href="/blog-docs/assets/js/34.70cdf10f.js"><link rel="prefetch" href="/blog-docs/assets/js/35.c6aeff16.js"><link rel="prefetch" href="/blog-docs/assets/js/36.df8333d8.js"><link rel="prefetch" href="/blog-docs/assets/js/37.f7d20cb4.js"><link rel="prefetch" href="/blog-docs/assets/js/38.51f1d8bf.js"><link rel="prefetch" href="/blog-docs/assets/js/39.3628eb1a.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.9503463f.js"><link rel="prefetch" href="/blog-docs/assets/js/41.033baec3.js"><link rel="prefetch" href="/blog-docs/assets/js/42.947a9cbc.js"><link rel="prefetch" href="/blog-docs/assets/js/43.288c335f.js"><link rel="prefetch" href="/blog-docs/assets/js/44.f2d40737.js"><link rel="prefetch" href="/blog-docs/assets/js/45.6f582921.js"><link rel="prefetch" href="/blog-docs/assets/js/46.67f9b38c.js"><link rel="prefetch" href="/blog-docs/assets/js/47.5653e794.js"><link rel="prefetch" href="/blog-docs/assets/js/48.a7a8334d.js"><link rel="prefetch" href="/blog-docs/assets/js/49.0e75b0df.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c00cef28.js"><link rel="prefetch" href="/blog-docs/assets/js/51.a18d30ce.js"><link rel="prefetch" href="/blog-docs/assets/js/52.5ee0b676.js"><link rel="prefetch" href="/blog-docs/assets/js/53.3a8f4134.js"><link rel="prefetch" href="/blog-docs/assets/js/54.5ec0f281.js"><link rel="prefetch" href="/blog-docs/assets/js/55.b54c4cce.js"><link rel="prefetch" href="/blog-docs/assets/js/56.fe569b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/57.e88f7ff8.js"><link rel="prefetch" href="/blog-docs/assets/js/58.b51a8ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/59.4ec5382b.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.8dd8efd6.js"><link rel="prefetch" href="/blog-docs/assets/js/61.2bf40aa8.js"><link rel="prefetch" href="/blog-docs/assets/js/62.a7f65626.js"><link rel="prefetch" href="/blog-docs/assets/js/63.750a244a.js"><link rel="prefetch" href="/blog-docs/assets/js/64.18d04687.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7e8d5e45.js"><link rel="prefetch" href="/blog-docs/assets/js/66.ab659c07.js"><link rel="prefetch" href="/blog-docs/assets/js/67.105a4696.js"><link rel="prefetch" href="/blog-docs/assets/js/68.2524615c.js"><link rel="prefetch" href="/blog-docs/assets/js/69.baaa5f55.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.0deadb91.js"><link rel="prefetch" href="/blog-docs/assets/js/71.7a47ced0.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df303f6b.js"><link rel="prefetch" href="/blog-docs/assets/js/73.39e10828.js"><link rel="prefetch" href="/blog-docs/assets/js/74.86126d96.js"><link rel="prefetch" href="/blog-docs/assets/js/75.3c0dc65a.js"><link rel="prefetch" href="/blog-docs/assets/js/76.7ba24ace.js"><link rel="prefetch" href="/blog-docs/assets/js/77.e802ff4c.js"><link rel="prefetch" href="/blog-docs/assets/js/78.4f4894d4.js"><link rel="prefetch" href="/blog-docs/assets/js/79.6c1d5b08.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4ec88365.js"><link rel="prefetch" href="/blog-docs/assets/js/80.15f580eb.js"><link rel="prefetch" href="/blog-docs/assets/js/81.14e1b6ad.js"><link rel="prefetch" href="/blog-docs/assets/js/82.95da7dba.js"><link rel="prefetch" href="/blog-docs/assets/js/83.40ca2c09.js"><link rel="prefetch" href="/blog-docs/assets/js/84.d5da1d67.js"><link rel="prefetch" href="/blog-docs/assets/js/85.5515fd0c.js"><link rel="prefetch" href="/blog-docs/assets/js/86.932f6159.js"><link rel="prefetch" href="/blog-docs/assets/js/87.361fe08e.js"><link rel="prefetch" href="/blog-docs/assets/js/88.18ca48e1.js"><link rel="prefetch" href="/blog-docs/assets/js/89.c61d8e5c.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.60d31b53.js"><link rel="prefetch" href="/blog-docs/assets/js/91.d36b5c65.js"><link rel="prefetch" href="/blog-docs/assets/js/92.bc0b5ecb.js"><link rel="prefetch" href="/blog-docs/assets/js/93.45edbbdc.js"><link rel="prefetch" href="/blog-docs/assets/js/94.cf678b5c.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e25a7d37.js"><link rel="prefetch" href="/blog-docs/assets/js/96.95be2a42.js"><link rel="prefetch" href="/blog-docs/assets/js/97.e4e798cf.js"><link rel="prefetch" href="/blog-docs/assets/js/98.b32554de.js"><link rel="prefetch" href="/blog-docs/assets/js/99.698799aa.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>算法</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法.html" class="sidebar-link">Java手写二叉搜索树算法</a></li><li><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html" class="active sidebar-link">二叉平衡树（AVL树）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_1-平衡二叉树定义" class="sidebar-link">1. 平衡二叉树定义</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_2-这货还是不是平衡二叉树" class="sidebar-link">2. 这货还是不是平衡二叉树？</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_3-平衡因子" class="sidebar-link">3. 平衡因子</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_4-如何保持平衡二叉树平衡" class="sidebar-link">4. 如何保持平衡二叉树平衡？</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_5-平衡二叉树插入节点的四种情况" class="sidebar-link">5. 平衡二叉树插入节点的四种情况</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_6-平衡二叉树操作的代码实现" class="sidebar-link">6. 平衡二叉树操作的代码实现</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/算法/二叉平衡树（AVL树）.html#_7-avl树总结" class="sidebar-link">7. AVL树总结</a></li></ul></li><li><a href="/blog-docs/technology/java/算法/红黑树.html" class="sidebar-link">红黑树</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="二叉平衡树-avl树"><a href="#二叉平衡树-avl树" class="header-anchor">#</a> 二叉平衡树（AVL树）</h1> <h2 id="_1-平衡二叉树定义"><a href="#_1-平衡二叉树定义" class="header-anchor">#</a> 1. 平衡二叉树定义</h2> <blockquote><p>平衡二叉树又称AVL树。它可以是一颗空树，或者具有以下性质的二叉排序树：它的左子树和右子树的高度之差(平衡因子)的绝对值不超过1且它的左子树和右子树都是一颗平衡二叉树。</p></blockquote> <ul><li>平衡二叉树又称AVL树</li> <li>平衡二叉树必须是二叉排序树</li> <li>每个节点的左子树和右子树的高度差至多为1。</li></ul> <p>在定义中提到了树的高度和深度，我敢肯定有很多读者一定对树的高度和深度有所误解！最可爱的误解就是树的高度和深度没有区别，认为树的高度就是深度。宜春就忍不了了，必须得哔哔几句...
+树的高度和深度本质区别：深度是从根节点数到它的叶节点，高度是从叶节点数到它的根节点。</p> <p>在定义中提到了树的高度和深度，我敢肯定有很多读者一定对树的高度和深度有所误解！最可爱的误解就是树的高度和深度没有区别，认为树的高度就是深度。宜春就忍不了了，必须得哔哔几句...
+树的高度和深度本质区别：深度是从根节点数到它的叶节点，高度是从叶节点数到它的根节点。</p> <blockquote><p>二叉树的深度是从根节点开始自顶向下逐层累加的；而二叉树高度是从叶节点开始自底向上逐层累加的。虽然树的深度和高度一样，但是具体到树的某个节点，其深度和高度是不一样的。</p></blockquote> <p>其次就是对树的高度和深度是从1数起，还是从0数起。当然我也有自己的答案，但是众说纷纭，博主就不说其对与错了，就不多哔哔了。但是我还是比较认同这张图的观点：</p> <p><img src="https://user-gold-cdn.xitu.io/2019/12/14/16f03f6df4598e71?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p> <h2 id="_2-这货还是不是平衡二叉树"><a href="#_2-这货还是不是平衡二叉树" class="header-anchor">#</a> 2. 这货还是不是平衡二叉树？</h2> <p>判断一棵平衡二叉树（AVL树）有如下必要条件：</p> <blockquote><p>条件一：必须是二叉搜索树。 条件二：每个节点的左子树和右子树的高度差至多为1。</p></blockquote> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df54a3ae6~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"> <img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df53b4b33~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"></p> <h2 id="_3-平衡因子"><a href="#_3-平衡因子" class="header-anchor">#</a> 3. 平衡因子</h2> <p>不多哔哔，平衡因子 = 左子树深度/高度 - 右子树深度/高度</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df732a875~tplv-t2oaga2asx-watermark.awebp" alt="在这里插入图片描述"></p> <p>对于上图平衡二叉树而言：
+5的结点平衡因子就是 3 - 2 = 1；
+2的结点平衡因子就是 1 - 2 = -1；
+4的结点平衡因子就是 1 - 0 = 1；
+6的结点平衡因子就是 0 - 1 = -1；</p> <p>对于上图非平衡二叉树而言：
+3 的结点平衡因子就是 2 - 4 = -2；
+1 的结点平衡因子就是 0 - 1 = -1；
+4 的结点平衡因子就是 0 - 3 = -3；
+5 的结点平衡因子就是 0 - 2 = -2；
+6 的结点平衡因子就是 0 - 1 = -1；</p> <p><strong>特别注意：叶子结点平衡因子都是为 0</strong></p> <h2 id="_4-如何保持平衡二叉树平衡"><a href="#_4-如何保持平衡二叉树平衡" class="header-anchor">#</a> 4. 如何保持平衡二叉树平衡？</h2> <p>由于普通的二叉查找树会容易失去”平衡“，极端情况下，二叉查找树会退化成线性的链表，导致插入和查找的复杂度下降到 O(n) ，所以，这也是平衡二叉树设计的初衷。那么平衡二叉树如何保持”平衡“呢？</p> <p>不难看出平衡二叉树是一棵高度平衡的二叉查找树。所以，要构建跟维系一棵平衡二叉树就比普通的二叉树要复杂的多。在构建一棵平衡二叉树的过程中，当有新的节点要插入时，检查是否因插入后而破坏了树的平衡，如果是，则需要做旋转去改变树的结构。关于旋转，我相信使用文字描述是很难表达清楚的，还是得靠经典的两个图来理解最好不过了！不要不信噢，当然你可以尝试读下文字描述左旋：</p> <blockquote><p>左旋简单来说就是将节点的右支往左拉，右子节点变成父节点，并把晋升之后多余的左子节点出让给降级节点的右子节点。</p></blockquote> <p>相信你已经晕了。当然可以试着看看下面的经典动图理解！</p> <p>左旋：</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df54a4697~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"></p> <p>==试着用动态和下面的左旋结果图分析分析，想象一下，估计分分钟明白左旋！！！==</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df625d203~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"></p> <div class="language- extra-class"><pre class="language-text"><code>//左旋转方法代码
+private void leftRotate() {
+    //创建新的结点，以当前根结点的值
+    Node newNode = new Node(value);
+    //把新的结点的左子树设置成当前结点的左子树
+    newNode.left = left;
+    //把新的结点的右子树设置成带你过去结点的右子树的左子树
+    newNode.right = right.left;
+    //把当前结点的值替换成右子结点的值
+    value = right.value;
+    //把当前结点的右子树设置成当前结点右子树的右子树
+    right = right.right;
+    //把当前结点的左子树(左子结点)设置成新的结点
+    left = newNode;
+}
+</code></pre></div><p>相应的右旋就很好理解了：</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df55fc125~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"></p> <p>反之就是右旋，这里就不再举例了！</p> <p>小结：当二叉排序树每个节点的左子树和右子树的高度差超过1的时候，就需要通过旋转节点来维持平衡！旋转又分为左旋、右旋、双旋转。</p> <p>啥？双旋转？是的，顾名思义，在一些添加节点的情况下旋转一次是不能达到平衡的，需要进行第二次旋转，</p> <h2 id="_5-平衡二叉树插入节点的四种情况"><a href="#_5-平衡二叉树插入节点的四种情况" class="header-anchor">#</a> 5. 平衡二叉树插入节点的四种情况</h2> <p>当新节点插入后，有可能会有导致树不平衡，而可能出现的情况就有4种，分别称作<strong>左左，左右，右左，右右。</strong></p> <p>==而所谓的“左”和“右”无非就是代表新节点所插入的位置是左还是右！==</p> <blockquote><p>第一个左右代表位于根节点的左或者右， 第二个左右代表位于 【最接近插入节点的拥有两个子节点的父节点】 位置的左或者右</p></blockquote> <p>下面以左左为例，分析一波：</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df77d3362~tplv-t2oaga2asx-watermark.png" alt="在这里插入图片描述"></p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/16f03f6df76fae10~tplv-t2oaga2asx-watermark.awebp" alt="在这里插入图片描述"></p> <p>其中要特别注意的是：</p> <blockquote><p>右右、左左只需要旋转一次就可以平衡。 左右、右左要旋转两次才能把树调整平衡！</p></blockquote> <p>==其中旋转的条件就是：当二叉排序树每个节点的左子树和右子树的高度差超过1的时候！==</p> <h2 id="_6-平衡二叉树操作的代码实现"><a href="#_6-平衡二叉树操作的代码实现" class="header-anchor">#</a> 6. 平衡二叉树操作的代码实现</h2> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">// 创建AVLTree</span>
+<span class="token keyword">class</span> <span class="token class-name">AVLTree</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">Node</span> root<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">getRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> root<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 查找要删除的结点</span>
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">search</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> root<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 查找父结点</span>
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">searchParent</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> root<span class="token punctuation">.</span><span class="token function">searchParent</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 编写方法:</span>
+    <span class="token comment">// 1. 返回的 以node 为根结点的二叉排序树的最小结点的值</span>
+    <span class="token comment">// 2. 删除node 为根结点的二叉排序树的最小结点</span>
+    <span class="token comment">/**
+     *
+     * @param node 传入的结点(当做二叉排序树的根结点)
+     *            
+     * @return 返回的 以node 为根结点的二叉排序树的最小结点的值
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">delRightTreeMin</span><span class="token punctuation">(</span><span class="token class-name">Node</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Node</span> target <span class="token operator">=</span> node<span class="token punctuation">;</span>
+        <span class="token comment">// 循环的查找左子节点，就会找到最小值</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>target<span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            target <span class="token operator">=</span> target<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 这时 target就指向了最小结点</span>
+        <span class="token comment">// 删除最小结点</span>
+        <span class="token function">delNode</span><span class="token punctuation">(</span>target<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> target<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 删除结点</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delNode</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 1.需求先去找到要删除的结点 targetNode</span>
+            <span class="token class-name">Node</span> targetNode <span class="token operator">=</span> <span class="token function">search</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 如果没有找到要删除的结点</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>targetNode <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment">// 如果我们发现当前这颗二叉排序树只有一个结点</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>left <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> root<span class="token punctuation">.</span>right <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                root <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment">// 去找到targetNode的父结点</span>
+            <span class="token class-name">Node</span> parent <span class="token operator">=</span> <span class="token function">searchParent</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 如果要删除的结点是叶子结点</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>targetNode<span class="token punctuation">.</span>left <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> targetNode<span class="token punctuation">.</span>right <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 判断targetNode 是父结点的左子结点，还是右子结点</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>parent<span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> parent<span class="token punctuation">.</span>left<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 是左子结点</span>
+                    parent<span class="token punctuation">.</span>left <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>parent<span class="token punctuation">.</span>right <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> parent<span class="token punctuation">.</span>right<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment">// 是由子结点</span>
+                    parent<span class="token punctuation">.</span>right <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>targetNode<span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> targetNode<span class="token punctuation">.</span>right <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 删除有两颗子树的节点</span>
+                <span class="token keyword">int</span> minVal <span class="token operator">=</span> <span class="token function">delRightTreeMin</span><span class="token punctuation">(</span>targetNode<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                targetNode<span class="token punctuation">.</span>value <span class="token operator">=</span> minVal<span class="token punctuation">;</span>
+
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// 删除只有一颗子树的结点</span>
+                <span class="token comment">// 如果要删除的结点有左子结点</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>targetNode<span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment">// 如果 targetNode 是 parent 的左子结点</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>parent<span class="token punctuation">.</span>left<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            parent<span class="token punctuation">.</span>left <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// targetNode 是 parent 的右子结点</span>
+                            parent<span class="token punctuation">.</span>right <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                        root <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// 如果要删除的结点有右子结点</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment">// 如果 targetNode 是 parent 的左子结点</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>parent<span class="token punctuation">.</span>left<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            parent<span class="token punctuation">.</span>left <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// 如果 targetNode 是 parent 的右子结点</span>
+                            parent<span class="token punctuation">.</span>right <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                        root <span class="token operator">=</span> targetNode<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+
+            <span class="token punctuation">}</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 添加结点的方法</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Node</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            root <span class="token operator">=</span> node<span class="token punctuation">;</span><span class="token comment">// 如果root为空则直接让root指向node</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            root<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 中序遍历</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            root<span class="token punctuation">.</span><span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;二叉排序树为空，不能遍历&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 创建Node结点</span>
+<span class="token keyword">class</span> <span class="token class-name">Node</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> value<span class="token punctuation">;</span>
+    <span class="token class-name">Node</span> left<span class="token punctuation">;</span>
+    <span class="token class-name">Node</span> right<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 返回左子树的高度</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> left<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 返回右子树的高度</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>right <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> right<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 返回 以该结点为根结点的树的高度</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>left <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> left<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> right <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> right<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">//左旋转方法</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">leftRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment">//创建新的结点，以当前根结点的值</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//把新的结点的左子树设置成当前结点的左子树</span>
+        newNode<span class="token punctuation">.</span>left <span class="token operator">=</span> left<span class="token punctuation">;</span>
+        <span class="token comment">//把新的结点的右子树设置成带你过去结点的右子树的左子树</span>
+        newNode<span class="token punctuation">.</span>right <span class="token operator">=</span> right<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+        <span class="token comment">//把当前结点的值替换成右子结点的值</span>
+        value <span class="token operator">=</span> right<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+        <span class="token comment">//把当前结点的右子树设置成当前结点右子树的右子树</span>
+        right <span class="token operator">=</span> right<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+        <span class="token comment">//把当前结点的左子树(左子结点)设置成新的结点</span>
+        left <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">//右旋转</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">rightRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>right <span class="token operator">=</span> right<span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>left <span class="token operator">=</span> left<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+        value <span class="token operator">=</span> left<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+        left <span class="token operator">=</span> left<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+        right <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 查找要删除的结点</span>
+    <span class="token comment">/**
+     *
+     * @param value
+     *            希望删除的结点的值
+     * @return 如果找到返回该结点，否则返回null
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">search</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 找到就是该结点</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment">// 如果查找的值小于当前结点，向左子树递归查找</span>
+            <span class="token comment">// 如果左子结点为空</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>left<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// 如果查找的值不小于当前结点，向右子树递归查找</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>right<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 查找要删除结点的父结点</span>
+    <span class="token comment">/**
+     *
+     * @param value 要找到的结点的值
+     *            
+     * @return 返回的是要删除的结点的父结点，如果没有就返回null
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">searchParent</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 如果当前结点就是要删除的结点的父结点，就返回</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>left<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>right<span class="token punctuation">.</span>value <span class="token operator">==</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 如果查找的值小于当前结点的值, 并且当前结点的左子结点不为空</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>left<span class="token punctuation">.</span><span class="token function">searchParent</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 向左子树递归查找</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">&gt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>right<span class="token punctuation">.</span><span class="token function">searchParent</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 向右子树递归查找</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment">// 没有找到父结点</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">&quot;Node [value=&quot;</span> <span class="token operator">+</span> value <span class="token operator">+</span> <span class="token string">&quot;]&quot;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 添加结点的方法</span>
+    <span class="token comment">// 递归的形式添加结点，注意需要满足二叉排序树的要求</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Node</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>node <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 判断传入的结点的值，和当前子树的根结点的值关系</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>value <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 如果当前结点左子结点为null</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">=</span> node<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 递归的向左子树添加</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>left<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment">// 添加的结点的值大于 当前结点的值</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">=</span> node<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 递归的向右子树添加</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>right<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//当添加完一个结点后，如果: (右子树的高度-左子树的高度) &gt; 1 , 左旋转</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">//如果它的右子树的左子树的高度大于它的右子树的右子树的高度</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>right <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> right<span class="token punctuation">.</span><span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> right<span class="token punctuation">.</span><span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">//先对右子结点进行右旋转</span>
+                right<span class="token punctuation">.</span><span class="token function">rightRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment">//然后在对当前结点进行左旋转</span>
+                <span class="token function">leftRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//左旋转..</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">//直接进行左旋转即可</span>
+                <span class="token function">leftRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> <span class="token punctuation">;</span> <span class="token comment">//必须要!!!</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//当添加完一个结点后，如果 (左子树的高度 - 右子树的高度) &gt; 1, 右旋转</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">//如果它的左子树的右子树高度大于它的左子树的高度</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>left <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> left<span class="token punctuation">.</span><span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> left<span class="token punctuation">.</span><span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">//先对当前结点的左结点(左子树)-&gt;左旋转</span>
+                left<span class="token punctuation">.</span><span class="token function">leftRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment">//再对当前结点进行右旋转</span>
+                <span class="token function">rightRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">//直接进行右旋转即可</span>
+                <span class="token function">rightRotate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 中序遍历</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>left<span class="token punctuation">.</span><span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>right<span class="token punctuation">.</span><span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AVLTreeDemo</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>      
+        <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">;</span><span class="token comment">//任意测试节点数组</span>
+        <span class="token comment">//创建一个 AVLTree对象</span>
+        <span class="token class-name">AVLTree</span> avlTree <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AVLTree</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//添加结点</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            avlTree<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">//遍历</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;中序遍历&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        avlTree<span class="token punctuation">.</span><span class="token function">infixOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;平衡处理...&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;树的高度=&quot;</span> <span class="token operator">+</span> avlTree<span class="token punctuation">.</span><span class="token function">getRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;树的左子树高度=&quot;</span> <span class="token operator">+</span> avlTree<span class="token punctuation">.</span><span class="token function">getRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">leftHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;树的右子树高度=&quot;</span> <span class="token operator">+</span> avlTree<span class="token punctuation">.</span><span class="token function">getRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">rightHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;当前的根结点=&quot;</span> <span class="token operator">+</span> avlTree<span class="token punctuation">.</span><span class="token function">getRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_7-avl树总结"><a href="#_7-avl树总结" class="header-anchor">#</a> 7. AVL树总结</h2> <ol><li>平衡二叉树又称AVL树。</li> <li>平衡二叉树查询、插入、删除的时间复杂度都是 O(logN) 。</li> <li>插入节点失去平衡的情况有4种，左左，左右，右左，右右。</li> <li>右右、左左只需要旋转一次就可以平衡，而左右、右左要旋转两次才能把树调整平衡！</li> <li>失去平衡最多也只要旋转2次，所以，调整平衡的过程的时间复杂度为O(1)。</li></ol> <p>虽然平衡二叉树有效的解决了极端类似蛇皮单链表的情况，但是平衡二叉树也不是完美的，AVL树最大的缺点就是删除节点时有可能因为失衡，导致需要从删除节点的父节点开始，不断的回溯到根节点，如果这棵AVL树很高的话，那中间就要判断很多个节点，效率就显然变的低下！</p> <p>来源于 https://juejin.cn/post/6844904023015817223#heading-3</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 1:26:06 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法.html" class="prev">
+        Java手写二叉搜索树算法
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/算法/红黑树.html">
+        红黑树
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.4367deb4.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/154.681e8f9c.js" defer></script>
+  </body>
+</html>
