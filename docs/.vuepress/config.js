@@ -6,6 +6,25 @@ module.exports = {
     themeConfig: {
         // 最后更新时间
         lastUpdated: '最后更新时间', // string | boolean
+
+        // Git 仓库和编辑链接
+        // 假定是 GitHub. 同时也可以是一个完整的 GitLab URL
+        repo: 'ty-wssf/blog-docs',
+        // 自定义仓库链接文字。默认从 `themeConfig.repo` 中自动推断为
+        // "GitHub"/"GitLab"/"Bitbucket" 其中之一，或是 "Source"。
+        repoLabel: 'GitHub',
+        // 以下为可选的编辑链接选项
+        // 假如你的文档仓库和项目本身不在一个仓库：
+        docsRepo: 'ty-wssf/blog-docs',
+        // 假如文档不是放在仓库的根目录下：
+        docsDir: 'docs',
+        // 假如文档放在一个特定的分支下：
+        docsBranch: 'master',
+        // 默认是 false, 设置为 true 来启用
+        editLinks: true,
+        // 默认为 "Edit this page"
+        editLinkText: '帮助我们改善此页面！',
+
         // 顶部导航栏
         nav: [
             {text: '安装文档', link: '/install/'},
@@ -56,9 +75,6 @@ module.exports = {
                     {text: '掘金', link: 'https://juejin.cn/'},
                     {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
                 ]
-            },
-            {
-                text: 'GitHub', link: 'https://github.com/ty-wssf/blog-docs'
             },
             {
                 text: 'gitee', link: 'https://gitee.com/wuyilong/blog-docs'
