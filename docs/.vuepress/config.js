@@ -256,6 +256,7 @@ module.exports = {
                         'VuePress 基于 Vue 的静态网站生成器',
                         '数据同步kettle详解',
                         'github国内加速解决方案',
+                        'Typora + 图床 + 码云',
                     ]
                 },
             ],
