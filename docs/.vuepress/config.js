@@ -22,6 +22,8 @@ module.exports = {
                             {text: 'MyBatis', link: '/technology/java/MyBatis/MyBatis 源码分析系列文章导读/'},
                             {text: 'Dubbo', link: '/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/'},
                             {text: 'Docker', link: '/technology/java/Docker/Docker入门教程/'},
+                            {text: 'Jvm系列', link: '/technology/java/Jvm系列/Java类的加载机制/'},
+                            {text: '算法', link: '/technology/java/算法/Java手写二叉搜索树算法/'},
                             {text: '查缺补漏', link: '/technology/java/查缺补漏/Java面试题基础系列228道/'},
                             {text: '其它', link: '/technology/java/other/基于canal的mysql数据同步/'},
                         ]
@@ -257,6 +259,7 @@ module.exports = {
                         '数据同步kettle详解',
                         'github国内加速解决方案',
                         'Typora + 图床 + 码云',
+                        'Nexus搭建Maven私服',
                     ]
                 },
             ],
@@ -276,6 +279,37 @@ module.exports = {
                     ]
                 },
 
+            ],
+            '/technology/java/Jvm系列/': [
+                {
+                    title: 'Jvm系列',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Java类的加载机制',
+                        'Jvm内存结构',
+                        'GC算法垃圾收集器',
+                        'Jvm调优命令篇',
+                        'Java-GC分析',
+                        'Java服务GC参数调优案例',
+                        'Jvm调优-工具篇',
+                        '如何优化Java-GC「译」'
+                    ]
+                },
+            ],
+            '/technology/java/算法/': [
+                {
+                    title: '算法',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Java手写二叉搜索树算法',
+                        '二叉平衡树（AVL树）',
+                        '红黑树',
+                    ]
+                },
             ],
         },
     },
