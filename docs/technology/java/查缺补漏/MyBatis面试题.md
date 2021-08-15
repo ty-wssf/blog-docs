@@ -121,7 +121,7 @@ Mybatis 在处理${}时，就是把${}替换成变量的值。
 me.gacl.domain.order”>
 select order_id id, order_no orderno ,order_price price form
 orders where order_id=#{id};
-</select>复制代码
+</select>
 ```
 
 第 2 种： 通过<resultMap>来映射字段名和实体类属性名的一一对应的关系。
@@ -138,7 +138,7 @@ select * from orders where order_id=#{id}
 为数据表中的属性–>
 <result property = “orderno” column =”order_no”/>
 <result property=”price” column=”order_price” />
-</reslutMap>复制代码
+</reslutMap>
 ```
 
 ### 8、 模糊查询 like 语句该怎么写?
@@ -150,7 +150,7 @@ string wildcardname = “%smi%”;
 list<name> names = mapper.selectlike(wildcardname);
 <select id=”selectlike”>
 select * from foo where bar like #{value}
-</select>复制代码
+</select>
 ```
 
 第 2 种：在 sql 语句中拼接通配符，会引起 sql 注入
@@ -160,7 +160,7 @@ string wildcardname = “smi”;
 list<name> names = mapper.selectlike(wildcardname);
 <select id=”selectlike”>
 select * from foo where bar like "%"#{value}"%"
-</select>复制代码
+</select>
 ```
 
 ### 9、通常一个 Xml 映射文件，都会写一个 Dao 接口与之对应，请问，这个 Dao 接口的工作原理是什么？Dao 接口里的方法，参数不同时，方法能重载吗？
@@ -197,7 +197,7 @@ insert into names (name) values (#{
 	value
 }
 )
-</insert>复制代码
+</insert>
 ```
 
 然后在 java 代码中像下面这样执行批处理插入:
@@ -225,7 +225,7 @@ catch (Exception e) {
 }
 finally {
 	sqlsession.close();
-}复制代码
+}
 ```
 
 ### 13、如何获取自动生成的(主)键值?
@@ -249,7 +249,7 @@ name.setname(“fred”);
 int rows = mapper.insertname(name);
 // 完成后,id 已经被设置到对象中
 system.out.println(“rows inserted = ” + rows);
-system.out.println(“generated key value = ” + name.getid());复制代码
+system.out.println(“generated key value = ” + name.getid());
 ```
 
 ### 14、在 mapper 中如何传递多个参数?
@@ -264,7 +264,7 @@ public UserselectUser(String name,String area);
 <select id="selectUser"resultMap="BaseResultMap">
 select * fromuser_user_t whereuser_name = #{0}
 anduser_area=#{1}
-</select>复制代码
+</select>
 ```
 
 第二种： 使用 @param 注解:
@@ -273,7 +273,7 @@ anduser_area=#{1}
 public interface usermapper {
 	user selectuser(@param(“username”) string
 	username,@param(“hashedpassword”) string hashedpassword);
-}复制代码
+}
 ```
 
 然后,就可以在 xml 像下面这样使用(推荐封装为一个 map,作为单个参数传递给mapper):
@@ -284,7 +284,7 @@ select id, username, hashedpassword
 from some_table
 where username = #{username}
 and hashedpassword = #{hashedpassword}
-</select>复制代码
+</select>
 ```
 
 第三种：多个参数封装成 map
@@ -307,7 +307,7 @@ catch (Exception e) {
 }
 finally {
 	MybatisUtil.closeSqlSession();
-}复制代码
+}
 ```
 
 ### 15、Mybatis 动态 sql 有什么用？执行原理？有哪些动态 sql？
@@ -372,7 +372,7 @@ ofType="com.lcb.user.Student">
 <result property="name" column="s_name"/>
 </collection>
 </resultMap>
-</mapper>复制代码
+</mapper>
 ```
 
 ### 20、MyBatis 实现一对一有几种方式?具体怎么操作的？
@@ -425,7 +425,7 @@ ofType="com.lcb.user.Student">
 <mappers>
 <mapper resource="mapper.xml 文件的地址" />
 <mapper resource="mapper.xml 文件的地址" />
-</mappers>复制代码
+</mappers>
 ```
 
 （2）定义 mapper 接口
@@ -440,7 +440,7 @@ mapper 方法中可以 this.getSqlSession()进行数据增删改查。
 <bean id=" " class="mapper 接口的实现">
 <property name="sqlSessionFactory"
 ref="sqlSessionFactory"></property>
-</bean>复制代码
+</bean>
 ```
 
 第二种：使用 org.mybatis.spring.mapper.MapperFactoryBean：
@@ -451,7 +451,7 @@ ref="sqlSessionFactory"></property>
 <mappers>
 <mapper resource="mapper.xml 文件的地址" />
 <mapper resource="mapper.xml 文件的地址" />
-</mappers>复制代码
+</mappers>
 ```
 
 （2）定义 mapper 接口：
@@ -466,7 +466,7 @@ ref="sqlSessionFactory"></property>
 <bean id="" class="org.mybatis.spring.mapper.MapperFactoryBean">
 <property name="mapperInterface" value="mapper 接口地址" />
 <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>复制代码
+</bean>
 ```
 
 第三种：使用 mapper 扫描器：
@@ -491,7 +491,7 @@ mapper 接口中的方法名和 mapper.xml 中的定义的 statement 的 id 保�
 "></property>
 <property name="sqlSessionFactoryBeanName"
 value="sqlSessionFactory"/>
-</bean>复制代码
+</bean>
 ```
 
 （4）使用扫描器后从 spring 容器中获取 mapper 的实现对象。

@@ -229,6 +229,12 @@ module.exports = {
                         'Spring Boot 面试题',
                         'SpringCloud面试题',
                         'Java微服务面试题',
+                        'kafka 面试题',
+                        'RabbitMQ 面试题',
+                        'Dubbo 面试题',
+                        'Elasticsearch 面试题1',
+                        'Elasticsearch 面试题2',
+                        'Linux 面试题',
                     ]
                 },
 

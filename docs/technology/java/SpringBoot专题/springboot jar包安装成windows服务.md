@@ -31,7 +31,7 @@
     <pattern>yyyy-MM-dd</pattern>   
     </log>
 </service>
-复制代码
+
 ```
 
 **（注：此处注意，如果用的是文本编辑器修改，务必将编码格式换成Unicode编码）**

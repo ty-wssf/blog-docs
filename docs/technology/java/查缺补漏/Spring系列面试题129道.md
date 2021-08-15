@@ -143,7 +143,7 @@ class Client {
 			f.eat();
 		}
 	}
-}复制代码
+}
 ```
 
 ## 17、什么是 spring bean？
@@ -157,7 +157,7 @@ class Client {
 ```
 <bean id="studentbean" class="org.edureka.firstSpring.StudentBean">
 <property name="name" value="Edureka"></property>
-</bean>复制代码
+</bean>
 ```
 
 基于注解配置 您可以通过在相关的类，方法或字段声明上使用注解，将 bean 配置为组件类本身，而不是使用 XML 来描述 bean 装配。默认情况下，Spring 容器中未打开注解装配。因此，您需要在使用它之前在 Spring 配置文件中启用它。例如：
@@ -166,7 +166,7 @@ class Client {
 <beans>
 <context:annotation-config/>
 <!-- bean definitions go here -->
-</beans>复制代码
+</beans>
 ```
 
 基于 Java API 配置
@@ -180,7 +180,7 @@ public class StudentConfig {
 	public StudentBean myStudent() {
 		return new StudentBean();
 	}
-}复制代码
+}
 ```
 
 ## 19、spring 支持集中 bean scope？
@@ -218,7 +218,7 @@ public class Person {
 	private String name;
 	private String address;
 	//Setters and Getters
-}复制代码
+}
 ```
 
 bean.xml
@@ -233,7 +233,7 @@ bean.xml
 “Bangalore"></property>
 </bean>
 </property>
-</bean>复制代码
+</bean>
 ```
 
 ## 22、什么是 spring 装配
@@ -264,7 +264,7 @@ public class StudentConfig {
 	public StudentBean myStudent() {
 		return new StudentBean();
 	}
-}复制代码
+}
 ```
 
 ## 26、如何在 spring 中启动注解装配？
@@ -297,7 +297,7 @@ public class Employee {
 	public string getName(){
 		return name;
 	}
-}复制代码
+}
 ```
 
 ## 29、@Autowired  注解有什么用？
@@ -314,7 +314,7 @@ public class Employee {
 	public string getName(){
 		return name;
 	}
-}复制代码
+}
 ```
 
 ## 30、@Qualifier  注解有什么用？
@@ -333,7 +333,7 @@ public class Employee {
 	public string getName() {
 		return name;
 	}
-}复制代码
+}
 ```
 
 EmpAccount.java
@@ -346,7 +346,7 @@ public class EmpAccount {
 	public void showName() {
 		System.out.println(“Employee name : ”+emp.getName);
 	}
-}复制代码
+}
 ```
 
 ## 31、@RequestMapping 注解有什么用？

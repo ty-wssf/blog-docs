@@ -151,7 +151,7 @@ SpringBoot我们引入的是`2.2.2.RELEASE`版本，所以SpringCloud版本选�
             </dependencies>
         </dependencyManagement>
 
-复制代码
+
 ```
 
 - 子项目引入Nacos
@@ -169,7 +169,7 @@ SpringBoot我们引入的是`2.2.2.RELEASE`版本，所以SpringCloud版本选�
                 <artifactId>nacos-client</artifactId>
             </dependency>
 
-复制代码
+
 ```
 
 > 这里存在一个问题，spring-cloud-starter-alibaba-nacos-discovery需要指定版本，否则无法导入，没有查找为什么版本和SpringCloud Alibaba版本不一致。
@@ -188,7 +188,7 @@ public class EshopUserApplication {
         SpringApplication.run(EshopUserApplication.class, args);
     }
 }
-复制代码
+
 ```
 
 - 在配置文件application.yml中添加服务名称和Nacos Server地址
@@ -201,7 +201,7 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-复制代码
+
 ```
 
 > 更多配置可以查看：[Nacos discovery](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Falibaba%2Fspring-cloud-alibaba%2Fwiki%2FNacos-discovery)

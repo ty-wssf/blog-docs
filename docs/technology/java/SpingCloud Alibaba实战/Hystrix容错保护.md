@@ -32,7 +32,7 @@ Hystrix在SpringCloud体系的使用也非常简单，下面，我们开始吧�
         <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
     </dependency>
 
-复制代码
+
 ```
 
 - 在application.yml开启hystrix：
@@ -41,7 +41,7 @@ Hystrix在SpringCloud体系的使用也非常简单，下面，我们开始吧�
 feign:
   hystrix:
     enabled: true
-复制代码
+
 ```
 
 - 在服务启动类加入@EnableHystrix注解，以使系统支持hystrix的功能。
@@ -58,7 +58,7 @@ public class EshopGoodsApplication {
         SpringApplication.run(EshopGoodsApplication.class, args);
     }
 }
-复制代码
+
 ```
 
 - 编写一个StockClientFallback类，实现StockClientFeign接口，这个类是用来干什么的呢？是用于Feign客户端远程调用失败回调的。
@@ -83,14 +83,14 @@ public class StockClientFallback implements StockClientFeign {
         return 0;
     }
 }
-复制代码
+
 ```
 
 - 在StockClientFeign中添加失败回调配置，原来是`@FeignClient(value = "stock-service"）`
 
 ```java
 @FeignClient(value = "stock-service", fallback = StockClientFallback.class)
-复制代码
+
 ```
 
 还有另外一种方式，可以在方法上使用`@HystrixCommand(fallbackMethod = "getDefaultUser")`来定义服务降级方法。

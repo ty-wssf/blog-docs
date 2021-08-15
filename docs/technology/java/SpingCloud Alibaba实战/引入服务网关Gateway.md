@@ -74,7 +74,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-复制代码
+
 ```
 
 - bootstap.yml：在配置文件里除了应用名称，我们还配置了Nacos的相关配置，不太清楚的同学可以查看上一节。
@@ -93,7 +93,7 @@ spring:
         group: DEFAULT_GROUP     # 组，默认为 DEFAULT_GROUP
         file-extension: yaml    # 配置内容的数据格式，默认为 properties
         namespace: dev_space    # 指定命名空间，默认为public
-复制代码
+
 ```
 
 ## 路由配置
@@ -121,7 +121,7 @@ spring:
           - Path=/user/**
         filters:
           - StripPrefix=1  
-复制代码
+
 ```
 
 我们在里面进行了路由转发的配置，也就是`routes`,我们来看一看这些配置项都是什么意思：
