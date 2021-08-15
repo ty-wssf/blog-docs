@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Docker 三剑客之 Docker Compose | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.51b5f06b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/12.2dabdd65.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.6cb3fd3d.js"><link rel="prefetch" href="/blog-docs/assets/js/101.99cf37d8.js"><link rel="prefetch" href="/blog-docs/assets/js/102.27ad49b1.js"><link rel="prefetch" href="/blog-docs/assets/js/103.bedc670c.js"><link rel="prefetch" href="/blog-docs/assets/js/104.d4bf82c7.js"><link rel="prefetch" href="/blog-docs/assets/js/105.ba0cbbec.js"><link rel="prefetch" href="/blog-docs/assets/js/106.e7810702.js"><link rel="prefetch" href="/blog-docs/assets/js/107.bbeb40d8.js"><link rel="prefetch" href="/blog-docs/assets/js/108.b09dee68.js"><link rel="prefetch" href="/blog-docs/assets/js/109.85da12bc.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.da616a7a.js"><link rel="prefetch" href="/blog-docs/assets/js/111.17c5cc36.js"><link rel="prefetch" href="/blog-docs/assets/js/112.52e534cf.js"><link rel="prefetch" href="/blog-docs/assets/js/113.f87a040b.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.c8fe2b57.js"><link rel="prefetch" href="/blog-docs/assets/js/28.66775f55.js"><link rel="prefetch" href="/blog-docs/assets/js/29.2a24a074.js"><link rel="prefetch" href="/blog-docs/assets/js/3.b98532be.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e9054e60.js"><link rel="prefetch" href="/blog-docs/assets/js/31.792c98e9.js"><link rel="prefetch" href="/blog-docs/assets/js/32.83e51477.js"><link rel="prefetch" href="/blog-docs/assets/js/33.28c14f43.js"><link rel="prefetch" href="/blog-docs/assets/js/34.07262394.js"><link rel="prefetch" href="/blog-docs/assets/js/35.1ee292f5.js"><link rel="prefetch" href="/blog-docs/assets/js/36.678e522d.js"><link rel="prefetch" href="/blog-docs/assets/js/37.4d1d1ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/38.b77157a7.js"><link rel="prefetch" href="/blog-docs/assets/js/39.ca60e8ca.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.d76eae45.js"><link rel="prefetch" href="/blog-docs/assets/js/41.c2eb83a5.js"><link rel="prefetch" href="/blog-docs/assets/js/42.3405621c.js"><link rel="prefetch" href="/blog-docs/assets/js/43.1d2b4398.js"><link rel="prefetch" href="/blog-docs/assets/js/44.d4e8af00.js"><link rel="prefetch" href="/blog-docs/assets/js/45.a79ec485.js"><link rel="prefetch" href="/blog-docs/assets/js/46.f437f17e.js"><link rel="prefetch" href="/blog-docs/assets/js/47.b0fd407e.js"><link rel="prefetch" href="/blog-docs/assets/js/48.22d2be62.js"><link rel="prefetch" href="/blog-docs/assets/js/49.633b5050.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.456112f0.js"><link rel="prefetch" href="/blog-docs/assets/js/51.2cbe5062.js"><link rel="prefetch" href="/blog-docs/assets/js/52.107af4c7.js"><link rel="prefetch" href="/blog-docs/assets/js/53.b83c4913.js"><link rel="prefetch" href="/blog-docs/assets/js/54.b0e61963.js"><link rel="prefetch" href="/blog-docs/assets/js/55.ba96e247.js"><link rel="prefetch" href="/blog-docs/assets/js/56.5a7b30a4.js"><link rel="prefetch" href="/blog-docs/assets/js/57.57786ae3.js"><link rel="prefetch" href="/blog-docs/assets/js/58.c348ec08.js"><link rel="prefetch" href="/blog-docs/assets/js/59.18fb3ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.226572d8.js"><link rel="prefetch" href="/blog-docs/assets/js/61.c9c4db08.js"><link rel="prefetch" href="/blog-docs/assets/js/62.24893c0c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.418b1be1.js"><link rel="prefetch" href="/blog-docs/assets/js/64.48cb2f75.js"><link rel="prefetch" href="/blog-docs/assets/js/65.5c63972c.js"><link rel="prefetch" href="/blog-docs/assets/js/66.c07026f7.js"><link rel="prefetch" href="/blog-docs/assets/js/67.a6d6b6be.js"><link rel="prefetch" href="/blog-docs/assets/js/68.66f4baba.js"><link rel="prefetch" href="/blog-docs/assets/js/69.03813f87.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.7dee7e46.js"><link rel="prefetch" href="/blog-docs/assets/js/71.ac1e24e7.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df8cb940.js"><link rel="prefetch" href="/blog-docs/assets/js/73.d096c4af.js"><link rel="prefetch" href="/blog-docs/assets/js/74.3dc52159.js"><link rel="prefetch" href="/blog-docs/assets/js/75.7d1d840b.js"><link rel="prefetch" href="/blog-docs/assets/js/76.9860c22a.js"><link rel="prefetch" href="/blog-docs/assets/js/77.cc453bfd.js"><link rel="prefetch" href="/blog-docs/assets/js/78.8099acb8.js"><link rel="prefetch" href="/blog-docs/assets/js/79.963aa97c.js"><link rel="prefetch" href="/blog-docs/assets/js/8.8a9472a3.js"><link rel="prefetch" href="/blog-docs/assets/js/80.60575d23.js"><link rel="prefetch" href="/blog-docs/assets/js/81.783b8c68.js"><link rel="prefetch" href="/blog-docs/assets/js/82.b2a97aa6.js"><link rel="prefetch" href="/blog-docs/assets/js/83.8274fda3.js"><link rel="prefetch" href="/blog-docs/assets/js/84.bb4cf24e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.dd489d22.js"><link rel="prefetch" href="/blog-docs/assets/js/86.46844327.js"><link rel="prefetch" href="/blog-docs/assets/js/87.be0b7d01.js"><link rel="prefetch" href="/blog-docs/assets/js/88.2eb506cc.js"><link rel="prefetch" href="/blog-docs/assets/js/89.ec734928.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.451c0089.js"><link rel="prefetch" href="/blog-docs/assets/js/91.ebd455b1.js"><link rel="prefetch" href="/blog-docs/assets/js/92.8869b590.js"><link rel="prefetch" href="/blog-docs/assets/js/93.de8dd2f3.js"><link rel="prefetch" href="/blog-docs/assets/js/94.da2b07df.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e9b438b2.js"><link rel="prefetch" href="/blog-docs/assets/js/96.fae3f7ed.js"><link rel="prefetch" href="/blog-docs/assets/js/97.ceb75035.js"><link rel="prefetch" href="/blog-docs/assets/js/98.fb315f9a.js"><link rel="prefetch" href="/blog-docs/assets/js/99.2ae78624.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Docker</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/Docker/Docker入门教程.html" class="sidebar-link">Docker入门教程</a></li><li><a href="/blog-docs/technology/java/Docker/Dockerfile 使用介绍.html" class="sidebar-link">Dockerfile 使用介绍</a></li><li><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html" class="sidebar-link">Dockerfile 指令详解</a></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html" class="active sidebar-link">Docker 三剑客之 Docker Compose</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#docker-compose-介绍" class="sidebar-link">Docker Compose 介绍</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#docker-compose-安装" class="sidebar-link">Docker Compose 安装</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#快速上手" class="sidebar-link">快速上手</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#第一步-创建-python-服务" class="sidebar-link">第一步，创建 Python 服务</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#第二步-创建-dockerfile" class="sidebar-link">第二步，创建 Dockerfile</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#第三步-使用-compose-文件定义一个服务" class="sidebar-link">第三步，使用 Compose 文件定义一个服务</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#第四步-使用-compose-编译启动应用" class="sidebar-link">第四步，使用 Compose 编译启动应用</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html#docker-compose-常用命令" class="sidebar-link">Docker Compose 常用命令</a></li></ul></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Machine.html" class="sidebar-link">Docker 三剑客之 Docker Machine</a></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Swarm.html" class="sidebar-link">Docker 三剑客之 Docker Swarm</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="docker-三剑客之-docker-compose"><a href="#docker-三剑客之-docker-compose" class="header-anchor">#</a> Docker 三剑客之 Docker Compose</h1> <p>Docker-Compose 是 Docker 的一种编排服务，是一个用于在 Docker 上定义并运行复杂应用的工具，可以让用户在集群中部署分布式应用。</p> <p>我们知道使用一个 Dockerfile 模板文件可以定义一个单独的应用容器，如果需要定义多个容器就需要服务编排。服务编排有很多种技术方案，今天给大家介绍 Docker 官方产品 Docker Compose 。</p> <p>Dockerfile 可以让用户管理一个单独的应用容器；而 Compose 则允许用户在一个模板（YAML 格式）中定义一组相关联的应用容器（被称为一个 project，即项目），例如一个 Web 服务容器再加上后端的数据库服务容器等。</p> <h2 id="docker-compose-介绍"><a href="#docker-compose-介绍" class="header-anchor">#</a> Docker Compose 介绍</h2> <p>通过 Docker-Compose 用户可以很容易地用一个配置文件定义一个多容器的应用，然后使用一条指令安装这个应用的所有依赖，完成构建。Docker-Compose 解决了容器与容器之间如何管理编排的问题。</p> <p>Docker Compose 工作原理图</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/docker-compose.png" alt="img"></p> <p>Compose 中有两个重要的概念：</p> <ul><li>服务 (service) ：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。</li> <li>项目 (project) ：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。</li></ul> <p>一个项目可以由多个服务（容器）关联而成，Compose 面向项目进行管理，通过子命令对项目中的一组容器进行便捷地生命周期管理。</p> <p>Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理。因此，只要所操作的平台支持 Docker API，就可以在其上利用 Compose 来进行编排管理。</p> <h2 id="docker-compose-安装"><a href="#docker-compose-安装" class="header-anchor">#</a> Docker Compose 安装</h2> <p>Docker Compose 是 Docker 的独立产品，因此需要安装 Docker 之后在单独安装 Docker Compose .</p> <p><strong>方法一：</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#下载
+sudo curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#安装
+chmod +x /usr/local/bin/docker-compose
+#查看版本
+docker-compose version
+</code></pre></div><p><strong>方法二：</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#安装pip
+yum -y install epel-release
+yum -y install python-pip
+#确认版本
+pip --version
+#更新pip
+pip install --upgrade pip
+#安装docker-compose
+pip install docker-compose 
+#查看版本
+docker-compose version
+</code></pre></div><p>推荐使用方法一进行安装，安装成功后输入<code>docker-compose version</code>会返回 docker-compose 的版本信息，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost ~]# docker-compose version
+docker-compose version 1.19.0, build 9e633ef
+docker-py version: 2.7.0
+CPython version: 2.7.13
+OpenSSL version: OpenSSL 1.0.1t  3 May 2016
+</code></pre></div><p>出现以上信息，表明 docker-compose 安装成功</p> <p><strong>安装补全工具(可选)</strong></p> <p>为了方便我们输入命令，也可以安装 Docker 的补全提示工具帮忙我们快速输入命令</p> <div class="language- extra-class"><pre class="language-text"><code>#安装
+yum install bash-completion
+
+#下载docker-compose脚本
+curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose &gt; /etc/bash_completion.d/docker-compose
+</code></pre></div><h2 id="快速上手"><a href="#快速上手" class="header-anchor">#</a> 快速上手</h2> <p>没有什么比来一个小例子练练手更好的学习方法了，我们以官网上的简单示例来看看 docker compose 的使用方法。</p> <p>我们设计这么一个场景，使用 Python 启动一个 Web 服务，输出一个<code>hello()</code>方法，每次访问的时候在 Redis 缓存中进行计数，并且将统计的结果打印到页面中。</p> <h3 id="第一步-创建-python-服务"><a href="#第一步-创建-python-服务" class="header-anchor">#</a> 第一步，创建 Python 服务</h3> <p>创建项目路径:</p> <div class="language- extra-class"><pre class="language-text"><code>mkdir composetest
+cd composetest
+</code></pre></div><p>在目录下创建<code>app.py</code>文件</p> <div class="language- extra-class"><pre class="language-text"><code>import time
+
+import redis
+from flask import Flask
+
+
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return 'Hello World! I have been seen {} times.\n'.format(count)
+
+if __name__ == &quot;__main__&quot;:
+    app.run(host=&quot;0.0.0.0&quot;, debug=True)
+</code></pre></div><p>在这个例子中, redis 使用了容器内的网络默认端口是6379。这段 Python 程序的内容就是，启动后连接 Redis 并且输出 <code>hello()</code>方法，当每次访问的时候累计访问次数并且将结果放回到页面。</p> <p>在同目录下创建<code>requirements.txt</code>文件，添加项目依赖的python包：</p> <div class="language- extra-class"><pre class="language-text"><code>flask
+redis
+</code></pre></div><blockquote><p>Flask 是 Python 中一个微型的 Web 开发框架。</p></blockquote> <h3 id="第二步-创建-dockerfile"><a href="#第二步-创建-dockerfile" class="header-anchor">#</a> 第二步，创建 Dockerfile</h3> <p>我们来写一个 Dockerfile 来定义 Docker 镜像，此镜像包含了 Python 的依赖包和 Python 环境。</p> <p>同样在此目录下，我们创建一个 Dockerfile 文件。</p> <div class="language- extra-class"><pre class="language-text"><code>FROM python:3.4-alpine
+ADD . /code
+WORKDIR /code
+RUN pip install -r requirements.txt
+CMD [&quot;python&quot;, &quot;app.py&quot;]
+</code></pre></div><p>这段代码表示:</p> <ul><li>使用基础镜像 Python 3.4</li> <li>将当前目录映射到镜像<code>/code</code>目录下</li> <li>设置工作目录为 <code>/code</code></li> <li>安装 Python 依赖包</li> <li>启动 <code>app.py</code> 程序</li></ul> <h3 id="第三步-使用-compose-文件定义一个服务"><a href="#第三步-使用-compose-文件定义一个服务" class="header-anchor">#</a> 第三步，使用 Compose 文件定义一个服务</h3> <p>在当期目录下，我们创建一个 docker-compose.yml 文件，内容如下：</p> <div class="language- extra-class"><pre class="language-text"><code>version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - &quot;5000:5000&quot;
+  redis:
+    image: &quot;redis:alpine&quot;
+</code></pre></div><p>这个 Compose 文件定义了两个服务, 一个 Pyhon Web 服务和 redis 服务。</p> <ul><li>Pyhon Web 服务：使用 Dockerfile 构建了当前镜像。将 Web 容器内部的5000端口映射到 host 的5000端口；并将 Web 容器与 redis 容器连接。</li> <li>redis服务：该容器直接由官方的 redis 镜像创建。</li></ul> <h3 id="第四步-使用-compose-编译启动应用"><a href="#第四步-使用-compose-编译启动应用" class="header-anchor">#</a> 第四步，使用 Compose 编译启动应用</h3> <p>使用命令<code>docker-compose up</code>启动</p> <div class="language- extra-class"><pre class="language-text"><code>version: '2'
+services:
+  web:
+    build: .
+    command: python app.py
+    ports:
+     - &quot;5000:5000&quot;
+    volumes:
+     - .:/code
+  redis:
+    image: &quot;redis:alpine&quot;
+</code></pre></div><p>启动成功之后，在浏览器访问：<code>http://ipaddress:5000/</code> ，返回如下：</p> <div class="language- extra-class"><pre class="language-text"><code>Hello World! I have been seen 1 times.
+</code></pre></div><p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/quick-hello-world-1.png" alt="img"></p> <p>刷新再次访问返回</p> <div class="language- extra-class"><pre class="language-text"><code>Hello World! I have been seen 2 times.
+</code></pre></div><p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/quick-hello-world-2.png" alt="img"></p> <p>不断的刷新数字会不断的增长。</p> <h2 id="docker-compose-常用命令"><a href="#docker-compose-常用命令" class="header-anchor">#</a> Docker Compose 常用命令</h2> <p>使用<code>docker-compose up -d</code>在后台启动服务</p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost composetest]# docker-compose up -d
+Starting composetest_web_1 ... 
+Starting composetest_web_1 ... done
+</code></pre></div><p>使用<code>docker-compose ps</code>命令查看启动的服务</p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost composetest]# docker-compose ps
+       Name                      Command               State           Ports         
+-------------------------------------------------------------------------------------
+composetest_redis_1   docker-entrypoint.sh redis ...   Up      6379/tcp              
+composetest_web_1     python app.py                    Up      0.0.0.0:5000-&gt;5000/tcp
+</code></pre></div><p>使用<code>docker-compose stop</code>停止服务。</p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost composetest]# docker-compose stop
+Stopping composetest_web_1   ... done
+Stopping composetest_redis_1 ... done
+</code></pre></div><p><strong>其它常用命令</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#查看帮助
+docker-compose -h
+
+# -f  指定使用的 Compose 模板文件，默认为 docker-compose.yml，可以多次指定。
+docker-compose -f docker-compose.yml up -d 
+
+#启动所有容器，-d 将会在后台启动并运行所有的容器
+docker-compose up -d
+
+#停用移除所有容器以及网络相关
+docker-compose down
+
+#查看服务容器的输出
+docker-compose logs
+
+#列出项目中目前的所有容器
+docker-compose ps
+
+#构建（重新构建）项目中的服务容器。服务容器一旦构建后，将会带上一个标记名，例如对于 web 项目中的一个 db 容器，可能是 web_db。可以随时在项目目录下运行 docker-compose build 来重新构建服务
+docker-compose build
+
+#拉取服务依赖的镜像
+docker-compose pull
+
+#重启项目中的服务
+docker-compose restart
+
+#删除所有（停止状态的）服务容器。推荐先执行 docker-compose stop 命令来停止容器。
+docker-compose rm 
+
+#在指定服务上执行一个命令。
+docker-compose run ubuntu ping docker.com
+
+#设置指定服务运行的容器个数。通过 service=num 的参数来设置数量
+docker-compose scale web=3 db=2
+
+#启动已经存在的服务容器。
+docker-compose start
+
+#停止已经处于运行状态的容器，但不删除它。通过 docker-compose start 可以再次启动这些容器。
+docker-compose stop
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 9:22:48 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html" class="prev">
+        Dockerfile 指令详解
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Machine.html">
+        Docker 三剑客之 Docker Machine
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.51b5f06b.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/12.2dabdd65.js" defer></script>
+  </body>
+</html>

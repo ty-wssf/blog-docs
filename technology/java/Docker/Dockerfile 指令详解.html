@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dockerfile 指令详解 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.51b5f06b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/16.8ed0322a.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.6cb3fd3d.js"><link rel="prefetch" href="/blog-docs/assets/js/101.99cf37d8.js"><link rel="prefetch" href="/blog-docs/assets/js/102.27ad49b1.js"><link rel="prefetch" href="/blog-docs/assets/js/103.bedc670c.js"><link rel="prefetch" href="/blog-docs/assets/js/104.d4bf82c7.js"><link rel="prefetch" href="/blog-docs/assets/js/105.ba0cbbec.js"><link rel="prefetch" href="/blog-docs/assets/js/106.e7810702.js"><link rel="prefetch" href="/blog-docs/assets/js/107.bbeb40d8.js"><link rel="prefetch" href="/blog-docs/assets/js/108.b09dee68.js"><link rel="prefetch" href="/blog-docs/assets/js/109.85da12bc.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.da616a7a.js"><link rel="prefetch" href="/blog-docs/assets/js/111.17c5cc36.js"><link rel="prefetch" href="/blog-docs/assets/js/112.52e534cf.js"><link rel="prefetch" href="/blog-docs/assets/js/113.f87a040b.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.c8fe2b57.js"><link rel="prefetch" href="/blog-docs/assets/js/28.66775f55.js"><link rel="prefetch" href="/blog-docs/assets/js/29.2a24a074.js"><link rel="prefetch" href="/blog-docs/assets/js/3.b98532be.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e9054e60.js"><link rel="prefetch" href="/blog-docs/assets/js/31.792c98e9.js"><link rel="prefetch" href="/blog-docs/assets/js/32.83e51477.js"><link rel="prefetch" href="/blog-docs/assets/js/33.28c14f43.js"><link rel="prefetch" href="/blog-docs/assets/js/34.07262394.js"><link rel="prefetch" href="/blog-docs/assets/js/35.1ee292f5.js"><link rel="prefetch" href="/blog-docs/assets/js/36.678e522d.js"><link rel="prefetch" href="/blog-docs/assets/js/37.4d1d1ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/38.b77157a7.js"><link rel="prefetch" href="/blog-docs/assets/js/39.ca60e8ca.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.d76eae45.js"><link rel="prefetch" href="/blog-docs/assets/js/41.c2eb83a5.js"><link rel="prefetch" href="/blog-docs/assets/js/42.3405621c.js"><link rel="prefetch" href="/blog-docs/assets/js/43.1d2b4398.js"><link rel="prefetch" href="/blog-docs/assets/js/44.d4e8af00.js"><link rel="prefetch" href="/blog-docs/assets/js/45.a79ec485.js"><link rel="prefetch" href="/blog-docs/assets/js/46.f437f17e.js"><link rel="prefetch" href="/blog-docs/assets/js/47.b0fd407e.js"><link rel="prefetch" href="/blog-docs/assets/js/48.22d2be62.js"><link rel="prefetch" href="/blog-docs/assets/js/49.633b5050.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.456112f0.js"><link rel="prefetch" href="/blog-docs/assets/js/51.2cbe5062.js"><link rel="prefetch" href="/blog-docs/assets/js/52.107af4c7.js"><link rel="prefetch" href="/blog-docs/assets/js/53.b83c4913.js"><link rel="prefetch" href="/blog-docs/assets/js/54.b0e61963.js"><link rel="prefetch" href="/blog-docs/assets/js/55.ba96e247.js"><link rel="prefetch" href="/blog-docs/assets/js/56.5a7b30a4.js"><link rel="prefetch" href="/blog-docs/assets/js/57.57786ae3.js"><link rel="prefetch" href="/blog-docs/assets/js/58.c348ec08.js"><link rel="prefetch" href="/blog-docs/assets/js/59.18fb3ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.226572d8.js"><link rel="prefetch" href="/blog-docs/assets/js/61.c9c4db08.js"><link rel="prefetch" href="/blog-docs/assets/js/62.24893c0c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.418b1be1.js"><link rel="prefetch" href="/blog-docs/assets/js/64.48cb2f75.js"><link rel="prefetch" href="/blog-docs/assets/js/65.5c63972c.js"><link rel="prefetch" href="/blog-docs/assets/js/66.c07026f7.js"><link rel="prefetch" href="/blog-docs/assets/js/67.a6d6b6be.js"><link rel="prefetch" href="/blog-docs/assets/js/68.66f4baba.js"><link rel="prefetch" href="/blog-docs/assets/js/69.03813f87.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.7dee7e46.js"><link rel="prefetch" href="/blog-docs/assets/js/71.ac1e24e7.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df8cb940.js"><link rel="prefetch" href="/blog-docs/assets/js/73.d096c4af.js"><link rel="prefetch" href="/blog-docs/assets/js/74.3dc52159.js"><link rel="prefetch" href="/blog-docs/assets/js/75.7d1d840b.js"><link rel="prefetch" href="/blog-docs/assets/js/76.9860c22a.js"><link rel="prefetch" href="/blog-docs/assets/js/77.cc453bfd.js"><link rel="prefetch" href="/blog-docs/assets/js/78.8099acb8.js"><link rel="prefetch" href="/blog-docs/assets/js/79.963aa97c.js"><link rel="prefetch" href="/blog-docs/assets/js/8.8a9472a3.js"><link rel="prefetch" href="/blog-docs/assets/js/80.60575d23.js"><link rel="prefetch" href="/blog-docs/assets/js/81.783b8c68.js"><link rel="prefetch" href="/blog-docs/assets/js/82.b2a97aa6.js"><link rel="prefetch" href="/blog-docs/assets/js/83.8274fda3.js"><link rel="prefetch" href="/blog-docs/assets/js/84.bb4cf24e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.dd489d22.js"><link rel="prefetch" href="/blog-docs/assets/js/86.46844327.js"><link rel="prefetch" href="/blog-docs/assets/js/87.be0b7d01.js"><link rel="prefetch" href="/blog-docs/assets/js/88.2eb506cc.js"><link rel="prefetch" href="/blog-docs/assets/js/89.ec734928.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.451c0089.js"><link rel="prefetch" href="/blog-docs/assets/js/91.ebd455b1.js"><link rel="prefetch" href="/blog-docs/assets/js/92.8869b590.js"><link rel="prefetch" href="/blog-docs/assets/js/93.de8dd2f3.js"><link rel="prefetch" href="/blog-docs/assets/js/94.da2b07df.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e9b438b2.js"><link rel="prefetch" href="/blog-docs/assets/js/96.fae3f7ed.js"><link rel="prefetch" href="/blog-docs/assets/js/97.ceb75035.js"><link rel="prefetch" href="/blog-docs/assets/js/98.fb315f9a.js"><link rel="prefetch" href="/blog-docs/assets/js/99.2ae78624.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Docker</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/Docker/Docker入门教程.html" class="sidebar-link">Docker入门教程</a></li><li><a href="/blog-docs/technology/java/Docker/Dockerfile 使用介绍.html" class="sidebar-link">Dockerfile 使用介绍</a></li><li><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html" class="active sidebar-link">Dockerfile 指令详解</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#常用指令" class="sidebar-link">常用指令</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_1-from-指定基础镜像" class="sidebar-link">1 FROM 指定基础镜像</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_2-run-执行命令" class="sidebar-link">2 RUN 执行命令</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_3-copy-复制文件" class="sidebar-link">3 COPY 复制文件</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_4-add-更高级的复制文件" class="sidebar-link">4 ADD 更高级的复制文件</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_5-env-设置环境变量" class="sidebar-link">5 ENV 设置环境变量</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_6-expose" class="sidebar-link">6 EXPOSE</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_7-volume-定义匿名卷" class="sidebar-link">7 VOLUME 定义匿名卷</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_8-workdir-指定工作目录" class="sidebar-link">8 WORKDIR 指定工作目录</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_9-user-指定当前用户" class="sidebar-link">9 USER 指定当前用户</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_10-cmd" class="sidebar-link">10 CMD</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_11-entrypoint" class="sidebar-link">11 ENTRYPOINT</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_12-label" class="sidebar-link">12 LABEL</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_13-arg" class="sidebar-link">13 ARG</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_14-onbuild" class="sidebar-link">14 ONBUILD</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_15-stopsignal" class="sidebar-link">15 STOPSIGNAL</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#_16-shell" class="sidebar-link">16 SHELL</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#dockerfile-使用经验" class="sidebar-link">Dockerfile 使用经验</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#dockerfile-示例" class="sidebar-link">Dockerfile 示例</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/Docker/Dockerfile 指令详解.html#原则与建议" class="sidebar-link">原则与建议</a></li></ul></li></ul></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html" class="sidebar-link">Docker 三剑客之 Docker Compose</a></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Machine.html" class="sidebar-link">Docker 三剑客之 Docker Machine</a></li><li><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Swarm.html" class="sidebar-link">Docker 三剑客之 Docker Swarm</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="dockerfile-指令详解"><a href="#dockerfile-指令详解" class="header-anchor">#</a> Dockerfile 指令详解</h1> <h2 id="常用指令"><a href="#常用指令" class="header-anchor">#</a> 常用指令</h2> <h3 id="_1-from-指定基础镜像"><a href="#_1-from-指定基础镜像" class="header-anchor">#</a> 1 FROM 指定基础镜像</h3> <p>FROM 指令用于指定其后构建新镜像所使用的基础镜像。FROM 指令必是 Dockerfile 文件中的首条命令，启动构建流程后，Docker 将会基于该镜像构建新镜像，FROM 后的命令也会基于这个基础镜像。</p> <p>FROM语法格式为：</p> <div class="language- extra-class"><pre class="language-text"><code>FROM &lt;image&gt;
+</code></pre></div><p>或</p> <div class="language- extra-class"><pre class="language-text"><code>FROM &lt;image&gt;:&lt;tag&gt;
+</code></pre></div><p>或</p> <div class="language- extra-class"><pre class="language-text"><code>FROM &lt;image&gt;:&lt;digest&gt;
+</code></pre></div><p>通过 FROM 指定的镜像，可以是任何有效的基础镜像。FROM 有以下限制：</p> <ul><li>FROM 必须 是 Dockerfile 中第一条非注释命令</li> <li>在一个 Dockerfile 文件中创建多个镜像时，FROM 可以多次出现。只需在每个新命令 FROM 之前，记录提交上次的镜像 ID。</li> <li>tag 或 digest 是可选的，如果不使用这两个值时，会使用 latest 版本的基础镜像</li></ul> <h3 id="_2-run-执行命令"><a href="#_2-run-执行命令" class="header-anchor">#</a> 2 RUN 执行命令</h3> <p>在镜像的构建过程中执行特定的命令，并生成一个中间镜像。格式:</p> <div class="language- extra-class"><pre class="language-text"><code>#shell格式
+RUN &lt;command&gt;
+#exec格式
+RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]
+</code></pre></div><ul><li>RUN 命令将在当前 image 中执行任意合法命令并提交执行结果。命令执行提交后，就会自动执行 Dockerfile 中的下一个指令。</li> <li>层级 RUN 指令和生成提交是符合 Docker 核心理念的做法。它允许像版本控制那样，在任意一个点，对 image 镜像进行定制化构建。</li> <li>RUN 指令创建的中间镜像会被缓存，并会在下次构建中使用。如果不想使用这些缓存镜像，可以在构建时指定 <code>--no-cache</code> 参数，如：<code>docker build --no-cache</code>。</li></ul> <h3 id="_3-copy-复制文件"><a href="#_3-copy-复制文件" class="header-anchor">#</a> 3 COPY 复制文件</h3> <p>格式：</p> <div class="language- extra-class"><pre class="language-text"><code>COPY &lt;源路径&gt;... &lt;目标路径&gt;
+COPY [&quot;&lt;源路径1&gt;&quot;,... &quot;&lt;目标路径&gt;&quot;]
+</code></pre></div><p>和 RUN 指令一样，也有两种格式，一种类似于命令行，一种类似于函数调用。COPY 指令将从构建上下文目录中 &lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的<code>&lt;目标路径&gt;</code>位置。比如：</p> <div class="language- extra-class"><pre class="language-text"><code>COPY package.json /usr/src/app/
+</code></pre></div><p><code>&lt;源路径&gt;</code>可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 filepath.Match 规则，如：</p> <div class="language- extra-class"><pre class="language-text"><code>COPY hom* /mydir/
+COPY hom?.txt /mydir/
+</code></pre></div><p><code>&lt;目标路径&gt;</code>可以是容器内的绝对路径，也可以是相对于工作目录的相对路径（工作目录可以用 WORKDIR 指令来指定）。目标路径不需要事先创建，如果目录不存在会在复制文件前先行创建缺失目录。</p> <p>此外，还需要注意一点，使用 COPY 指令，源文件的各种元数据都会保留。比如读、写、执行权限、文件变更时间等。这个特性对于镜像定制很有用。特别是构建相关文件都在使用 Git 进行管理的时候。</p> <h3 id="_4-add-更高级的复制文件"><a href="#_4-add-更高级的复制文件" class="header-anchor">#</a> 4 ADD 更高级的复制文件</h3> <p>ADD 指令和 COPY 的格式和性质基本一致。但是在 COPY 基础上增加了一些功能。比如<code>&lt;源路径&gt;</code>可以是一个 URL，这种情况下，Docker 引擎会试图去下载这个链接的文件放到<code>&lt;目标路径&gt;</code>去。</p> <p>在构建镜像时，复制上下文中的文件到镜像内，格式：</p> <div class="language- extra-class"><pre class="language-text"><code>ADD &lt;源路径&gt;... &lt;目标路径&gt;
+ADD [&quot;&lt;源路径&gt;&quot;,... &quot;&lt;目标路径&gt;&quot;]
+</code></pre></div><p><strong>注意</strong>
+如果 docker 发现文件内容被改变，则接下来的指令都不会再使用缓存。关于复制文件时需要处理的/，基本跟正常的 copy 一致</p> <h3 id="_5-env-设置环境变量"><a href="#_5-env-设置环境变量" class="header-anchor">#</a> 5 ENV 设置环境变量</h3> <p>格式有两种：</p> <div class="language- extra-class"><pre class="language-text"><code>ENV &lt;key&gt; &lt;value&gt;
+ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...
+</code></pre></div><p>这个指令很简单，就是设置环境变量而已，无论是后面的其它指令，如 RUN，还是运行时的应用，都可以直接使用这里定义的环境变量。</p> <div class="language- extra-class"><pre class="language-text"><code>ENV VERSION=1.0 DEBUG=on \
+    NAME=&quot;Happy Feet&quot;
+</code></pre></div><p>这个例子中演示了如何换行，以及对含有空格的值用双引号括起来的办法，这和 Shell 下的行为是一致的。</p> <h3 id="_6-expose"><a href="#_6-expose" class="header-anchor">#</a> 6 EXPOSE</h3> <p>为构建的镜像设置监听端口，使容器在运行时监听。格式：</p> <div class="language- extra-class"><pre class="language-text"><code>EXPOSE &lt;port&gt; [&lt;port&gt;...]
+</code></pre></div><p>EXPOSE 指令并不会让容器监听 host 的端口，如果需要，需要在 docker run 时使用 <code>-p</code>、<code>-P</code> 参数来发布容器端口到 host 的某个端口上。</p> <h3 id="_7-volume-定义匿名卷"><a href="#_7-volume-定义匿名卷" class="header-anchor">#</a> 7 VOLUME 定义匿名卷</h3> <p>VOLUME用于创建挂载点，即向基于所构建镜像创始的容器添加卷：</p> <div class="language- extra-class"><pre class="language-text"><code>VOLUME [&quot;/data&quot;]
+</code></pre></div><p>一个卷可以存在于一个或多个容器的指定目录，该目录可以绕过联合文件系统，并具有以下功能：</p> <ul><li>卷可以容器间共享和重用</li> <li>容器并不一定要和其它容器共享卷</li> <li>修改卷后会立即生效</li> <li>对卷的修改不会对镜像产生影响</li> <li>卷会一直存在，直到没有任何容器在使用它</li></ul> <p>VOLUME 让我们可以将源代码、数据或其它内容添加到镜像中，而又不并提交到镜像中，并使我们可以多个容器间共享这些内容。</p> <h3 id="_8-workdir-指定工作目录"><a href="#_8-workdir-指定工作目录" class="header-anchor">#</a> 8 WORKDIR 指定工作目录</h3> <p>WORKDIR用于在容器内设置一个工作目录：</p> <div class="language- extra-class"><pre class="language-text"><code>WORKDIR /path/to/workdir
+</code></pre></div><p>通过WORKDIR设置工作目录后，Dockerfile 中其后的命令 RUN、CMD、ENTRYPOINT、ADD、COPY 等命令都会在该目录下执行。 如，使用WORKDIR设置工作目录：</p> <div class="language- extra-class"><pre class="language-text"><code>WORKDIR /a
+WORKDIR b
+WORKDIR c
+RUN pwd
+</code></pre></div><p>在以上示例中，pwd 最终将会在 <code>/a/b/c</code> 目录中执行。在使用 docker run 运行容器时，可以通过<code>-w</code>参数覆盖构建时所设置的工作目录。</p> <h3 id="_9-user-指定当前用户"><a href="#_9-user-指定当前用户" class="header-anchor">#</a> 9 USER 指定当前用户</h3> <p>USER 用于指定运行镜像所使用的用户：</p> <div class="language- extra-class"><pre class="language-text"><code>USER daemon
+</code></pre></div><p>使用USER指定用户时，可以使用用户名、UID 或 GID，或是两者的组合。以下都是合法的指定试：</p> <div class="language- extra-class"><pre class="language-text"><code>USER user
+USER user:group
+USER uid
+USER uid:gid
+USER user:gid
+USER uid:group
+</code></pre></div><p>使用USER指定用户后，Dockerfile 中其后的命令 RUN、CMD、ENTRYPOINT 都将使用该用户。镜像构建完成后，通过 docker run 运行容器时，可以通过 <code>-u</code> 参数来覆盖所指定的用户。</p> <h3 id="_10-cmd"><a href="#_10-cmd" class="header-anchor">#</a> 10 CMD</h3> <p>CMD用于指定在容器启动时所要执行的命令。CMD 有以下三种格式：</p> <div class="language- extra-class"><pre class="language-text"><code>CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]
+CMD [&quot;param1&quot;,&quot;param2&quot;]
+CMD command param1 param2
+</code></pre></div><p>省略可执行文件的 exec 格式，这种写法使 CMD 中的参数当做 ENTRYPOINT 的默认参数，此时 ENTRYPOINT 也应该是 exec 格式，具体与 ENTRYPOINT 的组合使用，参考 ENTRYPOINT。</p> <p><strong>注意</strong>
+与 RUN 指令的区别：RUN 在构建的时候执行，并生成一个新的镜像，CMD 在容器运行的时候执行，在构建时不进行任何操作。</p> <h3 id="_11-entrypoint"><a href="#_11-entrypoint" class="header-anchor">#</a> 11 ENTRYPOINT</h3> <p>ENTRYPOINT 用于给容器配置一个可执行程序。也就是说，每次使用镜像创建容器时，通过 ENTRYPOINT 指定的程序都会被设置为默认程序。ENTRYPOINT 有以下两种形式：</p> <div class="language- extra-class"><pre class="language-text"><code>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]
+ENTRYPOINT command param1 param2
+</code></pre></div><p>ENTRYPOINT 与 CMD 非常类似，不同的是通过<code>docker run</code>执行的命令不会覆盖 ENTRYPOINT，而<code>docker run</code>命令中指定的任何参数，都会被当做参数再次传递给 ENTRYPOINT。Dockerfile 中只允许有一个 ENTRYPOINT 命令，多指定时会覆盖前面的设置，而只执行最后的 ENTRYPOINT 指令。</p> <p><code>docker run</code>运行容器时指定的参数都会被传递给 ENTRYPOINT ，且会覆盖 CMD 命令指定的参数。如，执行<code>docker run &lt;image&gt; -d</code>时，-d 参数将被传递给入口点。</p> <p>也可以通过<code>docker run --entrypoint</code>重写 ENTRYPOINT 入口点。如：可以像下面这样指定一个容器执行程序：</p> <div class="language- extra-class"><pre class="language-text"><code>ENTRYPOINT [&quot;/usr/bin/nginx&quot;]
+</code></pre></div><p>完整构建代码：</p> <div class="language- extra-class"><pre class="language-text"><code># Version: 0.0.3
+FROM ubuntu:16.04
+MAINTAINER 何民三 &quot;cn.liuht@gmail.com&quot;
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo 'Hello World, 我是个容器' \ 
+   &gt; /var/www/html/index.html
+ENTRYPOINT [&quot;/usr/sbin/nginx&quot;]
+EXPOSE 80
+</code></pre></div><p>使用docker build构建镜像，并将镜像指定为 itbilu/test：</p> <div class="language- extra-class"><pre class="language-text"><code>docker build -t=&quot;itbilu/test&quot; .
+</code></pre></div><p>构建完成后，使用itbilu/test启动一个容器：</p> <div class="language- extra-class"><pre class="language-text"><code>docker run -i -t  itbilu/test -g &quot;daemon off;&quot;
+</code></pre></div><p>在运行容器时，我们使用了 <code>-g &quot;daemon off;&quot;</code>，这个参数将会被传递给 ENTRYPOINT，最终在容器中执行的命令为 <code>/usr/sbin/nginx -g &quot;daemon off;&quot;</code>。</p> <h3 id="_12-label"><a href="#_12-label" class="header-anchor">#</a> 12 LABEL</h3> <p>LABEL用于为镜像添加元数据，元数以键值对的形式指定：</p> <div class="language- extra-class"><pre class="language-text"><code>LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...
+</code></pre></div><p>使用LABEL指定元数据时，一条LABEL指定可以指定一或多条元数据，指定多条元数据时不同元数据之间通过空格分隔。推荐将所有的元数据通过一条LABEL指令指定，以免生成过多的中间镜像。 如，通过LABEL指定一些元数据：</p> <div class="language- extra-class"><pre class="language-text"><code>LABEL version=&quot;1.0&quot; description=&quot;这是一个Web服务器&quot; by=&quot;IT笔录&quot;
+</code></pre></div><p>指定后可以通过docker inspect查看：</p> <div class="language- extra-class"><pre class="language-text"><code>docker inspect itbilu/test
+&quot;Labels&quot;: {
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;description&quot;: &quot;这是一个Web服务器&quot;,
+    &quot;by&quot;: &quot;IT笔录&quot;
+},
+</code></pre></div><h3 id="_13-arg"><a href="#_13-arg" class="header-anchor">#</a> 13 ARG</h3> <p>ARG用于指定传递给构建运行时的变量：</p> <div class="language- extra-class"><pre class="language-text"><code>ARG &lt;name&gt;[=&lt;default value&gt;]
+</code></pre></div><p>如，通过ARG指定两个变量：</p> <div class="language- extra-class"><pre class="language-text"><code>ARG site
+ARG build_user=IT笔录
+</code></pre></div><p>以上我们指定了 site 和 build_user 两个变量，其中 build_user 指定了默认值。在使用 docker build 构建镜像时，可以通过 <code>--build-arg &lt;varname&gt;=&lt;value&gt;</code> 参数来指定或重设置这些变量的值。</p> <div class="language- extra-class"><pre class="language-text"><code>docker build --build-arg site=itiblu.com -t itbilu/test .
+</code></pre></div><p>这样我们构建了 itbilu/test 镜像，其中site会被设置为 itbilu.com，由于没有指定 build_user，其值将是默认值 IT 笔录。</p> <h3 id="_14-onbuild"><a href="#_14-onbuild" class="header-anchor">#</a> 14 ONBUILD</h3> <p>ONBUILD用于设置镜像触发器：</p> <div class="language- extra-class"><pre class="language-text"><code>ONBUILD [INSTRUCTION]
+</code></pre></div><p>当所构建的镜像被用做其它镜像的基础镜像，该镜像中的触发器将会被钥触发。 如，当镜像被使用时，可能需要做一些处理：</p> <div class="language- extra-class"><pre class="language-text"><code>[...]
+ONBUILD ADD . /app/src
+ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+[...]
+</code></pre></div><h3 id="_15-stopsignal"><a href="#_15-stopsignal" class="header-anchor">#</a> 15 STOPSIGNAL</h3> <p>STOPSIGNAL用于设置停止容器所要发送的系统调用信号：</p> <div class="language- extra-class"><pre class="language-text"><code>STOPSIGNAL signal
+</code></pre></div><p>所使用的信号必须是内核系统调用表中的合法的值，如：SIGKILL。</p> <h3 id="_16-shell"><a href="#_16-shell" class="header-anchor">#</a> 16 SHELL</h3> <p>SHELL用于设置执行命令（shell式）所使用的的默认 shell 类型：</p> <div class="language- extra-class"><pre class="language-text"><code>SHELL [&quot;executable&quot;, &quot;parameters&quot;]
+</code></pre></div><p>SHELL在Windows环境下比较有用，Windows 下通常会有 cmd 和 powershell 两种 shell，可能还会有 sh。这时就可以通过 SHELL 来指定所使用的 shell 类型：</p> <div class="language- extra-class"><pre class="language-text"><code>FROM microsoft/windowsservercore
+
+# Executed as cmd /S /C echo default
+RUN echo default
+
+# Executed as cmd /S /C powershell -command Write-Host default
+RUN powershell -command Write-Host default
+
+# Executed as powershell -command Write-Host hello
+SHELL [&quot;powershell&quot;, &quot;-command&quot;]
+RUN Write-Host hello
+
+# Executed as cmd /S /C echo hello
+SHELL [&quot;cmd&quot;, &quot;/S&quot;&quot;, &quot;/C&quot;]
+RUN echo hello
+</code></pre></div><h2 id="dockerfile-使用经验"><a href="#dockerfile-使用经验" class="header-anchor">#</a> Dockerfile 使用经验</h2> <h3 id="dockerfile-示例"><a href="#dockerfile-示例" class="header-anchor">#</a> Dockerfile 示例</h3> <p><strong>构建Nginx运行环境</strong></p> <div class="language- extra-class"><pre class="language-text"><code># 指定基础镜像
+FROM sameersbn/ubuntu:14.04.20161014
+
+# 维护者信息
+MAINTAINER sameer@damagehead.com
+
+# 设置环境
+ENV RTMP_VERSION=1.1.10 \
+    NPS_VERSION=1.11.33.4 \
+    LIBAV_VERSION=11.8 \
+    NGINX_VERSION=1.10.1 \
+    NGINX_USER=www-data \
+    NGINX_SITECONF_DIR=/etc/nginx/sites-enabled \
+    NGINX_LOG_DIR=/var/log/nginx \
+    NGINX_TEMP_DIR=/var/lib/nginx \
+    NGINX_SETUP_DIR=/var/cache/nginx
+
+# 设置构建时变量，镜像建立完成后就失效
+ARG BUILD_LIBAV=false
+ARG WITH_DEBUG=false
+ARG WITH_PAGESPEED=true
+ARG WITH_RTMP=true
+
+# 复制本地文件到容器目录中
+COPY setup/ ${NGINX_SETUP_DIR}/
+RUN bash ${NGINX_SETUP_DIR}/install.sh
+
+# 复制本地配置文件到容器目录中
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY entrypoint.sh /sbin/entrypoint.sh
+
+# 运行指令
+RUN chmod 755 /sbin/entrypoint.sh
+
+# 允许指定的端口
+EXPOSE 80/tcp 443/tcp 1935/tcp
+
+# 指定网站目录挂载点
+VOLUME [&quot;${NGINX_SITECONF_DIR}&quot;]
+
+ENTRYPOINT [&quot;/sbin/entrypoint.sh&quot;]
+CMD [&quot;/usr/sbin/nginx&quot;]
+</code></pre></div><p><strong>构建tomcat 环境</strong></p> <p>Dockerfile文件</p> <div class="language- extra-class"><pre class="language-text"><code># 指定基于的基础镜像
+FROM ubuntu:13.10  
+
+# 维护者信息
+MAINTAINER zhangjiayang &quot;zhangjiayang@sczq.com.cn&quot;  
+  
+# 镜像的指令操作
+# 获取APT更新的资源列表
+RUN echo &quot;deb http://archive.ubuntu.com/ubuntu precise main universe&quot;&gt; /etc/apt/sources.list
+# 更新软件
+RUN apt-get update  
+  
+# Install curl  
+RUN apt-get -y install curl  
+  
+# Install JDK 7  
+RUN cd /tmp &amp;&amp;  curl -L 'http://download.oracle.com/otn-pub/java/jdk/7u65-b17/jdk-7u65-linux-x64.tar.gz' -H 'Cookie: oraclelicense=accept-securebackup-cookie; gpw_e24=Dockerfile' | tar -xz  
+RUN mkdir -p /usr/lib/jvm  
+RUN mv /tmp/jdk1.7.0_65/ /usr/lib/jvm/java-7-oracle/  
+  
+# Set Oracle JDK 7 as default Java  
+RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-oracle/bin/java 300     
+RUN update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-7-oracle/bin/javac 300     
+
+# 设置系统环境
+ENV JAVA_HOME /usr/lib/jvm/java-7-oracle/  
+  
+# Install tomcat7  
+RUN cd /tmp &amp;&amp; curl -L 'http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.8/bin/apache-tomcat-7.0.8.tar.gz' | tar -xz  
+RUN mv /tmp/apache-tomcat-7.0.8/ /opt/tomcat7/  
+  
+ENV CATALINA_HOME /opt/tomcat7  
+ENV PATH $PATH:$CATALINA_HOME/bin  
+
+# 复件tomcat7.sh到容器中的目录 
+ADD tomcat7.sh /etc/init.d/tomcat7  
+RUN chmod 755 /etc/init.d/tomcat7  
+  
+# Expose ports.  指定暴露的端口
+EXPOSE 8080  
+  
+# Define default command.  
+ENTRYPOINT service tomcat7 start &amp;&amp; tail -f /opt/tomcat7/logs/catalina.out
+</code></pre></div><p><code>tomcat7.sh</code>命令文件</p> <div class="language- extra-class"><pre class="language-text"><code>export JAVA_HOME=/usr/lib/jvm/java-7-oracle/  
+export TOMCAT_HOME=/opt/tomcat7  
+  
+case $1 in  
+start)  
+  sh $TOMCAT_HOME/bin/startup.sh  
+;;  
+stop)  
+  sh $TOMCAT_HOME/bin/shutdown.sh  
+;;  
+restart)  
+  sh $TOMCAT_HOME/bin/shutdown.sh  
+  sh $TOMCAT_HOME/bin/startup.sh  
+;;  
+esac  
+exit 0
+</code></pre></div><h3 id="原则与建议"><a href="#原则与建议" class="header-anchor">#</a> 原则与建议</h3> <ul><li>容器轻量化。从镜像中产生的容器应该尽量轻量化，能在足够短的时间内停止、销毁、重新生成并替换原来的容器。</li> <li>使用 <code>.gitignore</code>。在大部分情况下，Dockerfile 会和构建所需的文件放在同一个目录中，为了提高构建的性能，应该使用 <code>.gitignore</code> 来过滤掉不需要的文件和目录。</li> <li>为了减少镜像的大小，减少依赖，仅安装需要的软件包。</li> <li>一个容器只做一件事。解耦复杂的应用，分成多个容器，而不是所有东西都放在一个容器内运行。如一个 Python Web 应用，可能需要 Server、DB、Cache、MQ、Log 等几个容器。一个更加极端的说法：One process per container。</li> <li>减少镜像的图层。不要多个 Label、ENV 等标签。</li> <li>对续行的参数按照字母表排序，特别是使用<code>apt-get install -y</code>安装包的时候。</li> <li>使用构建缓存。如果不想使用缓存，可以在构建的时候使用参数<code>--no-cache=true</code>来强制重新生成中间镜像。</li></ul></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 9:22:48 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/Docker/Dockerfile 使用介绍.html" class="prev">
+        Dockerfile 使用介绍
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/Docker/Docker 三剑客之 Docker Compose.html">
+        Docker 三剑客之 Docker Compose
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.51b5f06b.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/16.8ed0322a.js" defer></script>
+  </body>
+</html>

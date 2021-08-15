@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Docker Compose + Spring Boot + Nginx + Mysql 实践 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.51b5f06b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/45.a79ec485.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.6cb3fd3d.js"><link rel="prefetch" href="/blog-docs/assets/js/101.99cf37d8.js"><link rel="prefetch" href="/blog-docs/assets/js/102.27ad49b1.js"><link rel="prefetch" href="/blog-docs/assets/js/103.bedc670c.js"><link rel="prefetch" href="/blog-docs/assets/js/104.d4bf82c7.js"><link rel="prefetch" href="/blog-docs/assets/js/105.ba0cbbec.js"><link rel="prefetch" href="/blog-docs/assets/js/106.e7810702.js"><link rel="prefetch" href="/blog-docs/assets/js/107.bbeb40d8.js"><link rel="prefetch" href="/blog-docs/assets/js/108.b09dee68.js"><link rel="prefetch" href="/blog-docs/assets/js/109.85da12bc.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.da616a7a.js"><link rel="prefetch" href="/blog-docs/assets/js/111.17c5cc36.js"><link rel="prefetch" href="/blog-docs/assets/js/112.52e534cf.js"><link rel="prefetch" href="/blog-docs/assets/js/113.f87a040b.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.c8fe2b57.js"><link rel="prefetch" href="/blog-docs/assets/js/28.66775f55.js"><link rel="prefetch" href="/blog-docs/assets/js/29.2a24a074.js"><link rel="prefetch" href="/blog-docs/assets/js/3.b98532be.js"><link rel="prefetch" href="/blog-docs/assets/js/30.e9054e60.js"><link rel="prefetch" href="/blog-docs/assets/js/31.792c98e9.js"><link rel="prefetch" href="/blog-docs/assets/js/32.83e51477.js"><link rel="prefetch" href="/blog-docs/assets/js/33.28c14f43.js"><link rel="prefetch" href="/blog-docs/assets/js/34.07262394.js"><link rel="prefetch" href="/blog-docs/assets/js/35.1ee292f5.js"><link rel="prefetch" href="/blog-docs/assets/js/36.678e522d.js"><link rel="prefetch" href="/blog-docs/assets/js/37.4d1d1ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/38.b77157a7.js"><link rel="prefetch" href="/blog-docs/assets/js/39.ca60e8ca.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.d76eae45.js"><link rel="prefetch" href="/blog-docs/assets/js/41.c2eb83a5.js"><link rel="prefetch" href="/blog-docs/assets/js/42.3405621c.js"><link rel="prefetch" href="/blog-docs/assets/js/43.1d2b4398.js"><link rel="prefetch" href="/blog-docs/assets/js/44.d4e8af00.js"><link rel="prefetch" href="/blog-docs/assets/js/46.f437f17e.js"><link rel="prefetch" href="/blog-docs/assets/js/47.b0fd407e.js"><link rel="prefetch" href="/blog-docs/assets/js/48.22d2be62.js"><link rel="prefetch" href="/blog-docs/assets/js/49.633b5050.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.456112f0.js"><link rel="prefetch" href="/blog-docs/assets/js/51.2cbe5062.js"><link rel="prefetch" href="/blog-docs/assets/js/52.107af4c7.js"><link rel="prefetch" href="/blog-docs/assets/js/53.b83c4913.js"><link rel="prefetch" href="/blog-docs/assets/js/54.b0e61963.js"><link rel="prefetch" href="/blog-docs/assets/js/55.ba96e247.js"><link rel="prefetch" href="/blog-docs/assets/js/56.5a7b30a4.js"><link rel="prefetch" href="/blog-docs/assets/js/57.57786ae3.js"><link rel="prefetch" href="/blog-docs/assets/js/58.c348ec08.js"><link rel="prefetch" href="/blog-docs/assets/js/59.18fb3ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.226572d8.js"><link rel="prefetch" href="/blog-docs/assets/js/61.c9c4db08.js"><link rel="prefetch" href="/blog-docs/assets/js/62.24893c0c.js"><link rel="prefetch" href="/blog-docs/assets/js/63.418b1be1.js"><link rel="prefetch" href="/blog-docs/assets/js/64.48cb2f75.js"><link rel="prefetch" href="/blog-docs/assets/js/65.5c63972c.js"><link rel="prefetch" href="/blog-docs/assets/js/66.c07026f7.js"><link rel="prefetch" href="/blog-docs/assets/js/67.a6d6b6be.js"><link rel="prefetch" href="/blog-docs/assets/js/68.66f4baba.js"><link rel="prefetch" href="/blog-docs/assets/js/69.03813f87.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.7dee7e46.js"><link rel="prefetch" href="/blog-docs/assets/js/71.ac1e24e7.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df8cb940.js"><link rel="prefetch" href="/blog-docs/assets/js/73.d096c4af.js"><link rel="prefetch" href="/blog-docs/assets/js/74.3dc52159.js"><link rel="prefetch" href="/blog-docs/assets/js/75.7d1d840b.js"><link rel="prefetch" href="/blog-docs/assets/js/76.9860c22a.js"><link rel="prefetch" href="/blog-docs/assets/js/77.cc453bfd.js"><link rel="prefetch" href="/blog-docs/assets/js/78.8099acb8.js"><link rel="prefetch" href="/blog-docs/assets/js/79.963aa97c.js"><link rel="prefetch" href="/blog-docs/assets/js/8.8a9472a3.js"><link rel="prefetch" href="/blog-docs/assets/js/80.60575d23.js"><link rel="prefetch" href="/blog-docs/assets/js/81.783b8c68.js"><link rel="prefetch" href="/blog-docs/assets/js/82.b2a97aa6.js"><link rel="prefetch" href="/blog-docs/assets/js/83.8274fda3.js"><link rel="prefetch" href="/blog-docs/assets/js/84.bb4cf24e.js"><link rel="prefetch" href="/blog-docs/assets/js/85.dd489d22.js"><link rel="prefetch" href="/blog-docs/assets/js/86.46844327.js"><link rel="prefetch" href="/blog-docs/assets/js/87.be0b7d01.js"><link rel="prefetch" href="/blog-docs/assets/js/88.2eb506cc.js"><link rel="prefetch" href="/blog-docs/assets/js/89.ec734928.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.451c0089.js"><link rel="prefetch" href="/blog-docs/assets/js/91.ebd455b1.js"><link rel="prefetch" href="/blog-docs/assets/js/92.8869b590.js"><link rel="prefetch" href="/blog-docs/assets/js/93.de8dd2f3.js"><link rel="prefetch" href="/blog-docs/assets/js/94.da2b07df.js"><link rel="prefetch" href="/blog-docs/assets/js/95.e9b438b2.js"><link rel="prefetch" href="/blog-docs/assets/js/96.fae3f7ed.js"><link rel="prefetch" href="/blog-docs/assets/js/97.ceb75035.js"><link rel="prefetch" href="/blog-docs/assets/js/98.fb315f9a.js"><link rel="prefetch" href="/blog-docs/assets/js/99.2ae78624.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>SpringBoot专题</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/SpringBoot%E4%B8%93%E9%A2%98/" aria-current="page" class="sidebar-link">入门篇</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 2 尝鲜-动态 Banner.html" class="sidebar-link">Spring Boot 2 尝鲜-动态 Banner</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何解决项目启动时初始化资源.html" class="sidebar-link">Spring Boot 如何解决项目启动时初始化资源</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 如何测试打包部署.html" class="sidebar-link">Spring Boot 如何测试打包部署</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Linux下SpringBoot Jar 如何实现service服务.html" class="sidebar-link">Linux下SpringBoot Jar 如何实现service服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/springboot jar包安装成windows服务.html" class="sidebar-link">springboot jar包安装成windows服务（winsw）</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="sidebar-link">使用 Docker 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html" class="active sidebar-link">Docker Compose + Spring Boot + Nginx + Mysql 实践</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#spring-boot-案例" class="sidebar-link">Spring Boot 案例</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#配置信息" class="sidebar-link">配置信息</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#核心代码" class="sidebar-link">核心代码</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#docker-化改造" class="sidebar-link">Docker 化改造</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#docker-compose-yaml-文件详解" class="sidebar-link">docker-compose.yaml 文件详解</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#nginx-文件解读" class="sidebar-link">Nginx 文件解读</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#spring-boot-项目改造" class="sidebar-link">Spring Boot 项目改造</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#部署" class="sidebar-link">部署</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#docker-compose-顺序" class="sidebar-link">docker-compose 顺序</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/SpringBoot专题/Docker Compose + Spring Boot + Nginx + Mysql 实践.html#总结" class="sidebar-link">总结</a></li></ul></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html" class="sidebar-link">使用 Jenkins 部署 Spring Boot</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Web 综合开发.html" class="sidebar-link">Web 综合开发</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot初始化数据库脚本.html" class="sidebar-link">Spring Boot初始化数据库脚本</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 中 Redis 的使用.html" class="sidebar-link">Spring Boot 中 Redis 的使用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot 集成 Memcached.html" class="sidebar-link">Spring Boot 集成 Memcached</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Thymeleaf 使用详解.html" class="sidebar-link">Thymeleaf 使用详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 Mybatis.html" class="sidebar-link">如何优雅的使用 Mybatis</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/如何优雅的使用 MyBatis 之 MyBatis-Plus.html" class="sidebar-link">如何优雅的使用 MyBatis 之 MyBatis-Plus</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Mybatis 多数据源最简解决方案.html" class="sidebar-link">Mybatis 多数据源最简解决方案</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/RabbitMQ 详解.html" class="sidebar-link">RabbitMQ 详解</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/定时任务.html" class="sidebar-link">定时任务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/邮件服务.html" class="sidebar-link">邮件服务</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 Spring Boot Actuator 监控应用.html" class="sidebar-link">使用 Spring Boot Actuator 监控应用</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/使用 spring-boot-admin 对 Spring Boot 服务进行监控.html" class="sidebar-link">使用 spring-boot-admin 对 Spring Boot 服务进行监控</a></li><li><a href="/blog-docs/technology/java/SpringBoot专题/Spring Boot、微服务架构和大数据治理三者之间的故事.html" class="sidebar-link">Spring Boot、微服务架构和大数据治理三者之间的故事</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="docker-compose-spring-boot-nginx-mysql-实践"><a href="#docker-compose-spring-boot-nginx-mysql-实践" class="header-anchor">#</a> Docker Compose + Spring Boot + Nginx + Mysql 实践</h1> <p>Spring Boot + Nginx + Mysql 是实际工作中最常用的一个组合，最前端使用 Nginx 代理请求转发到后端 Spring Boot 内嵌的 Tomcat 服务，Mysql 负责业务中数据相关的交互，那么在没有 docker 之前，我们是如何来搞定这些环境的呢？</p> <ul><li>1、安装 Nginx，配置 Nginx 相关信息，重启。</li> <li>2、安装 Mysql ，配置字符集时区等信息，重启，最后初始化脚本。</li> <li>3、启动 Spring Boot 项目，整体进行联调测试。</li></ul> <p>大家看我只写了三行，但其实搭建这些环境的时候还挺费事的，但这还不是结局，在用了一段时间时候需要迁移到另外一个环境，怎么办又需要重新搞一次？正常情况下，测试环境、SIT 环境、UAT 环境、生产环境！我们需要重复搭建四次。有人说不就是搭建四次吗？也没什么大不了的，那么我想告诉你，Too yong ,Too Simple 。</p> <p>让我们看看以下几个因素：</p> <p>第一，这只是一个最简单的案例，如果项目涉及到 MongoDB、Redis、ES … 一些列的环境呢？ 第二，如果你经常搭建环境或者调试程序，你就会知道什么是环境问题？有的时候明明是一模一样的配置，但是到了另外一个环境就是跑不起来。于是你花费很多时间来查找，最后才发现是少了一个参数或者逗号的问题，或者是系统内核版本不一致、或者你最后也没搞懂是为什么！只能再换另外一台服务器，那么使用 Docker 呢就可以完美的避开这些坑。</p> <p>好了，废话不多说我们就开始吧！</p> <h2 id="spring-boot-案例"><a href="#spring-boot-案例" class="header-anchor">#</a> Spring Boot 案例</h2> <p>首先我们先准备一个 Spring Boot 使用 Mysql 的小场景，我们做这样一个示例，使用 Spring Boot 做一个 Web 应用，提供一个按照 IP 地址统计访问次数的方法，每次请求时将统计数据存入 Mysql 并展示到页面中。</p> <h3 id="配置信息"><a href="#配置信息" class="header-anchor">#</a> 配置信息</h3> <p><strong>依赖包</strong></p> <div class="language- extra-class"><pre class="language-text"><code>&lt;dependencies&gt;
+     &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+	&lt;/dependency&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;mysql&lt;/groupId&gt;
+		&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+	&lt;/dependency&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+		&lt;scope&gt;test&lt;/scope&gt;
+	&lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre></div><p>主要添加了 Spring Boot Web 支持，使用 Jpa 操作数据库、添加 Myql 驱动包等。</p> <p><strong>配置文件</strong></p> <div class="language- extra-class"><pre class="language-text"><code>spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+spring.jpa.properties.hibernate.hbm2ddl.auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=true
+</code></pre></div><p>配置了数据库的链接信息，以及 Jpa 更新表模式、方言和是否显示Sql</p> <h3 id="核心代码"><a href="#核心代码" class="header-anchor">#</a> 核心代码</h3> <p>核心代码很简单，每过来一个请求，判断是否已经统计过，如果没有统计新增数据，如果有统计数据更新数据。</p> <div class="language- extra-class"><pre class="language-text"><code>@RestController
+public class VisitorController {
+
+    @Autowired
+    private VisitorRepository repository;
+	
+    @RequestMapping(&quot;/&quot;)
+    public String index(HttpServletRequest request) {
+        String ip=request.getRemoteAddr();
+        Visitor visitor=repository.findByIp(ip);
+        if(visitor==null){
+            visitor=new Visitor();
+            visitor.setIp(ip);
+            visitor.setTimes(1);
+        }else {
+            visitor.setTimes(visitor.getTimes()+1);
+        }
+        repository.save(visitor);
+        return &quot;I have been seen ip &quot;+visitor.getIp()+&quot; &quot;+visitor.getTimes()+&quot; times.&quot;;
+    }
+}
+</code></pre></div><p>实体类和 Repository 层代码比较简单，这里就不贴出来了，大家感兴趣可以下载源码查看。</p> <p>以上内容都完成后，启动项目，访问：<code>http://localhost:8080/</code> 我们就可以看到这样的返回结果：</p> <div class="language- extra-class"><pre class="language-text"><code>I have been seen ip 0:0:0:0:0:0:0:1 1 times.
+</code></pre></div><p>再访问一次会变成</p> <div class="language- extra-class"><pre class="language-text"><code>I have been seen ip 0:0:0:0:0:0:0:1 2 times.
+</code></pre></div><p>多次访问一直叠加，说明演示项目开发完成。</p> <h2 id="docker-化改造"><a href="#docker-化改造" class="header-anchor">#</a> Docker 化改造</h2> <p>首先我们将目录改造成这样一个结构</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master/img/mulu.png" alt="img"></p> <p>我们先从最外层说起：</p> <ul><li><code>docker-compose.yaml</code>：docker-compose 的核心文件，描述如何构建整个服务</li> <li><code>nginx</code>：有关 nginx 的配置</li> <li><code>app</code>：Spring Boot 项目地址</li></ul> <p>如果我们需要对 Mysql 有特殊的定制，也可以在最外层创建 mysql 文件夹，在此目录下进行配置。</p> <h3 id="docker-compose-yaml-文件详解"><a href="#docker-compose-yaml-文件详解" class="header-anchor">#</a> <code>docker-compose.yaml</code> 文件详解</h3> <div class="language- extra-class"><pre class="language-text"><code>version: '3'
+services:
+  nginx:
+   container_name: v-nginx
+   image: nginx:1.13
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+    
+  mysql:
+   container_name: v-mysql
+   image: mysql/mysql-server:5.7
+   environment:
+    MYSQL_DATABASE: test
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_ROOT_HOST: '%'
+   ports:
+   - &quot;3306:3306&quot;
+   restart: always
+    
+  app:
+    restart: always
+    build: ./app
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - ~/.m2:/root/.m2
+    expose:
+      - &quot;8080&quot;
+    depends_on:
+      - nginx
+      - mysql
+    command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+</code></pre></div><ul><li><code>version: '3'</code>： 表示使用第三代语法来构建 docker-compose.yaml 文件。</li> <li><code>services</code>: 用来表示 compose 需要启动的服务，我们可以看出此文件中有三个服务分别为：nginx、mysql、app。</li> <li><code>container_name</code>: 容器名称</li> <li><code>environment</code>: 此节点下的信息会当作环境变量传入容器，此示例中 mysql 服务配置了数据库、密码和权限信息。</li> <li><code>ports</code>: 表示对外开放的端口</li> <li><code>restart: always</code> 表示如果服务启动不成功会一直尝试。</li> <li><code>volumes</code>: 加载本地目录下的配置文件到容器目标地址下</li> <li><code>depends_on</code>：可以配置依赖服务，表示需要先启动 <code>depends_on</code> 下面的服务后，再启动本服务。</li> <li><code>command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker</code>: 表示以这个命令来启动项目，<code>-Dspring-boot.run.profiles=docker</code>表示使用 <code>application-docker.properties</code>文件配置信息进行启动。</li></ul> <h3 id="nginx-文件解读"><a href="#nginx-文件解读" class="header-anchor">#</a> Nginx 文件解读</h3> <p>nginx 在目录下有一个文件 app.conf，主要配置了服务转发信息</p> <div class="language- extra-class"><pre class="language-text"><code>server {
+    listen 80;
+    charset utf-8;
+    access_log off;
+
+    location / {
+        proxy_pass http://app:8080;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static {
+        access_log   off;
+        expires      30d;
+
+        alias /app/static;
+    }
+}
+</code></pre></div><p>这块内容比较简单，配置请求转发，将80端口的请求转发到服务 app 的8080端口。其中<code>proxy_pass http://app:8080</code>这块的配置信息需要解释一下，这里使用是<code>app</code>而不是<code>localhost</code>，是因为他们没有在一个容器中，在一组 compose 的服务通讯需要使用 services 的名称进行访问。</p> <h3 id="spring-boot-项目改造"><a href="#spring-boot-项目改造" class="header-anchor">#</a> Spring Boot 项目改造</h3> <p>在<code>app</code>目录下也就是和<code>pom.xm</code>文件同级添加<code>Dockerfile</code>文件，文件内容如下：</p> <div class="language- extra-class"><pre class="language-text"><code>FROM maven:3.5-jdk-8
+</code></pre></div><p>只有一句，依赖于基础镜像<code>maven3.5</code>和<code>jdk 1.8</code>。因为在<code>docker-compose.yaml</code>文件设置了项目启动命令，这里不需要再添加启动命令。</p> <p>在项目的<code>resources</code>目录下创建<code>application-dev.properties</code>和<code>application-docker.properties</code>文件</p> <ul><li><code>application-dev.properties</code> 中的配置信息和上面一致</li> <li><code>application-docker.properties</code> 中的配置信息做稍微的改造，将数据库的连接信息由<code>jdbc:mysql://localhost:3306/test</code>改为<code>jdbc:mysql://mysql:3306/test</code> 。</li></ul> <p>这样我们所有的配置都已经完成。</p> <h2 id="部署"><a href="#部署" class="header-anchor">#</a> 部署</h2> <p>我们将项目拷贝到服务器中进行测试，服务器需要先安装 Docker 和 Docker Compos 环境。</p> <p>将项目拷贝到服务器中，进入目录<code>cd dockercompose-springboot-mysql-nginx</code></p> <p><strong>启动服务：<code>docker-compose up</code></strong></p> <div class="language- extra-class"><pre class="language-text"><code>[root@VM_73_217_centos dockercompose-springboot-mysql-nginx]# docker-compose up
+Creating network &quot;dockercomposespringbootmysqlnginx_default&quot; with the default driver
+Creating v-nginx ... done
+Creating v-mysql ... done
+Creating dockercomposespringbootmysqlnginx_app_1 ... done
+Attaching to v-nginx, v-mysql, dockercomposespringbootmysqlnginx_app_1
+v-mysql  | [Entrypoint] MySQL Docker Image 5.7.21-1.1.4
+v-mysql  | [Entrypoint] Initializing database
+app_1    | [INFO] Scanning for projects...
+... 
+app_1    | 2018-03-26 02:54:55.658  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+app_1    | 2018-03-26 02:54:55.660  INFO 1 --- [           main] com.neo.ComposeApplication               : Started ComposeApplication in 14.869 seconds (JVM running for 30.202)
+</code></pre></div><p>看到信息<code>Tomcat started on port(s): 8080</code>表示服务启动成功。也可以使用<code>docker-compose up -d</code>后台启动</p> <p>访问服务器地址；<code>http://58.87.69.230/</code>，返回：<code>I have been seen ip 172.19.0.2 1 times.</code> 表示整体服务启动成功</p> <p><strong>使用<code>docker-compose ps</code>查看项目中目前的所有容器</strong></p> <div class="language- extra-class"><pre class="language-text"><code>[root@VM_73_217_centos dockercompose-springboot-mysql-nginx]# docker-compose ps
+                 Name                                Command                  State                        Ports                  
+----------------------------------------------------------------------------------------------------------------------------------
+dockercomposespringbootmysqlnginx_app_1   /usr/local/bin/mvn-entrypo ...   Up             8080/tcp                                
+v-mysql                                   /entrypoint.sh mysqld            Up (healthy)   0.0.0.0:3306-&gt;3306/tcp, 33060/tcp       
+v-nginx                                   nginx -g daemon off;             Up             0.0.0.0:443-&gt;443/tcp, 0.0.0.0:80-&gt;80/tcp
+</code></pre></div><p>可以看到项目中服务的状态、命令、端口等信息。</p> <p><strong>关闭服务<code>docker-compose down</code></strong></p> <div class="language- extra-class"><pre class="language-text"><code>[root@VM_73_217_centos dockercompose-springboot-mysql-nginx]# docker-compose down
+Stopping dockercomposespringbootmysqlnginx_app_1 ... done
+Stopping visitor-nginx                           ... done
+Stopping visitor-mysql                           ... done
+Removing dockercomposespringbootmysqlnginx_app_1 ... done
+Removing visitor-nginx                           ... done
+Removing visitor-mysql                           ... done
+</code></pre></div><h3 id="docker-compose-顺序"><a href="#docker-compose-顺序" class="header-anchor">#</a> docker-compose 顺序</h3> <p>在使用 docker-compose 启动的时候经常会出现项目报 Mysql 连接异常，跟踪了一天终于发现了问题。 docker-compose 虽然可以通过<code>depends_on</code> 来定义服务启动的顺序，但是无法确定服务是否启动完成，因此会出现这样一个现象，Mysql 服务启动比较慢，当 Spring Boot 项目已经启动起来，但是 Mysql 还没有初始化好，这样当项目连接 Mysql 数据库的时候，就会出现连接数据库的异常。</p> <p>针对这样的问题，有两种解决方案:</p> <p>1、足够的容错和重试机制，比如连接数据库，在初次连接不上的时候，服务消费者可以不断重试，直到连接上服务。也就是在服务中定义： <code>restart: always</code></p> <p>2、同步等待，使用<code>wait-for-it.sh</code>或者其他<code>shell</code>脚本将当前服务启动阻塞，直到被依赖的服务加载完毕。这种方案后期可以尝试使用。</p> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <p>没有对比就没有伤害，在没有使用 Docker 之前，我们需要搭建这样一个环境的话，需要安装 Nginx、Mysql ，再进行一系列的配置调试，还要担心各种环境问题；使用 Docker 之后简单两个命令就完成服务的上线、下线。</p> <div class="language- extra-class"><pre class="language-text"><code>docker-compose up
+docker-compose down
+</code></pre></div><p>其实容器技术对部署运维的优化还有很多，这只是刚刚开始，后面使用了 Swarm 才会真正感受到它的便利和强大。</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/15/2021, 9:22:48 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/SpringBoot专题/使用 Docker 部署 Spring Boot.html" class="prev">
+        使用 Docker 部署 Spring Boot
+      </a></span> <span class="next"><a href="/blog-docs/technology/java/SpringBoot专题/使用 Jenkins 部署 Spring Boot.html">
+        使用 Jenkins 部署 Spring Boot
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.51b5f06b.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/45.a79ec485.js" defer></script>
+  </body>
+</html>
