@@ -1,10 +1,10 @@
 # 并发容器之ConcurrentLinkedQueue
 
-# 1.ConcurrentLinkedQueue 简介
+## 1.ConcurrentLinkedQueue 简介
 
 在单线程编程中我们会经常用到一些集合类，比如 ArrayList,HashMap 等，但是这些类都不是线程安全的类。在面试中也经常会有一些考点，比如 ArrayList 不是线程安全的，Vector 是线程安全。而保障 Vector 线程安全的方式，是非常粗暴的在方法上用 synchronized 独占锁，将多线程执行变成串行化。要想将 ArrayList 变成线程安全的也可以使用`Collections.synchronizedList(List<T> list)`方法 ArrayList 转换成线程安全的，但这种转换方式依然是通过 synchronized 修饰方法实现的，很显然这不是一种高效的方式，同时，队列也是我们常用的一种数据结构，为了解决线程安全的问题，Doug Lea 大师为我们准备了 ConcurrentLinkedQueue 这个线程安全的队列。从类名就可以看的出来实现队列的数据结构是链式。
 
-## 1.1 Node 
+#### 1.1 Node 
 
 要想先学习 ConcurrentLinkedQueue 自然而然得先从它的节点类看起，明白它的底层数据结构。Node 类的源码为：
 
@@ -40,7 +40,7 @@ head 和 tail 指针会指向一个 item 域为 null 的节点,此时 Concurrent
 
 ![1.ConcurrentLinkedQueue初始化状态.png](data:image/svg+xml;utf8,<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="176" height="280"></svg>)1.ConcurrentLinkedQueue初始化状态.png
 
-## 1.2 操作 Node 的几个 CAS 操作 
+#### 1.2 操作 Node 的几个 CAS 操作 
 
 在队列进行出队入队的时候免不了对节点需要进行操作，在多线程就很容易出现线程安全的问题。可以看出在处理器指令集能够支持**CMPXCHG**指令后，在 java 源码中涉及到并发处理都会使用 CAS 操作[(关于 CAS 操作可以看这篇文章的第 3.1 节](https://juejin.im/post/6844903600334831629))，那么在 ConcurrentLinkedQueue 对 Node 的 CAS 操作有这样几个：
 
@@ -62,7 +62,7 @@ boolean casNext(Node<E> cmp, Node<E> val) {
 
 可以看出这些方法实际上是通过调用 UNSAFE 实例的方法，UNSAFE 为**sun.misc.Unsafe**类，该类是 hotspot 底层方法，目前为止了解即可，知道 CAS 的操作归根结底是由该类提供就好。
 
-# 2.offer 方法
+## 2.offer 方法
 
 对一个队列来说，插入满足 FIFO 特性，插入元素总是在队列最末尾的地方进行插入，而取（移除）元素总是从队列的队头。所有要想能够彻底弄懂 ConcurrentLinkedQueue 自然而然是从 offer 方法和 poll 方法开始。那么为了能够理解 offer 方法，采用 debug 的方式来一行一行的看代码走。另外，在看多线程的代码时，可采用这样的思维方式：
 
@@ -153,7 +153,7 @@ p = (p != t && t != (t = tail)) ? t : q;
 
 那么还剩下第 11 行的代码我们没有分析，大致可以猜想到应该就是回答**一部分线程 offer，一部分 poll**的这种情况。当`if (p == q)`为 true 时，说明 p 指向的节点的 next 也指向它自己，这种节点称之为**哨兵节点**，**这种节点在队列中存在的价值不大，一般表示为要删除的节点或者是空节点**。为了能够很好的理解这种情况，我们先看看 poll 方法的执行过程后，再回过头来看，总之这是一个很有意思的事情 :)。
 
-# 3.poll 方法
+## 3.poll 方法
 
 poll 方法源码如下：
 
@@ -241,7 +241,7 @@ public static void main(String[] args) {
 
 通过 debug 控制线程 thread1 和线程 thread2 的执行顺序，thread1 先执行到第 8 行代码`if ((q = p.next) == null)`，由于此时队列为空队列 if 判断为 true，进入 if 块，此时先让 thread1 暂停，然后 thread2 进行 offer 插入值为 1 的节点后，thread2 执行结束。再让 thread1 执行，这时**thread1 并没有进行重试**，而是代码继续往下走，返回 null，尽管此时队列由于 thread2 已经插入了值为 1 的新的节点。所以输出结果为 thread0 poll 的为 null,然队列不为空队列。因此，**在判断队列是否为空队列的时候是不能通过线程在 poll 的时候返回为 null 进行判断的，可以通过 isEmpty 方法进行判断**。
 
-# 4. offer 方法中部分线程 offer 部分线程 poll
+## 4. offer 方法中部分线程 offer 部分线程 poll
 
 在分析 offer 方法的时候我们还留下了一个问题，即对 offer 方法中第 11 行代码的理解。
 
@@ -255,7 +255,7 @@ public static void main(String[] args) {
 
 此时线程 A 在执行判断`if (p == q)`时就为 true,会继续执行`p = (t != (t = tail)) ? t : head;`，由于 tail 指针没有发生改变所以 p 被赋值为 head,重新从 head 开始完成插入操作。
 
-# 5. HOPS 的设计
+## 5. HOPS 的设计
 
 通过上面对 offer 和 poll 方法的分析，我们发现 tail 和 head 是延迟更新的，两者更新触发时机为：
 

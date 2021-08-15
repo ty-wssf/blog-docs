@@ -42,6 +42,7 @@ module.exports = {
                             {text: 'Dubbo', link: '/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/'},
                             {text: 'Docker', link: '/technology/java/Docker/Docker入门教程/'},
                             {text: 'Jvm系列', link: '/technology/java/Jvm系列/Java类的加载机制/'},
+                            {text: '高并发', link: '/technology/java/thread/基础知识/并发编程的优缺点/'},
                             {text: '算法', link: '/technology/java/算法/Java手写二叉搜索树算法/'},
                             {text: '查缺补漏', link: '/technology/java/查缺补漏/Java面试题基础系列228道/'},
                             {text: '其它', link: '/technology/java/other/基于canal的mysql数据同步/'},
@@ -311,6 +312,109 @@ module.exports = {
                         'Java服务GC参数调优案例',
                         'Jvm调优-工具篇',
                         '如何优化Java-GC「译」'
+                    ]
+                },
+            ],
+            '/technology/java/thread/': [
+                {
+                    title: '基础知识',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '基础知识/并发编程的优缺点',
+                        '基础知识/线程的状态转换以及基本操作',
+                        '基础知识/漫谈Java线程状态',
+                    ]
+                },
+                {
+                    title: '并发原理',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '并发原理/Java内存模型以及happens-before规则',
+                    ]
+                },
+                {
+                    title: '并发关键字',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '并发关键字/彻底理解synchronized',
+                        '并发关键字/深入分析Synchronized原理',
+                        '并发关键字/彻底理解volatile',
+                        '并发关键字/你以为你真的了解final吗',
+                        '并发关键字/三大性质总结：原子性、可见性以及有序性',
+                    ]
+                },
+                {
+                    title: 'Lock体系',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Lock体系/初识Lock与AbstractQueuedSynchronizer(AQS)',
+                        'Lock体系/深入理解AbstractQueuedSynchronizer(AQS)',
+                        'Lock体系/彻底理解ReentrantLock',
+                        'Lock体系/深入理解读写锁ReentrantReadWriteLock',
+                        'Lock体系/详解Condition的await和signal等待通知机制',
+                        'Lock体系/LockSupport工具',
+                    ]
+                },
+                {
+                    title: '并发容器',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '并发容器/并发容器之ConcurrentHashMap(JDK-1.8版本)',
+                        '并发容器/并发容器之CopyOnWriteArrayList',
+                        '并发容器/并发容器之ConcurrentLinkedQueue',
+                        '并发容器/并发容器之ThreadLocal',
+                        '并发容器/从源码深入详解ThreadLocal内存泄漏问题',
+                        '并发容器/并发容器之BlockingQueue',
+                        '并发容器/并发容器之ArrayBlockingQueue和LinkedBlockingQueue实现原理详解',
+                    ]
+                },
+                {
+                    title: 'Executor体系',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Executor体系/线程池ThreadPoolExecutor实现原理',
+                        'Executor体系/线程池之ScheduledThreadPoolExecutor',
+                        'Executor体系/FutureTask基本操作总结',
+                    ]
+                },
+                {
+                    title: '原子操作类',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '原子操作类/Java中atomic包中的原子操作类总结',
+                    ]
+                },
+                {
+                    title: '并发工具',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '并发工具/大白话说java并发工具类-CountDownLatch，CyclicBarrier',
+                        '并发工具/大白话说java并发工具类-Semaphore，Exchanger',
+                    ]
+                },
+                {
+                    title: '并发实战',   // 必要的
+                    //path: '基础知识/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '并发实战/彻底弄懂生产者--消费者问题',
                     ]
                 },
             ],

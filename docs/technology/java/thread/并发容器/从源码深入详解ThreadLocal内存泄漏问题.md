@@ -1,6 +1,6 @@
 # 从源码深入详解ThreadLocal内存泄漏问题
 
-# 1. 造成内存泄漏的原因？
+## 1. 造成内存泄漏的原因？
 
 threadLocal 是为了解决**对象不能被多线程共享访问**的问题，通过 threadLocal.set 方法将对象实例保存在每个线程自己所拥有的 threadLocalMap 中，这样每个线程使用自己的对象实例，彼此不会影响达到隔离的作用，从而就解决了对象在被共享访问带来线程安全问题。如果将同步机制和 threadLocal 做一个横向比较的话，同步机制就是通过控制线程访问共享对象的顺序，而 threadLocal 就是为每一个线程分配一个该对象，各用各的互不影响。打个比方说，现在有 100 个同学需要填写一张表格但是只有一支笔，同步就相当于 A 使用完这支笔后给 B，B 使用后给 C 用......老师就控制着这支笔的使用顺序，使得同学之间不会产生冲突。而 threadLocal 就相当于，老师直接准备了 100 支笔，这样每个同学都使用自己的，同学之间就不会产生冲突。很显然这就是两种不同的思路，同步机制以“时间换空间”，由于每个线程在同一时刻共享对象只能被一个线程访问造成整体上响应时间增加，但是对象只占有一份内存，牺牲了时间效率换来了空间效率即“时间换空间”。而 threadLocal，为每个线程都分配了一份对象，自然而然内存使用率增加，每个线程各用各的，整体上时间效率要增加很多，牺牲了空间效率换来时间效率即“空间换时间”。
 
@@ -10,7 +10,7 @@ threadLocal 是为了解决**对象不能被多线程共享访问**的问题，�
 
 上图中，实线代表强引用，虚线代表的是弱引用，如果 threadLocal 外部强引用被置为 null(threadLocalInstance=null)的话，threadLocal 实例就没有一条引用链路可达，很显然在 gc(垃圾回收)的时候势必会被回收，因此 entry 就存在 key 为 null 的情况，无法通过一个 Key 为 null 去访问到该 entry 的 value。同时，就存在了这样一条引用链：threadRef->currentThread->threadLocalMap->entry->valueRef->valueMemory,导致在垃圾回收的时候进行可达性分析的时候,value 可达从而不会被回收掉，但是该 value 永远不能被访问到，这样就存在了**内存泄漏**。当然，如果线程执行结束后，threadLocal，threadRef 会断掉，因此 threadLocal,threadLocalMap，entry 都会被回收掉。可是，在实际使用中我们都是会用线程池去维护我们的线程，比如在 Executors.newFixedThreadPool()时创建线程的时候，为了复用线程是不会结束的，所以 threadLocal 内存泄漏就值得我们关注。
 
-# 2. 已经做出了哪些改进？
+## 2. 已经做出了哪些改进？
 
 实际上，为了解决 threadLocal 潜在的内存泄漏的问题，Josh Bloch and Doug Lea 大师已经做了一些改进。在 threadLocal 的 set 和 get 方法中都有相应的处理。下文为了叙述，针对 key 为 null 的 entry，源码注释为 stale entry，直译为不新鲜的 entry，这里我就称之为“脏 entry”。比如在 ThreadLocalMap 的 set 方法中：
 
@@ -26,7 +26,7 @@ private void set(ThreadLocal<?> key, Object value) { // We don't use a fast path
 1. 如果当前 table[i]！=null 的话说明 hash 冲突就需要向后环形查找，若在查找过程中遇到脏 entry 就通过 replaceStaleEntry 进行处理；
 2. 如果当前 table[i]==null 的话说明新的 entry 可以直接插入，但是插入后会调用 cleanSomeSlots 方法检测并清除脏 entry
 
-## 2.1 cleanSomeSlots 
+#### 2.1 cleanSomeSlots 
 
 该方法的源码为：
 
@@ -80,7 +80,7 @@ private boolean cleanSomeSlots(int i, int n) {
 
 2.2. n 的取值 如果是在 set 方法插入新的 entry 后调用（上述情况 2），n 位当前已经插入的 entry 个数 size；如果是在 replaceSateleEntry 方法中调用 n 为哈希表的长度 len。
 
-## 2.2 expungeStaleEntry 
+#### 2.2 expungeStaleEntry 
 
 如果对输入参数能够理解的话，那么 cleanSomeSlots 方法搜索基本上清除了，但是全部搞定还需要掌握 expungeStaleEntry 方法，当在搜索过程中遇到了脏 entry 的话就会调用该方法去清理掉脏 entry。源码为：
 
@@ -117,7 +117,7 @@ private boolean cleanSomeSlots(int i, int n) {
 3. 由于在第二趟搜索中发现脏 entry，n 增大为数组的长度 len，因此扩大搜索范围（增大循环次数）继续向后环形搜索；
 4. 直到在整个搜索范围里都未发现脏 entry，cleanSomeSlot 方法执行结束退出。
 
-## 2.3 replaceStaleEntry 
+#### 2.3 replaceStaleEntry 
 
 先来看 replaceStaleEntry 方法，该方法源码为：
 
@@ -142,25 +142,25 @@ int slotToExpunge = staleSlot;
 
 这部分代码通过 PreIndex 方法实现往前环形搜索脏 entry 的功能，初始时 slotToExpunge 和 staleSlot 相同，若在搜索过程中发现了脏 entry，则更新 slotToExpunge 为当前索引 i。另外，说明 replaceStaleEntry 并不仅仅局限于处理当前已知的脏 entry，它认为在出**现脏 entry 的相邻位置也有很大概率出现脏 entry，所以为了一次处理到位，就需要向前环形搜索，找到前面的脏 entry**。那么根据在向前搜索中是否还有脏 entry 以及在 for 循环后向环形查找中是否找到可覆盖的 entry，我们分这四种情况来充分理解这个方法：
 
-### 2.3.1 前向有脏 entry
+###### 2.3.1 前向有脏 entry
 
-#### 2.3.1.1 后向环形查找找到可覆盖的 entry
+######## 2.3.1.1 后向环形查找找到可覆盖的 entry
 
 该情形如下图所示。
 
 ![向前环形搜索到脏entry，向后环形查找到可覆盖的entry的情况.png](https://user-gold-cdn.xitu.io/2018/5/6/163346ed57f12f50?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) 如图，slotToExpunge 初始状态和 staleSlot 相同，当前向环形搜索遇到脏 entry 时，在第 1 行代码中 slotToExpunge 会更新为当前脏 entry 的索引 i，直到遇到哈希桶（table[i]）为 null 的时候，前向搜索过程结束。在接下来的 for 循环中进行后向环形查找，若查找到了可覆盖的 entry，第 2,3,4 行代码先覆盖当前位置的 entry，然后再与 staleSlot 位置上的脏 entry 进行交换。交换之后脏 entry 就更换到了 i 处，最后使用 cleanSomeSlots 方法从 slotToExpunge 为起点开始进行清理脏 entry 的过程
 
-#### 2.3.1.2 后向环形查找未找到可覆盖的 entry
+######## 2.3.1.2 后向环形查找未找到可覆盖的 entry
 
  该情形如下图所示。  ![前向环形搜索到脏entry,向后环形未搜索可覆盖entry.png](https://user-gold-cdn.xitu.io/2020/1/12/16f987a27465aebb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) 如图，slotToExpunge 初始状态和 staleSlot 相同，当前向环形搜索遇到脏 entry 时，在第 1 行代码中 slotToExpunge 会更新为当前脏 entry 的索引 i，直到遇到哈希桶（table[i]）为 null 的时候，前向搜索过程结束。在接下来的 for 循环中进行后向环形查找，若没有查找到了可覆盖的 entry，哈希桶（table[i]）为 null 的时候，后向环形查找过程结束。那么接下来在 8,9 行代码中，将插入的新 entry 直接放在 staleSlot 处即可，最后使用 cleanSomeSlots 方法从 slotToExpunge 为起点开始进行清理脏 entry 的过程
 
-### 2.3.2 前向没有脏 entry
+###### 2.3.2 前向没有脏 entry
 
-#### 2.3.2.1 后向环形查找找到可覆盖的 entry
+######## 2.3.2.1 后向环形查找找到可覆盖的 entry
 
 该情形如下图所示。 ![前向未搜索到脏entry，后向环形搜索到可覆盖的entry.png.png](https://user-gold-cdn.xitu.io/2018/5/6/163346ed585ef797?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) 如图，slotToExpunge 初始状态和 staleSlot 相同，当前向环形搜索直到遇到哈希桶（table[i]）为 null 的时候，前向搜索过程结束，若在整个过程未遇到脏 entry，slotToExpunge 初始状态依旧和 staleSlot 相同。在接下来的 for 循环中进行后向环形查找，若遇到了脏 entry，在第 7 行代码中更新 slotToExpunge 为位置 i。若查找到了可覆盖的 entry，第 2,3,4 行代码先覆盖当前位置的 entry，然后再与 staleSlot 位置上的脏 entry 进行交换，交换之后脏 entry 就更换到了 i 处。如果在整个查找过程中都还没有遇到脏 entry 的话，会通过第 5 行代码，将 slotToExpunge 更新当前 i 处，最后使用 cleanSomeSlots 方法从 slotToExpunge 为起点开始进行清理脏 entry 的过程。
 
-#### 2.3.2.2 后向环形查找未找到可覆盖的 entry
+######## 2.3.2.2 后向环形查找未找到可覆盖的 entry
 
 该情形如下图所示。
 
@@ -211,7 +211,7 @@ private void remove(ThreadLocal<?> key) {
 
 从以上 set,getEntry,remove 方法看出，**在 threadLocal 的生命周期里，针对 threadLocal 存在的内存泄漏的问题，都会通过 expungeStaleEntry，cleanSomeSlots,replaceStaleEntry 这三个方法清理掉 key 为 null 的脏 entry**。
 
-## 2.4 为什么使用弱引用？ 
+#### 2.4 为什么使用弱引用？ 
 
 从文章开头通过 threadLocal,threadLocalMap,entry 的引用关系看起来 threadLocal 存在内存泄漏的问题似乎是因为 threadLocal 是被弱引用修饰的。那为什么要使用弱引用呢？
 
@@ -225,7 +225,7 @@ private void remove(ThreadLocal<?> key) {
 
 从以上的分析可以看出，使用弱引用的话在 threadLocal 生命周期里会尽可能的保证不出现内存泄漏的问题，达到安全的状态。
 
-## 2.5 Thread.exit() 
+#### 2.5 Thread.exit() 
 
 当线程退出时会执行 exit 方法：
 
@@ -249,7 +249,7 @@ private void exit() {
 
 从源码可以看出当线程结束时，会令 threadLocals=null，也就意味着 GC 的时候就可以将 threadLocalMap 进行垃圾回收，换句话说 threadLocalMap 生命周期实际上 thread 的生命周期相同。
 
-# 3. threadLocal 最佳实践
+## 3. threadLocal 最佳实践
 
 通过这篇文章对 threadLocal 的内存泄漏做了很详细的分析，我们可以完全理解 threadLocal 内存泄漏的前因后果，那么实践中我们应该怎么做？
 

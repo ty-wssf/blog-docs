@@ -1,6 +1,6 @@
 # 并发容器之ConcurrentHashMap(JDK 1.8版本)
 
-# 1.ConcurrentHashmap 简介
+## 1.ConcurrentHashmap 简介
 
 在使用 HashMap 时在多线程情况下扩容会出现 CPU 接近 100%的情况，因为 hashmap 并不是线程安全的，通常我们可以使用在 java 体系中古老的 hashtable 类，该类基本上所有的方法都采用 synchronized 进行线程安全的控制，可想而知，在高并发的情况下，每次只有一个线程能够获取对象监视器锁，这样的并发性能的确不令人满意。另外一种方式通过 Collections 的`Map<K,V> synchronizedMap(Map<K,V> m)`将 hashmap 包装成一个线程安全的 map。比如 SynchronzedMap 的 put 方法源码为：
 
@@ -19,7 +19,7 @@ ConcurrentHashMap 在 JDK1.6 的版本网上资料很多，有兴趣的可以去
 
 而到了 JDK 1.8 的 ConcurrentHashMap 就有了很大的变化，光是代码量就足足增加了很多。1.8 版本舍弃了 segment，并且大量使用了 synchronized，以及 CAS 无锁操作以保证 ConcurrentHashMap 操作的线程安全性。至于为什么不用 ReentrantLock 而是 Synchronzied 呢？实际上，synchronzied 做了很多的优化，包括偏向锁，轻量级锁，重量级锁，可以依次向上升级锁状态，但不能降级（关于 synchronized 可以看这篇文章[2]），因此，使用 synchronized 相较于 ReentrantLock 的性能会持平甚至在某些情况更优，具体的性能测试可以去网上查阅一些资料。另外，底层数据结构改变为采用数组+链表+红黑树的数据形式。
 
-# 2.关键属性及类
+## 2.关键属性及类
 
 在了解 ConcurrentHashMap 的具体方法实现前，我们需要系统的来看一下几个关键的地方。
 
@@ -140,11 +140,11 @@ ConcurrentHashMap 在 JDK1.6 的版本网上资料很多，有兴趣的可以去
 
    该方法用来设置 table 数组中索引为 i 的元素
 
-# 3.重点方法讲解
+## 3.重点方法讲解
 
 在熟悉上面的这核心信息之后，我们接下来就来依次看看几个常用的方法是怎样实现的。
 
-## 3.1 实例构造器方法 
+#### 3.1 实例构造器方法 
 
 在使用 ConcurrentHashMap 第一件事自然而然就是 new 出来一个 ConcurrentHashMap 对象，一共提供了如下几个构造器方法：
 
@@ -197,7 +197,7 @@ private static final int tableSizeFor(int c) {
 
 通过注释就很清楚了，该方法会将调用构造器方法时指定的大小转换成一个 2 的幂次方数，也就是说 ConcurrentHashMap 的大小一定是 2 的幂次方，比如，当指定大小为 18 时，为了满足 2 的幂次方特性，实际上 concurrentHashMapd 的大小为 2 的 5 次方（32）。另外，需要注意的是，**调用构造器方法的时候并未构造出 table 数组（可以理解为 ConcurrentHashMap 的数据容器），只是算出 table 数组的长度，当第一次向 ConcurrentHashMap 插入数据的时候才真正的完成初始化创建 table 数组的工作**。
 
-## 3.2 initTable 方法 
+#### 3.2 initTable 方法 
 
 直接上源码：
 
@@ -232,7 +232,7 @@ private final Node<K,V>[] initTable() {
 
 代码的逻辑请见注释，有可能存在一个情况是多个线程同时走到这个方法中，为了保证能够正确初始化，在第 1 步中会先通过 if 进行判断，若当前已经有一个线程正在初始化即 sizeCtl 值变为-1，这个时候其他线程在 If 判断为 true 从而调用 Thread.yield()让出 CPU 时间片。正在进行初始化的线程会调用 U.compareAndSwapInt 方法将 sizeCtl 改为-1 即正在初始化的状态。另外还需要注意的事情是，在第四步中会进一步计算数组中可用的大小即为数组实际大小 n 乘以加载因子 0.75.可以看看这里乘以 0.75 是怎么算的，0.75 为四分之三，这里`n - (n >>> 2)`是不是刚好是 n-(1/4)n=(3/4)n，挺有意思的吧:)。如果选择是无参的构造器的话，这里在 new Node 数组的时候会使用默认大小为`DEFAULT_CAPACITY`（16），然后乘以加载因子 0.75 为 12，也就是说数组的可用大小为 12。
 
-## 3.3 put 方法 
+#### 3.3 put 方法 
 
 使用 ConcurrentHashMap 最长用的也应该是 put 和 get 方法了吧，我们先来看看 put 方法是怎样实现的。调用 put 方法时实际具体实现是 putVal 方法，源码如下：
 
@@ -427,7 +427,7 @@ if (binCount != 0) {
 7. 插入完节点之后再次检查链表长度，如果长度大于 8，就把这个链表转换成红黑树；
 8. 对当前容量大小进行检查，如果超过了临界值（实际大小*加载因子）就需要扩容。
 
-## 3.4 get 方法 
+#### 3.4 get 方法 
 
 看完了 put 方法再来看 get 方法就很容易了，用逆向思维去看就好，这样存的话我反过来这么取就好了。get 方法源码为：
 
@@ -459,7 +459,7 @@ public V get(Object key) {
 
 代码的逻辑请看注释，首先先看当前的 hash 桶数组节点即 table[i]是否为查找的节点，若是则直接返回；若不是，则继续再看当前是不是树节点？通过看节点的 hash 值是否为小于 0，如果小于 0 则为树节点。如果是树节点在红黑树中查找节点；如果不是树节点，那就只剩下为链表的形式的一种可能性了，就向后遍历查找节点，若查找到则返回节点的 value 即可，若没有找到就返回 null。
 
-## 3.5 transfer 方法 
+#### 3.5 transfer 方法 
 
 当 ConcurrentHashMap 容量不足的时候，需要对 table 进行扩容。这个方法的基本思想跟 HashMap 是很像的，但是由于它是支持并发扩容的，所以要复杂的多。原因是它支持多线程进行扩容操作，而并没有加锁。我想这样做的目的不仅仅是为了满足 concurrent 的要求，而是希望利用并发处理去减少扩容带来的时间影响。transfer 方法源码为：
 
@@ -624,7 +624,7 @@ private final void transfer(Node<K,V>[] tab, Node<K,V>[] nextTab) {
 
 ![ConcurrentHashMap扩容示意图](https://user-gold-cdn.xitu.io/2018/5/6/163344e9830954bd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)ConcurrentHashMap扩容示意图
 
-## 3.6 与 size 相关的一些方法 
+#### 3.6 与 size 相关的一些方法 
 
 对于 ConcurrentHashMap 来说，这个 table 里到底装了多少东西其实是个不确定的数量，因为**不可能在调用 size()方法的时候像 GC 的“stop the world”一样让其他线程都停下来让你去统计，因此只能说这个数量是个估计值。对于这个估计值**，ConcurrentHashMap 也是大费周章才计算出来的。
 
@@ -672,7 +672,7 @@ public int size() {
 }
  /**
  * Returns the number of mappings. This method should be used
- * instead of {@link #size} because a ConcurrentHashMap may
+ * instead of {@link ##size} because a ConcurrentHashMap may
  * contain more mappings than can be represented as an int. The
  * value returned is an estimate; the actual count may differ if
  * there are concurrent insertions or removals.
@@ -746,7 +746,7 @@ private final void addCount(long x, int check) {
 }
 ```
 
-# 4. 总结
+## 4. 总结
 
 JDK6,7 中的 ConcurrentHashmap 主要使用 Segment 来实现减小锁粒度，分割成若干个 Segment，在 put 的时候需要锁住 Segment，get 时候不加锁，使用 volatile 来保证可见性，当要统计全局时（比如 size），首先会尝试多次计算 modcount 来确定，这几次尝试中，是否有其他线程进行了修改操作，如果没有，则直接返回 size。如果有，则需要依次锁住所有的 Segment 来计算。
 

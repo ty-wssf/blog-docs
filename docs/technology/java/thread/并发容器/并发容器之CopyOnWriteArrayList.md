@@ -1,6 +1,6 @@
 # 并发容器之CopyOnWriteArrayList
 
-# 1. CopyOnWriteArrayList 的简介
+## 1. CopyOnWriteArrayList 的简介
 
 java 学习者都清楚 ArrayList 并不是线程安全的，在读线程在读取 ArrayList 的时候如果有写线程在写数据的时候，基于 fast-fail 机制，会抛出**ConcurrentModificationException**异常，也就是说 ArrayList 并不是一个线程安全的容器，当然您可以用 Vector,或者使用 Collections 的静态方法将 ArrayList 包装成一个线程安全的类，但是这些方式都是采用 java 关键字 synchronzied 对方法进行修饰，利用独占式锁来保证线程安全的。但是，由于独占式锁在同一时刻只有一个线程能够获取到对象监视器，很显然这种方式效率并不是太高。
 
@@ -8,13 +8,13 @@ java 学习者都清楚 ArrayList 并不是线程安全的，在读线程在读�
 
 Doug Lea 大师就为我们提供 CopyOnWriteArrayList 容器可以保证线程安全，保证读读之间在任何时候都不会被阻塞，CopyOnWriteArrayList 也被广泛应用于很多业务场景之中，CopyOnWriteArrayList 值得被我们好好认识一番。
 
-# 2. COW 的设计思想
+## 2. COW 的设计思想
 
 回到上面所说的，如果简单的使用读写锁的话，在写锁被获取之后，读写线程被阻塞，只有当写锁被释放后读线程才有机会获取到锁从而读到最新的数据，站在**读线程的角度来看，即读线程任何时候都是获取到最新的数据，满足数据实时性**。既然我们说到要进行优化，必然有 trade-off,我们就可以**牺牲数据实时性满足数据的最终一致性即可**。而 CopyOnWriteArrayList 就是通过 Copy-On-Write(COW)，即写时复制的思想来通过延时更新的策略来实现数据的最终一致性，并且能够保证读线程间不阻塞。
 
 COW 通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行 Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。对 CopyOnWrite 容器进行并发的读的时候，不需要加锁，因为当前容器不会添加任何元素。所以 CopyOnWrite 容器也是一种读写分离的思想，延时更新的策略是通过在写的时候针对的是不同的数据容器来实现的，放弃数据实时性达到数据的最终一致性。
 
-# 3. CopyOnWriteArrayList 的实现原理
+## 3. CopyOnWriteArrayList 的实现原理
 
 现在我们来通过看源码的方式来理解 CopyOnWriteArrayList，实际上 CopyOnWriteArrayList 内部维护的就是一个数组
 
@@ -26,7 +26,7 @@ private transient volatile Object[] array;
 
 并且该数组引用是被 volatile 修饰，注意这里**仅仅是修饰的是数组引用**，其中另有玄机，稍后揭晓。关于 volatile 很重要的一条性质是它能够够保证可见性，关于 volatile 的详细讲解可以看[这篇文章](https://juejin.im/post/6844903601064640525)。对 list 来说，我们自然而然最关心的就是读写的时候，分别为 get 和 add 方法的实现。
 
-## 3.1 get 方法实现原理 
+#### 3.1 get 方法实现原理 
 
 get 方法的源码为：
 
@@ -49,7 +49,7 @@ private E get(Object[] a, int index) {
 
 可以看出来 get 方法实现非常简单，几乎就是一个“单线程”程序，没有对多线程添加任何的线程安全控制，也没有加锁也没有 CAS 操作等等，原因是，所有的读线程只是会读取数据容器中的数据，并不会进行修改。
 
-## 3.2 add 方法实现原理 
+#### 3.2 add 方法实现原理 
 
 再来看下如何进行添加数据的？add 方法的源码为：
 
@@ -82,7 +82,7 @@ add 方法的逻辑也比较容易理解，请看上面的注释。需要注意�
 2. 前面说过数组引用是 volatile 修饰的，因此将旧的数组引用指向新的数组，根据 volatile 的 happens-before 规则，写线程对数组引用的修改对读线程是可见的。
 3. 由于在写数据的时候，是在新的数组中插入数据的，从而保证读写实在两个不同的数据容器中进行操作。
 
-# 4. 总结
+## 4. 总结
 
 我们知道 COW 和读写锁都是通过读写分离的思想实现的，但两者还是有些不同，可以进行比较：
 

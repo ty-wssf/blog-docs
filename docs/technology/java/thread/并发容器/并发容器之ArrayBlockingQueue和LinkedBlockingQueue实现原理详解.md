@@ -1,14 +1,14 @@
 # 并发容器之ArrayBlockingQueue和LinkedBlockingQueue实现原理详解
 
-# 1. ArrayBlockingQueue 简介
+## 1. ArrayBlockingQueue 简介
 
 在多线程编程过程中，为了业务解耦和架构设计，经常会使用并发容器用于存储多线程间的共享数据，这样不仅可以保证线程安全，还可以简化各个线程操作。例如在“生产者-消费者”问题中，会使用阻塞队列（BlockingQueue）作为数据容器，关于 BlockingQueue 可以[看这篇文章](https://juejin.im/post/6844903602444582920)。为了加深对阻塞队列的理解，唯一的方式是对其实验原理进行理解，这篇文章就主要来看看 ArrayBlockingQueue 和 LinkedBlockingQueue 的实现原理。
 
-# 2. ArrayBlockingQueue 实现原理
+## 2. ArrayBlockingQueue 实现原理
 
 阻塞队列最核心的功能是，能够可阻塞式的插入和删除队列元素。当前队列为空时，会阻塞消费数据的线程，直至队列非空时，通知被阻塞的线程；当队列满时，会阻塞插入数据的线程，直至队列未满时，通知插入数据的线程（生产者线程）。那么，多线程中消息通知机制最常用的是 lock 的 condition 机制，关于 condition 可以[看这篇文章的详细介绍](https://juejin.im/post/6844903602419400718)。那么 ArrayBlockingQueue 的实现是不是也会采用 Condition 的通知机制呢？下面来看看。
 
-## 2.1 ArrayBlockingQueue 的主要属性 
+#### 2.1 ArrayBlockingQueue 的主要属性 
 
 ArrayBlockingQueue 的主要属性如下:
 
@@ -53,7 +53,7 @@ public ArrayBlockingQueue(int capacity, boolean fair) {
 
 接下来，主要看看可阻塞式的 put 和 take 方法是怎样实现的。
 
-## 2.2 put 方法详解 
+#### 2.2 put 方法详解 
 
 `put(E e)`方法源码如下：
 
@@ -95,7 +95,7 @@ private void enqueue(E x) {
 
 enqueue 方法的逻辑同样也很简单，先完成插入数据，即往数组中添加数据（`items[putIndex] = x`），然后通知被阻塞的消费者线程，当前队列中有数据可供消费（`notEmpty.signal()`）。
 
-## 2.3 take 方法详解 
+#### 2.3 take 方法详解 
 
 take 方法源码如下：
 
@@ -143,7 +143,7 @@ dequeue 方法也主要做了两件事情：1. 获取队列中的数据，即获
 
 从以上分析，可以看出 put 和 take 方法主要是通过 condition 的通知机制来完成可阻塞式的插入数据和获取数据。在理解 ArrayBlockingQueue 后再去理解 LinkedBlockingQueue 就很容易了。
 
-# 3. LinkedBlockingQueue 实现原理
+## 3. LinkedBlockingQueue 实现原理
 
 LinkedBlockingQueue 是用链表实现的有界阻塞队列，当构造对象时为指定队列大小时，队列默认大小为`Integer.MAX_VALUE`。从它的构造方法可以看出：
 
@@ -154,7 +154,7 @@ public LinkedBlockingQueue() {
 复制代码
 ```
 
-## 3.1 LinkedBlockingQueue 的主要属性 
+#### 3.1 LinkedBlockingQueue 的主要属性 
 
 LinkedBlockingQueue 的主要属性有：
 
@@ -198,7 +198,7 @@ static class Node<E> {    E item; /** * One of: * - the real successor Node * - 
 
 接下来，我们也同样来看看 put 方法和 take 方法的实现。
 
-## 3.2 put 方法详解 
+#### 3.2 put 方法详解 
 
 put 方法源码为:
 
@@ -272,7 +272,7 @@ public E take() throws InterruptedException {
 
 take 方法的主要逻辑请见于注释，也很容易理解。
 
-# 4. ArrayBlockingQueue 与 LinkedBlockingQueue 的比较
+## 4. ArrayBlockingQueue 与 LinkedBlockingQueue 的比较
 
 **相同点**：ArrayBlockingQueue 和 LinkedBlockingQueue 都是通过 condition 通知机制来实现可阻塞式插入和删除元素，并满足线程安全的特性；
 

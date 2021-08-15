@@ -1,6 +1,6 @@
 # 大白话说java并发工具类-CountDownLatch，CyclicBarrier
 
-# 1. 倒计时器 CountDownLatch
+## 1. 倒计时器 CountDownLatch
 
 在多线程协作完成业务功能时，有时候需要等待其他多个线程完成任务之后，主线程才能继续往下执行业务功能，在这种的业务场景下，通常可以使用 Thread 类的 join 方法，让主线程等待被 join 的线程执行完之后，主线程才能继续往下执行。当然，使用线程间消息通信机制也可以完成。其实，java 并发工具类中为我们提供了类似“倒计时”这样的工具类，可以十分方便的完成所说的这种业务场景。
 
@@ -80,7 +80,7 @@ pool-1-thread-6  到达终点
 
 另外，需要注意的是，当调用 CountDownLatch 的 countDown 方法时，当前线程是不会被阻塞，会继续往下执行，比如在该例中会继续输出`pool-1-thread-4 到达终点`。
 
-# 2. 循环栅栏：CyclicBarrier
+## 2. 循环栅栏：CyclicBarrier
 
 CyclicBarrier 也是一种多线程并发控制的实用工具，和 CountDownLatch 一样具有等待计数的功能，但是相比于 CountDownLatch 功能更加强大。
 
@@ -165,7 +165,7 @@ pool-1-thread-2  运动员出发
 
 从输出结果可以看出，当 6 个运动员（线程）都到达了指定的临界点（barrier）时候，才能继续往下执行，否则，则会阻塞等待在调用`await()`处
 
-# 3. CountDownLatch 与 CyclicBarrier 的比较
+## 3. CountDownLatch 与 CyclicBarrier 的比较
 
 CountDownLatch 与 CyclicBarrier 都是用于控制并发的工具类，都可以理解成维护的就是一个计数器，但是这两者还是各有不同侧重点的：
 

@@ -1,6 +1,6 @@
 # 初识Lock与AbstractQueuedSynchronizer(AQS)
 
-# 1. concurrent包的结构层次
+## 1. concurrent包的结构层次
 
 在针对并发编程中，Doug Lea大师为我们提供了大量实用，高性能的工具类，针对这些代码进行研究会让我们队并发编程的掌握更加透彻也会大大提升我们队并发编程技术的热爱。这些代码在java.util.concurrent包下。如下图，即为concurrent包的目录结构图。
 
@@ -10,7 +10,7 @@
 
 ![concurrent包实现整体示意图.png](https://gitee.com/wuyilong/picture-bed/raw/master/img/163260cff7cb847c.png)
 
-# 2. lock简介
+## 2. lock简介
 
 我们下来看concurent包下的lock子包。锁是用来控制多个线程访问共享资源的方式，一般来说，一个锁能够防止多个线程同时访问共享资源。在Lock接口出现之前，java程序主要是靠synchronized关键字实现锁功能的，而java SE5之后，并发包中增加了lock接口，它提供了与synchronized一样的锁功能。**虽然它失去了像synchronize关键字隐式加锁解锁的便捷性，但是却拥有了锁获取和释放的可操作性，可中断的获取锁以及超时获取锁等多种synchronized关键字所不具备的同步特性。**通常使用显示使用lock的形式如下：
 
@@ -26,7 +26,7 @@ try{
 
 需要注意的是**synchronized同步块执行完成或者遇到异常是锁会自动释放，而lock必须调用unlock()方法释放锁，因此在finally块中释放锁**。
 
-## 2.1 Lock接口API 
+### 2.1 Lock接口API 
 
 我们现在就来看看lock接口定义了哪些方法：
 
@@ -42,7 +42,7 @@ try{
 
 很显然ReentrantLock实现了lock接口，接下来我们来仔细研究一下它是怎样实现的。当你查看源码时你会惊讶的发现ReentrantLock并没有多少代码，另外有一个很明显的特点是：**基本上所有的方法的实现实际上都是调用了其静态内存类`Sync`中的方法，而Sync类继承了`AbstractQueuedSynchronizer（AQS）`**。可以看出要想理解ReentrantLock关键核心在于对队列同步器AbstractQueuedSynchronizer（简称同步器）的理解。
 
-## 2.2 初识AQS 
+### 2.2 初识AQS 
 
 关于AQS在源码中有十分具体的解释：
 
@@ -78,7 +78,7 @@ implement their public methods.
 
 同步器是实现锁（也可以是任意同步组件）的关键，在锁的实现中聚合同步器，利用同步器实现锁的语义。可以这样理解二者的关系：**锁是面向使用者，它定义了使用者与锁交互的接口，隐藏了实现细节；同步器是面向锁的实现者，它简化了锁的实现方式，屏蔽了同步状态的管理，线程的排队，等待和唤醒等底层操作**。锁和同步器很好的隔离了使用者和实现者所需关注的领域。
 
-## 2.3 AQS的模板方法设计模式 
+### 2.3 AQS的模板方法设计模式 
 
 AQS的设计是使用模板方法设计模式，它将**一些方法开放给子类进行重写，而同步器给同步组件所提供模板方法又会重新调用被子类所重写的方法**。举个例子，AQS中需要重写的方法tryAcquire：
 
@@ -129,7 +129,7 @@ AQS提供的模板方法可以分为3类：
 
 同步组件通过AQS提供的模板方法实现自己的同步语义。
 
-# 3. 一个例子
+## 3. 一个例子
 
 下面使用一个例子来进一步理解下AQS的使用。这个例子也是来源于AQS源码中的example。
 

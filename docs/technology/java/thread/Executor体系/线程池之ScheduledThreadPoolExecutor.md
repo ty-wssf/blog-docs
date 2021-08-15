@@ -1,6 +1,6 @@
 # 线程池之ScheduledThreadPoolExecutor
 
-# 1. ScheduledThreadPoolExecutor 简介
+## 1. ScheduledThreadPoolExecutor 简介
 
 ScheduledThreadPoolExecutor 可以用来在给定延时后执行异步任务或者周期性执行任务，相对于任务调度的 Timer 来说，其功能更加强大，Timer 只能使用一个后台线程执行任务，而 ScheduledThreadPoolExecutor 则可以通过构造函数来指定后台线程的个数。ScheduledThreadPoolExecutor 类的 UML 图如下：
 
@@ -9,7 +9,7 @@ ScheduledThreadPoolExecutor 可以用来在给定延时后执行异步任务或�
 1. 从 UML 图可以看出，ScheduledThreadPoolExecutor 继承了`ThreadPoolExecutor`，也就是说 ScheduledThreadPoolExecutor 拥有 execute()和 submit()提交异步任务的基础功能，关于 ThreadPoolExecutor[可以看这篇文章](https://juejin.im/post/6844903602452955150)。但是，ScheduledThreadPoolExecutor 类实现了`ScheduledExecutorService`，该接口定义了 ScheduledThreadPoolExecutor 能够延时执行任务和周期执行任务的功能；
 2. ScheduledThreadPoolExecutor 也两个重要的内部类：**DelayedWorkQueue**和**ScheduledFutureTask**。可以看出 DelayedWorkQueue 实现了 BlockingQueue 接口，也就是一个阻塞队列，ScheduledFutureTask 则是继承了 FutureTask 类，也表示该类用于返回异步任务的结果。这两个关键类，下面会具体详细来看。
 
-## 1.1 构造方法 
+### 1.1 构造方法 
 
 ScheduledThreadPoolExecutor 有如下几个构造方法：
 
@@ -39,7 +39,7 @@ public ScheduledThreadPoolExecutor(int corePoolSize,
 
 可以看出由于 ScheduledThreadPoolExecutor 继承了 ThreadPoolExecutor，它的构造方法实际上是调用了 ThreadPoolExecutor，对 ThreadPoolExecutor 的介绍可以[可以看这篇文章](https://juejin.im/post/6844903602452955150)，理解 ThreadPoolExecutor 构造方法的几个参数的意义后，理解这就很容易了。可以看出，ScheduledThreadPoolExecutor 的核心线程池的线程个数为指定的 corePoolSize，当核心线程池的线程个数达到 corePoolSize 后，就会将任务提交给有界阻塞队列 DelayedWorkQueue，对 DelayedWorkQueue 在下面进行详细介绍，线程池允许最大的线程个数为 Integer.MAX_VALUE，也就是说理论上这是一个大小无界的线程池。
 
-## 1.2 特有方法 
+### 1.2 特有方法 
 
 ScheduledThreadPoolExecutor 实现了`ScheduledExecutorService`接口，该接口定义了**可延时执行异步任务和可周期执行异步任务的特有功能**，相应的方法分别为：
 
@@ -68,7 +68,7 @@ public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,
 复制代码
 ```
 
-# 2. 可周期性执行的任务---ScheduledFutureTask
+## 2. 可周期性执行的任务---ScheduledFutureTask
 
 ScheduledThreadPoolExecutor 最大的特色是能够周期性执行异步任务，当调用`schedule,scheduleAtFixedRate和scheduleWithFixedDelay方法`时，实际上是将提交的任务转换成的 ScheduledFutureTask 类，从源码就可以看出。以 schedule 方法为例：
 
@@ -110,7 +110,7 @@ public void run() {
 
 因此，可以得出结论：**`ScheduledFutureTask`最主要的功能是根据当前任务是否具有周期性，对异步任务进行进一步封装。如果不是周期性任务（调用 schedule 方法）则直接通过`run()`执行，若是周期性任务，则需要在每一次执行完后，重设下一次执行的时间，然后将下一次任务继续放入到阻塞队列中。**
 
-# 3. DelayedWorkQueue
+## 3. DelayedWorkQueue
 
 在 ScheduledThreadPoolExecutor 中还有另外的一个重要的类就是 DelayedWorkQueue。为了实现其 ScheduledThreadPoolExecutor 能够延时执行异步任务以及能够周期执行任务，DelayedWorkQueue 进行相应的封装。DelayedWorkQueue 是一个基于堆的数据结构，类似于 DelayQueue 和 PriorityQueue。在执行定时任务的时候，每个任务的执行时间都不同，所以 DelayedWorkQueue 的工作就是按照执行时间的升序来排列，执行时间距离当前时间越近的任务在队列的前面。
 
@@ -138,7 +138,7 @@ private int size = 0;
 
 关于 DelayedWorkQueue 我们可以得出这样的结论：**DelayedWorkQueue 是基于堆的数据结构，按照时间顺序将每个任务进行排序，将待执行时间越近的任务放在在队列的队头位置，以便于最先进行执行**。
 
-# 4.ScheduledThreadPoolExecutor 执行过程
+## 4.ScheduledThreadPoolExecutor 执行过程
 
 现在我们对 ScheduledThreadPoolExecutor 的两个内部类 ScheduledFutueTask 和 DelayedWorkQueue 进行了了解，实际上这也是线程池工作流程中最重要的两个关键因素：**任务以及阻塞队列**。现在我们来看下 ScheduledThreadPoolExecutor 提交一个任务后，整体的执行过程。以 ScheduledThreadPoolExecutor 的 schedule 方法为例，具体源码为：
 
@@ -196,7 +196,7 @@ void ensurePrestart() {
 
 可以看出该方法逻辑很简单，关键在于它所调用的`addWorker方法`，该方法主要功能：**新建`Worker类`，当执行任务时，就会调用被`Worker所重写的run方法`，进而会继续执行`runWorker`方法。在`runWorker`方法中会调用`getTask`方法从阻塞队列中不断的去获取任务进行执行，直到从阻塞队列中获取的任务为 null 的话，线程结束终止**。addWorker 方法是 ThreadPoolExecutor 类中的方法，[对 ThreadPoolExecutor 的源码分析可以看这篇文章，很详细。](http://www.ideabuffer.cn/2017/04/04/深入理解Java线程池：ThreadPoolExecutor/#addWorker方法)
 
-# 5.总结
+## 5.总结
 
 1. ScheduledThreadPoolExecutor 继承了 ThreadPoolExecutor 类，因此，整体上功能一致，线程池主要负责创建线程（Worker 类），线程从阻塞队列中不断获取新的异步任务，直到阻塞队列中已经没有了异步任务为止。但是相较于 ThreadPoolExecutor 来说，ScheduledThreadPoolExecutor 具有延时执行任务和可周期性执行任务的特性，ScheduledThreadPoolExecutor 重新设计了任务类`ScheduleFutureTask`,ScheduleFutureTask 重写了`run`方法使其具有可延时执行和可周期性执行任务的特性。另外，阻塞队列`DelayedWorkQueue`是可根据优先级排序的队列，采用了堆的底层数据结构，使得与当前时间相比，待执行时间越靠近的任务放置队头，以便线程能够获取到任务进行执行；
 

@@ -1,10 +1,11 @@
-# 1. ThreadLocal 的简介
+# 并发容器之ThreadLocal
+## 1. ThreadLocal 的简介
 
 在多线程编程中通常解决线程安全的问题我们会利用 synchronzed 或者 lock 控制线程对临界区资源的同步顺序从而解决线程安全的问题，但是这种加锁的方式会让未获取到锁的线程进行阻塞等待，很显然这种方式的时间效率并不是很好。**线程安全问题的核心在于多个线程会对同一个临界区共享资源进行操作**，那么，如果每个线程都使用自己的“共享资源”，各自使用各自的，又互相不影响到彼此即让多个线程间达到隔离的状态，这样就不会出现线程安全的问题。事实上，这就是一种“**空间换时间**”的方案，每个线程都会都拥有自己的“共享资源”无疑内存会大很多，但是由于不需要同步也就减少了线程可能存在的阻塞等待的情况从而提高的时间效率。
 
 虽然 ThreadLocal 并不在 java.util.concurrent 包中而在 java.lang 包中，但我更倾向于把它当作是一种并发容器（虽然真正存放数据的是 ThreadLoclMap）进行归类。从**ThreadLocal 这个类名可以顾名思义的进行理解，表示线程的“本地变量”，即每个线程都拥有该变量副本，达到人手一份的效果，各用各的这样就可以避免共享资源的竞争**。
 
-# 2. ThreadLocal 的实现原理
+## 2. ThreadLocal 的实现原理
 
 要想学习到 ThreadLocal 的实现原理，就必须了解它的几个核心方法，包括怎样存怎样取等等，下面我们一个个来看。
 
@@ -131,11 +132,11 @@ public void remove() {
 
 get,set 方法实现了存数据和读数据，我们当然还得学会如何删数据**。删除数据当然是从 map 中删除数据，先获取与当前线程相关联的 threadLocalMap 然后从 map 中删除该 threadLocal 实例为 key 的键值对即可**。
 
-# 3. ThreadLocalMap 详解
+## 3. ThreadLocalMap 详解
 
 从上面的分析我们已经知道，数据其实都放在了 threadLocalMap 中，threadLocal 的 get，set 和 remove 方法实际上具体是通过 threadLocalMap 的 getEntry,set 和 remove 方法实现的。如果想真正全方位的弄懂 threadLocal，势必得在对 threadLocalMap 做一番理解。
 
-## 3.1 Entry 数据结构 
+#### 3.1 Entry 数据结构 
 
 ThreadLocalMap 是 threadLocal 一个静态内部类，和大多数容器一样内部维护了一个数组，同样的 threadLocalMap 内部维护了一个 Entry 类型的 table 数组。
 
@@ -163,7 +164,7 @@ Entry 是一个以 ThreadLocal 为 key,Object 为 value 的键值对，另外需
 
 注意上图中的实线表示强引用，虚线表示弱引用。如图所示，每个线程实例中可以通过 threadLocals 获取到 threadLocalMap，而 threadLocalMap 实际上就是一个以 threadLocal 实例为 key，任意对象为 value 的 Entry 数组。当我们为 threadLocal 变量赋值，实际上就是以当前 threadLocal 实例为 key，值为 value 的 Entry 往这个 threadLocalMap 中存放。需要注意的是**Entry 中的 key 是弱引用，当 threadLocal 外部强引用被置为 null(`threadLocalInstance=null`),那么系统 GC 的时候，根据可达性分析，这个 threadLocal 实例就没有任何一条链路能够引用到它，这个 ThreadLocal 势必会被回收，这样一来，ThreadLocalMap 中就会出现 key 为 null 的 Entry，就没有办法访问这些 key 为 null 的 Entry 的 value，如果当前线程再迟迟不结束的话，这些 key 为 null 的 Entry 的 value 就会一直存在一条强引用链：Thread Ref -> Thread -> ThreaLocalMap -> Entry -> value 永远无法回收，造成内存泄漏。**当然，如果当前 thread 运行结束，threadLocal，threadLocalMap,Entry 没有引用链可达，在垃圾回收的时候都会被系统进行回收。在实际开发中，会使用线程池去维护线程的创建和复用，比如固定大小的线程池，线程为了复用是不会主动结束的，所以，threadLocal 的内存泄漏问题，是应该值得我们思考和注意的问题，关于这个问题可以看这篇文章----[详解 threadLocal 内存泄漏问题](http://www.jianshu.com/p/dde92ec37bd1)
 
-## 3.2 set 方法 
+#### 3.2 set 方法 
 
 与 concurrentHashMap，hashMap 等容器一样，threadLocalMap 也是采用散列表进行实现的。在了解 set 方法前，我们先来回顾下关于散列表相关的知识（摘自[这篇的 threadLocalMap 的讲解部分](https://www.cnblogs.com/zhangjk1993/archive/2017/03/29/6641745.html)以及[这篇文章的 hash](http://faculty.cs.niu.edu/~freedman/340/340notes/340hash.htm)）。
 
@@ -254,7 +255,7 @@ set 方法的关键部分**请看上面的注释**，主要有这样几点需要
 
 方法逻辑**请看注释**，新建一个大小为原来数组长度的两倍的数组，然后遍历旧数组中的 entry 并将其插入到新的 hash 数组中，主要注意的是，**在扩容的过程中针对脏 entry 的话会令 value 为 null，以便能够被垃圾回收器能够回收，解决隐藏的内存泄漏的问题**。
 
-## 3.3 getEntry 方法 
+#### 3.3 getEntry 方法 
 
 getEntry 方法源码为：
 
@@ -285,7 +286,7 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {    Entry[]
 
 这个方法同样很好理解，通过 nextIndex 往后环形查找，如果找到和查询的 key 相同的 entry 的话就直接返回，如果在查找过程中遇到脏 entry 的话使用 expungeStaleEntry 方法进行处理。到目前为止**，为了解决潜在的内存泄漏的问题，在 set，resize,getEntry 这些地方都会对这些脏 entry 进行处理，可见为了尽可能解决这个问题几乎无时无刻都在做出努力。**
 
-## 3.4 remove 
+#### 3.4 remove 
 
 ```
 /**
@@ -312,7 +313,7 @@ private void remove(ThreadLocal<?> key) {
 
 该方法逻辑很简单，通过往后环形查找到与指定 key 相同的 entry 后，先通过 clear 方法将 key 置为 null 后，使其转换为一个脏 entry，然后调用 expungeStaleEntry 方法将其 value 置为 null，以便垃圾回收时能够清理，同时将 table[i]置为 null。
 
-# 4. ThreadLocal 的使用场景
+## 4. ThreadLocal 的使用场景
 
 **ThreadLocal 不是用来解决共享对象的多线程访问问题的**，数据实质上是放在每个 thread 实例引用的 threadLocalMap,也就是说**每个不同的线程都拥有专属于自己的数据容器（threadLocalMap），彼此不影响**。因此 threadLocal 只适用于 **共享对象会造成线程安全** 的业务场景。比如**hibernate 中通过 threadLocal 管理 Session**就是一个典型的案例，不同的请求线程（用户）拥有自己的 session,若将 session 共享出去被多线程访问，必然会带来线程安全问题。下面，我们自己来写一个例子，SimpleDateFormat.parse 方法会有线程安全的问题，我们可以尝试使用 threadLocal 包装 SimpleDateFormat，将该实例不被多线程共享即可。
 

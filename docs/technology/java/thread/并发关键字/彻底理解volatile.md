@@ -1,6 +1,6 @@
 # 彻底理解volatile
 
-# 1. volatile简介
+## 1. volatile简介
 
 在上一篇文章中我们深入理解了java关键字[synchronized](https://juejin.im/post/6844903600334831629)，我们知道在java中还有一大神器就是关键volatile，可以说是和synchronized各领风骚，其中奥妙，我们来共同探讨下。
 
@@ -9,7 +9,7 @@
 现在我们有了一个大概的印象就是：**被volatile修饰的变量能够保证每个线程能够获取该变量的最新值，从而避免出现数据脏读的现象。**
 
 
-# 2. volatile实现原理
+## 2. volatile实现原理
 
 volatile是怎样实现了？比如一个很简单的Java代码：
 
@@ -30,7 +30,7 @@ volatile是怎样实现了？比如一个很简单的Java代码：
 
 
 
-# 3.  volatile的happens-before关系
+## 3.  volatile的happens-before关系
 
 经过上面的分析，我们已经知道了volatile变量可以通过**缓存一致性协议**保证每个线程都能获得最新值，即满足数据的“可见性”。我们继续延续上一篇分析问题的方式（我一直认为思考问题的方式是属于自己，也才是最重要的，也在不断培养这方面的能力），我一直将并发分析的切入点分为**两个核心，三大性质**。两大核心：JMM内存模型（主内存和工作内存）以及happens-before；三条性质：原子性，可见性，有序性（关于三大性质的总结在以后得文章会和大家共同探讨）。废话不多说，先来看两个核心之一：volatile的happens-before关系。
 
@@ -60,7 +60,7 @@ public class VolatileExample {
 加锁线程A先执行writer方法，然后线程B执行reader方法图中每一个箭头两个节点就代码一个happens-before关系，黑色的代表根据**程序顺序规则**推导出来，红色的是根据**volatile变量的写happens-before 于任意后续对volatile变量的读**，而蓝色的就是根据传递性规则推导出来的。这里的2 happen-before 3，同样根据happens-before规则定义：如果A happens-before B,则A的执行结果对B可见，并且A的执行顺序先于B的执行顺序，我们可以知道操作2执行结果对操作3来说是可见的，也就是说当线程A将volatile变量 flag更改为true后线程B就能够迅速感知。
 
 
-# 4. volatile的内存语义
+## 4. volatile的内存语义
 
 还是按照**两个核心**的分析方式，分析完happens-before关系后我们现在就来进一步分析volatile的内存语义（按照这种方式去学习，会不会让大家对知识能够把握的更深，而不至于不知所措，如果大家认同我的这种方式，不妨给个赞，小弟在此谢过，对我是个鼓励）。还是以上面的代码为例，假设线程A先执行writer方法，线程B随后执行reader方法，初始时线程的本地内存中flag和a都是初始状态，下图是线程A执行volatile写后的状态图。
 
@@ -83,7 +83,7 @@ public class VolatileExample {
 好的，我们现在**两个核心**：happens-before以及内存语义现在已经都了解清楚了。是不是还不过瘾，突然发现原来自己会这么爱学习（微笑脸），那我们下面就再来一点干货----volatile内存语义的实现。
 
 
-## 4.1 volatile的内存语义实现
+### 4.1 volatile的内存语义实现
 
 我们都知道，为了性能优化，JMM在不改变正确语义的前提下，会允许编译器和处理器对指令序列进行重排序，那如果想阻止重排序要怎么办了？答案是可以添加内存屏障。
 
@@ -134,7 +134,7 @@ java编译器会在生成指令系列时在适当的位置会插入内存屏障�
 
 ![volatile读插入内存屏障示意图](https://user-gold-cdn.xitu.io/2018/5/2/16320e799b76d34c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
-# 5. 一个示例
+## 5. 一个示例
 
 我们现在已经理解volatile的精华了，文章开头的那个问题我想现在我们都能给出答案了。更正后的代码为：
 

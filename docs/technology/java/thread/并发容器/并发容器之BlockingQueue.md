@@ -1,12 +1,12 @@
 # 并发容器之BlockingQueue
 
-# 1. BlockingQueue 简介
+## 1. BlockingQueue 简介
 
 在实际编程中，会经常使用到 JDK 中 Collection 集合框架中的各种容器类如实现 List,Map,Queue 接口的容器类，但是这些容器类基本上不是线程安全的，除了使用 Collections 可以将其转换为线程安全的容器，Doug Lea 大师为我们都准备了对应的线程安全的容器，如实现 List 接口的 CopyOnWriteArrayList（[关于 CopyOnWriteArrayList 可以看这篇文章](https://juejin.im/post/6844903602436374541)），实现 Map 接口的 ConcurrentHashMap（[关于 ConcurrentHashMap 可以看这篇文章](https://juejin.im/post/6844903602423595015)），实现 Queue 接口的 ConcurrentLinkedQueue（[关于 ConcurrentLinkedQueue 可以看这篇文章](https://juejin.im/post/6844903602427805704)）。
 
 最常用的"**生产者-消费者**"问题中，队列通常被视作线程间操作的数据容器，这样，可以对各个模块的业务功能进行解耦，生产者将“生产”出来的数据放置在数据容器中，而消费者仅仅只需要在“数据容器”中进行获取数据即可，这样生产者线程和消费者线程就能够进行解耦，只专注于自己的业务功能即可。阻塞队列（BlockingQueue）被广泛使用在“生产者-消费者”问题中，其原因是 BlockingQueue 提供了可阻塞的插入和移除的方法。**当队列容器已满，生产者线程会被阻塞，直到队列未满；当队列容器为空时，消费者线程会被阻塞，直至队列非空时为止。**
 
-# 2. 基本操作
+## 2. 基本操作
 
 BlockingQueue 基本操作总结如下（此图来源于 JAVA API 文档）：
 
@@ -41,7 +41,7 @@ BlockingQueue 具有的特殊操作：
 1. take()：当阻塞队列为空时，获取队头数据的线程会被阻塞；
 2. poll(long timeout, TimeUnit unit)：当阻塞队列为空时，获取数据的线程会被阻塞，另外，如果被阻塞的线程超过了给定的时长，该线程会退出
 
-# 3. 常用的 BlockingQueue
+## 3. 常用的 BlockingQueue
 
 实现 BlockingQueue 接口的有`ArrayBlockingQueue, DelayQueue, LinkedBlockingDeque, LinkedBlockingQueue, LinkedTransferQueue, PriorityBlockingQueue, SynchronousQueue`，而这几种常见的阻塞队列也是在实际编程中会常用的，下面对这几种常见的阻塞队列进行说明：
 

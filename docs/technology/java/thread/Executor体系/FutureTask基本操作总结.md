@@ -1,6 +1,6 @@
 # FutureTask基本操作总结
 
-# 1.FutureTask 简介
+## 1.FutureTask 简介
 
 在 Executors 框架体系中，FutureTask 用来表示可获取结果的异步任务。FutureTask 实现了 Future 接口，FutureTask 提供了启动和取消异步任务，查询异步任务是否计算结束以及获取最终的异步任务的结果的一些常用的方法。通过`get()`方法来获取异步任务的结果，但是会阻塞当前线程直至异步任务执行结束。一旦任务执行结束，任务不能重新启动或取消，除非调用`runAndReset()`方法。在 FutureTask 的源码中为其定义了这些状态：
 
@@ -43,7 +43,7 @@ private static final int INTERRUPTED  = 6;
 
 ![FutureTask的get和cancel的执行示意图.jpg](https://user-gold-cdn.xitu.io/2018/5/6/16334a72fd899d43?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)FutureTask的get和cancel的执行示意图.jpg
 
-# 2. FutureTask 的基本使用
+## 2. FutureTask 的基本使用
 
 FutureTask 除了实现 Future 接口外，还实现了 Runnable 接口。因此，FutureTask 可以交给 Executor 执行，也可以由调用的线程直接执行（FutureTask.run()）。另外，FutureTask 的获取也可以通过 ExecutorService.submit()方法返回一个 FutureTask 对象，然后在通过 FutureTask.get()或者 FutureTask.cancel 方法。
 
