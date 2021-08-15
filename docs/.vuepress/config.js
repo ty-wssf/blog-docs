@@ -131,6 +131,7 @@ module.exports = {
                         'Linux下SpringBoot Jar 如何实现service服务',
                         'springboot jar包安装成windows服务',
                         '使用 Docker 部署 Spring Boot',
+                        'Docker Compose + Spring Boot + Nginx + Mysql 实践',
                         '使用 Jenkins 部署 Spring Boot',
                         'Web 综合开发',
                         'Spring Boot初始化数据库脚本',
@@ -266,6 +267,11 @@ module.exports = {
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
                         'Docker入门教程',
+                        'Dockerfile 使用介绍',
+                        'Dockerfile 指令详解',
+                        'Docker 三剑客之 Docker Compose',
+                        'Docker 三剑客之 Docker Machine',
+                        'Docker 三剑客之 Docker Swarm',
                     ]
                 },
 
