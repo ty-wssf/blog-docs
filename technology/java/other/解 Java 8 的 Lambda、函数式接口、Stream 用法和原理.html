@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>解 Java 8 的 Lambda、函数式接口、Stream 用法和原理 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.2473371e.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.37203b8b.js" as="script"><link rel="preload" href="/blog-docs/assets/js/86.0d2e40de.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.3130520a.js"><link rel="prefetch" href="/blog-docs/assets/js/100.7490bf38.js"><link rel="prefetch" href="/blog-docs/assets/js/101.bbc7f3ba.js"><link rel="prefetch" href="/blog-docs/assets/js/102.7db47a00.js"><link rel="prefetch" href="/blog-docs/assets/js/103.08392eb6.js"><link rel="prefetch" href="/blog-docs/assets/js/104.6a9bccde.js"><link rel="prefetch" href="/blog-docs/assets/js/105.8fbc2d51.js"><link rel="prefetch" href="/blog-docs/assets/js/106.d8e79fc9.js"><link rel="prefetch" href="/blog-docs/assets/js/107.e6752b04.js"><link rel="prefetch" href="/blog-docs/assets/js/108.a99b5210.js"><link rel="prefetch" href="/blog-docs/assets/js/109.2a4f17f2.js"><link rel="prefetch" href="/blog-docs/assets/js/11.cf50825c.js"><link rel="prefetch" href="/blog-docs/assets/js/110.6c3b7a22.js"><link rel="prefetch" href="/blog-docs/assets/js/111.fe98a461.js"><link rel="prefetch" href="/blog-docs/assets/js/112.e6e3249d.js"><link rel="prefetch" href="/blog-docs/assets/js/113.dc1b17ae.js"><link rel="prefetch" href="/blog-docs/assets/js/114.e6cd8e48.js"><link rel="prefetch" href="/blog-docs/assets/js/115.b554d69a.js"><link rel="prefetch" href="/blog-docs/assets/js/116.5a0e005e.js"><link rel="prefetch" href="/blog-docs/assets/js/117.a9c117e1.js"><link rel="prefetch" href="/blog-docs/assets/js/118.b0a24190.js"><link rel="prefetch" href="/blog-docs/assets/js/119.db9fe5f0.js"><link rel="prefetch" href="/blog-docs/assets/js/12.2dabdd65.js"><link rel="prefetch" href="/blog-docs/assets/js/120.c8953964.js"><link rel="prefetch" href="/blog-docs/assets/js/121.1539d139.js"><link rel="prefetch" href="/blog-docs/assets/js/122.857696f3.js"><link rel="prefetch" href="/blog-docs/assets/js/123.3f3aa4dd.js"><link rel="prefetch" href="/blog-docs/assets/js/124.e741fc2c.js"><link rel="prefetch" href="/blog-docs/assets/js/125.f1e90b8d.js"><link rel="prefetch" href="/blog-docs/assets/js/126.6dbde72f.js"><link rel="prefetch" href="/blog-docs/assets/js/127.d97f4a73.js"><link rel="prefetch" href="/blog-docs/assets/js/128.00e14136.js"><link rel="prefetch" href="/blog-docs/assets/js/129.f93f581b.js"><link rel="prefetch" href="/blog-docs/assets/js/13.75b7f1e9.js"><link rel="prefetch" href="/blog-docs/assets/js/130.78165c67.js"><link rel="prefetch" href="/blog-docs/assets/js/131.795795b4.js"><link rel="prefetch" href="/blog-docs/assets/js/132.1b9ef0bc.js"><link rel="prefetch" href="/blog-docs/assets/js/133.9d5de742.js"><link rel="prefetch" href="/blog-docs/assets/js/134.44ee47f1.js"><link rel="prefetch" href="/blog-docs/assets/js/135.125a56b1.js"><link rel="prefetch" href="/blog-docs/assets/js/136.213696db.js"><link rel="prefetch" href="/blog-docs/assets/js/137.b21f5f81.js"><link rel="prefetch" href="/blog-docs/assets/js/138.04406a40.js"><link rel="prefetch" href="/blog-docs/assets/js/139.5cdc7c48.js"><link rel="prefetch" href="/blog-docs/assets/js/14.105d501e.js"><link rel="prefetch" href="/blog-docs/assets/js/140.548791ef.js"><link rel="prefetch" href="/blog-docs/assets/js/141.9a808212.js"><link rel="prefetch" href="/blog-docs/assets/js/142.eb86a4f3.js"><link rel="prefetch" href="/blog-docs/assets/js/143.3f07f0cc.js"><link rel="prefetch" href="/blog-docs/assets/js/144.cccf70e3.js"><link rel="prefetch" href="/blog-docs/assets/js/145.37e0293d.js"><link rel="prefetch" href="/blog-docs/assets/js/146.6ced2d22.js"><link rel="prefetch" href="/blog-docs/assets/js/147.774364ba.js"><link rel="prefetch" href="/blog-docs/assets/js/148.636c2acc.js"><link rel="prefetch" href="/blog-docs/assets/js/149.54982937.js"><link rel="prefetch" href="/blog-docs/assets/js/15.2f50a55e.js"><link rel="prefetch" href="/blog-docs/assets/js/150.77076124.js"><link rel="prefetch" href="/blog-docs/assets/js/151.67a908fa.js"><link rel="prefetch" href="/blog-docs/assets/js/152.7b2e8c4a.js"><link rel="prefetch" href="/blog-docs/assets/js/153.2d42675b.js"><link rel="prefetch" href="/blog-docs/assets/js/154.f7d4bdef.js"><link rel="prefetch" href="/blog-docs/assets/js/155.14d3834e.js"><link rel="prefetch" href="/blog-docs/assets/js/156.6bde1d14.js"><link rel="prefetch" href="/blog-docs/assets/js/16.8ed0322a.js"><link rel="prefetch" href="/blog-docs/assets/js/17.35f72c1f.js"><link rel="prefetch" href="/blog-docs/assets/js/18.98b39901.js"><link rel="prefetch" href="/blog-docs/assets/js/19.59a949bf.js"><link rel="prefetch" href="/blog-docs/assets/js/20.fe3c38db.js"><link rel="prefetch" href="/blog-docs/assets/js/21.6bf549bc.js"><link rel="prefetch" href="/blog-docs/assets/js/22.b04a892a.js"><link rel="prefetch" href="/blog-docs/assets/js/23.4376e455.js"><link rel="prefetch" href="/blog-docs/assets/js/24.9040408c.js"><link rel="prefetch" href="/blog-docs/assets/js/25.d2e5c278.js"><link rel="prefetch" href="/blog-docs/assets/js/26.d44ccadf.js"><link rel="prefetch" href="/blog-docs/assets/js/27.73246f81.js"><link rel="prefetch" href="/blog-docs/assets/js/28.b5188281.js"><link rel="prefetch" href="/blog-docs/assets/js/29.77ddbe9b.js"><link rel="prefetch" href="/blog-docs/assets/js/3.81cc6e32.js"><link rel="prefetch" href="/blog-docs/assets/js/30.19e664fc.js"><link rel="prefetch" href="/blog-docs/assets/js/31.669d5753.js"><link rel="prefetch" href="/blog-docs/assets/js/32.b80ef926.js"><link rel="prefetch" href="/blog-docs/assets/js/33.9de3207f.js"><link rel="prefetch" href="/blog-docs/assets/js/34.acf31267.js"><link rel="prefetch" href="/blog-docs/assets/js/35.a4e1d030.js"><link rel="prefetch" href="/blog-docs/assets/js/36.708a7cd7.js"><link rel="prefetch" href="/blog-docs/assets/js/37.60eac1b2.js"><link rel="prefetch" href="/blog-docs/assets/js/38.51f1d8bf.js"><link rel="prefetch" href="/blog-docs/assets/js/39.3628eb1a.js"><link rel="prefetch" href="/blog-docs/assets/js/4.93acd188.js"><link rel="prefetch" href="/blog-docs/assets/js/40.9503463f.js"><link rel="prefetch" href="/blog-docs/assets/js/41.033baec3.js"><link rel="prefetch" href="/blog-docs/assets/js/42.947a9cbc.js"><link rel="prefetch" href="/blog-docs/assets/js/43.288c335f.js"><link rel="prefetch" href="/blog-docs/assets/js/44.f2d40737.js"><link rel="prefetch" href="/blog-docs/assets/js/45.6f582921.js"><link rel="prefetch" href="/blog-docs/assets/js/46.67f9b38c.js"><link rel="prefetch" href="/blog-docs/assets/js/47.5653e794.js"><link rel="prefetch" href="/blog-docs/assets/js/48.a7a8334d.js"><link rel="prefetch" href="/blog-docs/assets/js/49.0e75b0df.js"><link rel="prefetch" href="/blog-docs/assets/js/5.d88b0199.js"><link rel="prefetch" href="/blog-docs/assets/js/50.c00cef28.js"><link rel="prefetch" href="/blog-docs/assets/js/51.a18d30ce.js"><link rel="prefetch" href="/blog-docs/assets/js/52.5ee0b676.js"><link rel="prefetch" href="/blog-docs/assets/js/53.c4d61ece.js"><link rel="prefetch" href="/blog-docs/assets/js/54.471c73c8.js"><link rel="prefetch" href="/blog-docs/assets/js/55.b54c4cce.js"><link rel="prefetch" href="/blog-docs/assets/js/56.fe569b3e.js"><link rel="prefetch" href="/blog-docs/assets/js/57.e88f7ff8.js"><link rel="prefetch" href="/blog-docs/assets/js/58.b51a8ff1.js"><link rel="prefetch" href="/blog-docs/assets/js/59.4ec5382b.js"><link rel="prefetch" href="/blog-docs/assets/js/6.27ac8ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/60.8dd8efd6.js"><link rel="prefetch" href="/blog-docs/assets/js/61.2bf40aa8.js"><link rel="prefetch" href="/blog-docs/assets/js/62.a7f65626.js"><link rel="prefetch" href="/blog-docs/assets/js/63.750a244a.js"><link rel="prefetch" href="/blog-docs/assets/js/64.18d04687.js"><link rel="prefetch" href="/blog-docs/assets/js/65.7e8d5e45.js"><link rel="prefetch" href="/blog-docs/assets/js/66.ab659c07.js"><link rel="prefetch" href="/blog-docs/assets/js/67.105a4696.js"><link rel="prefetch" href="/blog-docs/assets/js/68.2524615c.js"><link rel="prefetch" href="/blog-docs/assets/js/69.baaa5f55.js"><link rel="prefetch" href="/blog-docs/assets/js/7.864195c6.js"><link rel="prefetch" href="/blog-docs/assets/js/70.0deadb91.js"><link rel="prefetch" href="/blog-docs/assets/js/71.7a47ced0.js"><link rel="prefetch" href="/blog-docs/assets/js/72.df303f6b.js"><link rel="prefetch" href="/blog-docs/assets/js/73.39e10828.js"><link rel="prefetch" href="/blog-docs/assets/js/74.86126d96.js"><link rel="prefetch" href="/blog-docs/assets/js/75.3c0dc65a.js"><link rel="prefetch" href="/blog-docs/assets/js/76.7ba24ace.js"><link rel="prefetch" href="/blog-docs/assets/js/77.e802ff4c.js"><link rel="prefetch" href="/blog-docs/assets/js/78.4f4894d4.js"><link rel="prefetch" href="/blog-docs/assets/js/79.bf5242f4.js"><link rel="prefetch" href="/blog-docs/assets/js/8.4ec88365.js"><link rel="prefetch" href="/blog-docs/assets/js/80.15f580eb.js"><link rel="prefetch" href="/blog-docs/assets/js/81.14e1b6ad.js"><link rel="prefetch" href="/blog-docs/assets/js/82.95da7dba.js"><link rel="prefetch" href="/blog-docs/assets/js/83.40ca2c09.js"><link rel="prefetch" href="/blog-docs/assets/js/84.d5da1d67.js"><link rel="prefetch" href="/blog-docs/assets/js/85.5515fd0c.js"><link rel="prefetch" href="/blog-docs/assets/js/87.58a05cf9.js"><link rel="prefetch" href="/blog-docs/assets/js/88.5769b583.js"><link rel="prefetch" href="/blog-docs/assets/js/89.acc4aae3.js"><link rel="prefetch" href="/blog-docs/assets/js/9.f7898b59.js"><link rel="prefetch" href="/blog-docs/assets/js/90.275a74a7.js"><link rel="prefetch" href="/blog-docs/assets/js/91.d90e8e34.js"><link rel="prefetch" href="/blog-docs/assets/js/92.e5893d5a.js"><link rel="prefetch" href="/blog-docs/assets/js/93.75aca15f.js"><link rel="prefetch" href="/blog-docs/assets/js/94.7f70e023.js"><link rel="prefetch" href="/blog-docs/assets/js/95.1443f1f2.js"><link rel="prefetch" href="/blog-docs/assets/js/96.2e587096.js"><link rel="prefetch" href="/blog-docs/assets/js/97.e58eb798.js"><link rel="prefetch" href="/blog-docs/assets/js/98.acbed052.js"><link rel="prefetch" href="/blog-docs/assets/js/99.71fc9069.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术栈" class="dropdown-title"><span class="title">技术栈</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术栈" class="mobile-dropdown-title"><span class="title">技术栈</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          java
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-subitem"><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="在线工具" class="dropdown-title"><span class="title">在线工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="在线工具" class="mobile-dropdown-title"><span class="title">在线工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>其它</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/other/基于canal的mysql数据同步.html" class="sidebar-link">基于canal的mysql数据同步</a></li><li><a href="/blog-docs/technology/java/other/常用脚本.html" class="sidebar-link">常用脚本</a></li><li><a href="/blog-docs/technology/java/other/vue使用nginx部署配置.html" class="sidebar-link">vue使用nginx部署配置</a></li><li><a href="/blog-docs/technology/java/other/ShardingSphere分表分库解决方案.html" class="sidebar-link">ShardingSphere分表分库解决方案</a></li><li><a href="/blog-docs/technology/java/other/GitHub Actions 入门教程.html" class="sidebar-link">GitHub Actions 入门教程</a></li><li><a href="/blog-docs/technology/java/other/VuePress 基于 Vue 的静态网站生成器.html" class="sidebar-link">VuePress 基于 Vue 的静态网站生成器</a></li><li><a href="/blog-docs/technology/java/other/数据同步kettle详解.html" class="sidebar-link">数据同步kettle详解</a></li><li><a href="/blog-docs/technology/java/other/github国内加速解决方案.html" class="sidebar-link">github国内加速解决方案</a></li><li><a href="/blog-docs/technology/java/other/Typora + 图床 + 码云.html" class="sidebar-link">Typora + 图床 + 码云</a></li><li><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html" class="active sidebar-link">解 Java 8 的 Lambda、函数式接口、Stream 用法和原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#lambda-表达式" class="sidebar-link">Lambda 表达式</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#方法引用" class="sidebar-link">方法引用</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#自己动手实现一个例子" class="sidebar-link">自己动手实现一个例子</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#stream-api" class="sidebar-link">Stream API</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#of" class="sidebar-link">of</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#empty" class="sidebar-link">empty</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#concat" class="sidebar-link">concat</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#max" class="sidebar-link">max</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#min" class="sidebar-link">min</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#findfirst" class="sidebar-link">findFirst</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#findany" class="sidebar-link">findAny</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#count" class="sidebar-link">count</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#peek" class="sidebar-link">peek</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#foreach" class="sidebar-link">forEach</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#foreachordered" class="sidebar-link">forEachOrdered</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#limit" class="sidebar-link">limit</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#skip" class="sidebar-link">skip</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#distinct" class="sidebar-link">distinct</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#sorted" class="sidebar-link">sorted</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#filter" class="sidebar-link">filter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#map" class="sidebar-link">map</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#maptoint" class="sidebar-link">mapToInt</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#maptolong" class="sidebar-link">mapToLong</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#maptodouble" class="sidebar-link">mapToDouble</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#flatmap" class="sidebar-link">flatMap</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#flatmaptoint" class="sidebar-link">flatMapToInt</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#flatmaptolong" class="sidebar-link">flatMapToLong</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#flatmaptodouble" class="sidebar-link">flatMapToDouble</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#collection" class="sidebar-link">collection</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#toarray" class="sidebar-link">toArray</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#reduce" class="sidebar-link">reduce</a></li></ul></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.html#并行-stream" class="sidebar-link">并行 Stream</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="解-java-8-的-lambda、函数式接口、stream-用法和原理"><a href="#解-java-8-的-lambda、函数式接口、stream-用法和原理" class="header-anchor">#</a> 解 Java 8 的 Lambda、函数式接口、Stream 用法和原理</h1> <h2 id="lambda-表达式"><a href="#lambda-表达式" class="header-anchor">#</a> Lambda 表达式</h2> <blockquote><p>Lambda 表达式是一个<a href="https://link.juejin.cn?target=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%25E5%258C%25BF%25E5%2590%258D%25E5%2587%25BD%25E6%2595%25B0%2F4337265" target="_blank" rel="noopener noreferrer">匿名函数<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>，Lambda表达式基于数学中的<a href="https://link.juejin.cn?target=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%25CE%25BB%25E6%25BC%2594%25E7%25AE%2597" target="_blank" rel="noopener noreferrer">λ演算<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>得名，直接对应于其中的lambda抽象，是一个匿名函数，即没有函数名的函数。Lambda表达式可以表示闭包。</p></blockquote> <p>在 Java 中，Lambda 表达式的格式是像下面这样</p> <div class="language- extra-class"><pre class="language-text"><code>// 无参数，无返回值
+() -&gt; log.info(&quot;Lambda&quot;)
+
+ // 有参数，有返回值
+(int a, int b) -&gt; { a+b }
+</code></pre></div><p>其等价于</p> <div class="language- extra-class"><pre class="language-text"><code>log.info(&quot;Lambda&quot;);
+
+private int plus(int a, int b){
+   return a+b;
+}
+</code></pre></div><p>最常见的一个例子就是新建线程，有时候为了省事，会用下面的方法创建并启动一个线程，这是匿名内部类的写法，<code>new Thread</code>需要一个 implements 自<code>Runnable</code>类型的对象实例作为参数，比较好的方式是创建一个新类，这个类 <code>implements Runnable</code>，然后 new 出这个新类的实例作为参数传给 Thread。而匿名内部类不用找对象接收，直接当做参数。</p> <div class="language- extra-class"><pre class="language-text"><code>new Thread(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println(&quot;快速新建并启动一个线程&quot;);
+    }
+}).start();
+</code></pre></div><p>但是这样写是不是感觉看上去很乱、很土，而这时候，换上 Lambda 表达式就是另外一种感觉了。</p> <div class="language- extra-class"><pre class="language-text"><code>new Thread(()-&gt;{
+    System.out.println(&quot;快速新建并启动一个线程&quot;);
+}).start();
+</code></pre></div><p>怎么样，这样一改，瞬间感觉清新脱俗了不少，简洁优雅了不少。</p> <p>Lambda 表达式简化了匿名内部类的形式，可以达到同样的效果，但是 Lambda 要优雅的多。虽然最终达到的目的是一样的，但其实内部的实现原理却不相同。</p> <p>匿名内部类在编译之后会创建一个新的匿名内部类出来，而 Lambda 是调用 JVM <code>invokedynamic</code>指令实现的，并不会产生新类。</p> <h2 id="方法引用"><a href="#方法引用" class="header-anchor">#</a> 方法引用</h2> <p>方法引用的出现，使得我们可以将一个方法赋给一个变量或者作为参数传递给另外一个方法。<code>::</code>双冒号作为方法引用的符号，比如下面这两行语句，引用 <code>Integer</code>类的 <code>parseInt</code>方法。</p> <div class="language- extra-class"><pre class="language-text"><code>Function&lt;String, Integer&gt; s = Integer::parseInt;
+Integer i = s.apply(&quot;10&quot;);
+</code></pre></div><p>或者下面这两行，引用 <code>Integer</code>类的 <code>compare</code>方法。</p> <div class="language- extra-class"><pre class="language-text"><code>Comparator&lt;Integer&gt; comparator = Integer::compare;
+int result = comparator.compare(100,10);
+</code></pre></div><p>再比如，下面这两行代码，同样是引用 <code>Integer</code>类的 <code>compare</code>方法，但是返回类型却不一样，但却都能正常执行，并正确返回。</p> <div class="language- extra-class"><pre class="language-text"><code>IntBinaryOperator intBinaryOperator = Integer::compare;
+int result = intBinaryOperator.applyAsInt(10,100);
+</code></pre></div><p>相信有的同学看到这里恐怕是下面这个状态，完全不可理喻吗，也太随便了吧，返回给谁都能接盘。</p> <p>先别激动，来来来，现在咱们就来解惑，解除蒙圈脸。</p> <p><strong>Q：什么样的方法可以被引用？</strong></p> <p>A：这么说吧，任何你有办法访问到的方法都可以被引用。</p> <p><strong>Q：返回值到底是什么类型？</strong></p> <p>A：这就问到点儿上了，上面又是 <code>Function</code>、又是<code>Comparator</code>、又是 <code>IntBinaryOperator</code>的，看上去好像没有规律，其实不然。</p> <p>返回的类型是 Java 8 专门定义的函数式接口，这类接口用 <code>@FunctionalInterface</code> 注解。</p> <p>比如 <code>Function</code>这个函数式接口的定义如下：</p> <div class="language- extra-class"><pre class="language-text"><code>@FunctionalInterface
+public interface Function&lt;T, R&gt; {
+    R apply(T t);
+}
+</code></pre></div><p>还有很关键的一点，你的引用方法的参数个数、类型，返回值类型要和函数式接口中的方法声明一一对应才行。</p> <p>比如 <code>Integer.parseInt</code>方法定义如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public static int parseInt(String s) throws NumberFormatException {
+    return parseInt(s,10);
+}
+
+</code></pre></div><p>首先<code>parseInt</code>方法的参数个数是 1 个，而 <code>Function</code>中的 <code>apply</code>方法参数个数也是 1 个，参数个数对应上了，再来，<code>apply</code>方法的参数类型和返回类型是泛型类型，所以肯定能和 <code>parseInt</code>方法对应上。</p> <p>这样一来，就可以正确的接收<code>Integer::parseInt</code>的方法引用，并可以调用<code>Funciton</code>的<code>apply</code>方法，这时候，调用到的其实就是对应的 <code>Integer.parseInt</code>方法了。</p> <p>用这套标准套到 <code>Integer::compare</code>方法上，就不难理解为什么即可以用 <code>Comparator&lt;Integer&gt;</code>接收，又可以用 <code>IntBinaryOperator</code>接收了，而且调用它们各自的方法都能正确的返回结果。</p> <p><code>Integer.compare</code>方法定义如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public static int compare(int x, int y) {
+    return (x &lt; y) ? -1 : ((x == y) ? 0 : 1);
+}
+</code></pre></div><p>返回值类型 <code>int</code>，两个参数，并且参数类型都是 <code>int</code>。</p> <p>然后来看<code>Comparator</code>和<code>IntBinaryOperator</code>它们两个的函数式接口定义和其中对应的方法：</p> <div class="language- extra-class"><pre class="language-text"><code>@FunctionalInterface
+public interface Comparator&lt;T&gt; {
+    int compare(T o1, T o2);
+}
+
+@FunctionalInterface
+public interface IntBinaryOperator {
+    int applyAsInt(int left, int right);
+}
+</code></pre></div><p>对不对，都能正确的匹配上，所以前面示例中用这两个函数式接口都能正常接收。其实不止这两个，只要是在某个函数式接口中声明了这样的方法：两个参数，参数类型是 <code>int</code>或者泛型，并且返回值是 <code>int</code>或者泛型的，都可以完美接收。</p> <p>JDK 中定义了很多函数式接口，主要在 <code>java.util.function</code>包下，还有 <code>java.util.Comparator</code> 专门用作定制比较器。另外，前面说的 <code>Runnable</code>也是一个函数式接口。</p> <h2 id="自己动手实现一个例子"><a href="#自己动手实现一个例子" class="header-anchor">#</a> 自己动手实现一个例子</h2> <p><strong>1. 定义一个函数式接口，并添加一个方法</strong></p> <p>定义了名称为 KiteFunction 的函数式接口，使用 <code>@FunctionalInterface</code>注解，然后声明了具有两个参数的方法 <code>run</code>，都是泛型类型，返回结果也是泛型。</p> <p>还有一点很重要，函数式接口中只能声明一个可被实现的方法，你不能声明了一个 <code>run</code>方法，又声明一个 <code>start</code>方法，到时候编译器就不知道用哪个接收了。而用<code>default</code> 关键字修饰的方法则没有影响。</p> <div class="language- extra-class"><pre class="language-text"><code>@FunctionalInterface
+public interface KiteFunction&lt;T, R, S&gt; {
+
+    /**
+     * 定义一个双参数的方法
+     * @param t
+     * @param s
+     * @return
+     */
+    R run(T t,S s);
+}
+</code></pre></div><p><strong>2. 定义一个与 KiteFunction 中 run 方法对应的方法</strong></p> <p>在 FunctionTest 类中定义了方法 <code>DateFormat</code>，一个将 <code>LocalDateTime</code>类型格式化为字符串类型的方法。</p> <div class="language- extra-class"><pre class="language-text"><code>public class FunctionTest {
+    public static String DateFormat(LocalDateTime dateTime, String partten) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(partten);
+        return dateTime.format(dateTimeFormatter);
+    }
+}
+</code></pre></div><p><strong>3.用方法引用的方式调用</strong></p> <p>正常情况下我们直接使用 <code>FunctionTest.DateFormat()</code>就可以了。</p> <p>而用函数式方式，是这样的。</p> <div class="language- extra-class"><pre class="language-text"><code>KiteFunction&lt;LocalDateTime,String,String&gt; functionDateFormat = FunctionTest::DateFormat;
+String dateString = functionDateFormat.run(LocalDateTime.now(),&quot;yyyy-MM-dd HH:mm:ss&quot;);
+</code></pre></div><p>而其实我可以不专门在外面定义 <code>DateFormat</code>这个方法，而是像下面这样，使用匿名内部类。</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+  
+    String dateString = new KiteFunction&lt;LocalDateTime, String, String&gt;() {
+        @Override
+        public String run(LocalDateTime localDateTime, String s) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(s);
+            return localDateTime.format(dateTimeFormatter);
+        }
+    }.run(LocalDateTime.now(), &quot;yyyy-MM-dd HH:mm:ss&quot;);
+    System.out.println(dateString);
+}
+
+</code></pre></div><p>前面第一个 <code>Runnable</code>的例子也提到了，这样的匿名内部类可以用 Lambda 表达式的形式简写，简写后的代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>public static void main(String[] args) throws Exception {
+
+        KiteFunction&lt;LocalDateTime, String, String&gt; functionDateFormat = (LocalDateTime dateTime, String partten) -&gt; {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(partten);
+            return dateTime.format(dateTimeFormatter);
+        };
+        String dateString = functionDateFormat.run(LocalDateTime.now(), &quot;yyyy-MM-dd HH:mm:ss&quot;);
+        System.out.println(dateString);
+}
+</code></pre></div><p>使用（LocalDateTime dateTime, String partten) -&gt; { } 这样的 Lambda 表达式直接返回方法引用。</p> <h2 id="stream-api"><a href="#stream-api" class="header-anchor">#</a> Stream API</h2> <p>为了说一下 Stream API 的使用，可以说是大费周章啊，知其然，也要知其所以然吗，追求技术的态度和姿势要正确。</p> <p>当然 Stream 也不只是 Lambda 表达式就厉害了，真正厉害的还是它的功能，Stream 是 Java 8 中集合数据处理的利器，很多本来复杂、需要写很多代码的方法，比如过滤、分组等操作，往往使用 Stream 就可以在一行代码搞定，当然也因为 Stream 都是链式操作，一行代码可能会调用好几个方法。</p> <p><code>Collection</code>接口提供了 <code>stream()</code>方法，让我们可以在一个集合方便的使用 Stream API 来进行各种操作。值得注意的是，我们执行的任何操作都不会对源集合造成影响，你可以同时在一个集合上提取出多个 stream 进行操作。</p> <p>我们看 Stream 接口的定义，继承自 <code>BaseStream</code>，机会所有的接口声明都是接收方法引用类型的参数，比如 <code>filter</code>方法，接收了一个 <code>Predicate</code>类型的参数，它就是一个函数式接口，常用来作为条件比较、筛选、过滤用，<code>JPA</code>中也使用了这个函数式接口用来做查询条件拼接。</p> <div class="language- extra-class"><pre class="language-text"><code>public interface Stream&lt;T&gt; extends BaseStream&lt;T, Stream&lt;T&gt;&gt; {
+  
+  Stream&lt;T&gt; filter(Predicate&lt;? super T&gt; predicate);
+  
+  // 其他接口
+}  
+</code></pre></div><p>下面就来看看 Stream 常用 API。</p> <p><img src="https://gitee.com/wuyilong/picture-bed/raw/master//img/agyrz-pqm57.png" alt="img"></p> <h3 id="of"><a href="#of" class="header-anchor">#</a> of</h3> <p>可接收一个泛型对象或可变成泛型集合，构造一个 Stream 对象。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void createStream(){
+    Stream&lt;String&gt; stringStream = Stream.of(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;);
+}
+</code></pre></div><h3 id="empty"><a href="#empty" class="header-anchor">#</a> empty</h3> <p>创建一个空的  Stream 对象。</p> <h3 id="concat"><a href="#concat" class="header-anchor">#</a> concat</h3> <p>连接两个 Stream ，不改变其中任何一个 Steam 对象，返回一个新的 Stream 对象。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void concatStream(){
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;);
+    Stream&lt;String&gt; b = Stream.of(&quot;d&quot;,&quot;e&quot;);
+    Stream&lt;String&gt; c = Stream.concat(a,b);
+}
+</code></pre></div><h3 id="max"><a href="#max" class="header-anchor">#</a> max</h3> <p>一般用于求数字集合中的最大值，或者按实体中数字类型的属性比较，拥有最大值的那个实体。它接收一个 <code>Comparator&lt;T&gt;</code>，上面也举到这个例子了，它是一个函数式接口类型，专门用作定义两个对象之间的比较，例如下面这个方法使用了 <code>Integer::compareTo</code>这个方法引用。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void max(){
+    Stream&lt;Integer&gt; integerStream = Stream.of(2, 2, 100, 5);
+    Integer max = integerStream.max(Integer::compareTo).get();
+    System.out.println(max);
+}
+</code></pre></div><p>当然，我们也可以自己定制一个 <code>Comparator</code>，顺便复习一下 Lambda 表达式形式的方法引用。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void max(){
+    Stream&lt;Integer&gt; integerStream = Stream.of(2, 2, 100, 5);
+    Comparator&lt;Integer&gt; comparator =  (x, y) -&gt; (x.intValue() &lt; y.intValue()) ? -1 : ((x.equals(y)) ? 0 : 1);
+    Integer max = integerStream.max(comparator).get();
+    System.out.println(max);
+}
+</code></pre></div><h3 id="min"><a href="#min" class="header-anchor">#</a> min</h3> <p>与 max 用法一样，只不过是求最小值。</p> <h3 id="findfirst"><a href="#findfirst" class="header-anchor">#</a> findFirst</h3> <p>获取 Stream 中的第一个元素。</p> <h3 id="findany"><a href="#findany" class="header-anchor">#</a> findAny</h3> <p>获取 Stream 中的某个元素，如果是串行情况下，一般都会返回第一个元素，并行情况下就不一定了。</p> <h3 id="count"><a href="#count" class="header-anchor">#</a> count</h3> <p>返回元素个数。</p> <div class="language- extra-class"><pre class="language-text"><code>Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+long x = a.count();
+</code></pre></div><h3 id="peek"><a href="#peek" class="header-anchor">#</a> peek</h3> <p>建立一个通道，在这个通道中对 Stream 的每个元素执行对应的操作，对应 <code>Consumer&lt;T&gt;</code>的函数式接口，这是一个消费者函数式接口，顾名思义，它是用来消费 Stream 元素的，比如下面这个方法，把每个元素转换成对应的大写字母并输出。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void peek() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+    List&lt;String&gt; list = a.peek(e-&gt;System.out.println(e.toUpperCase())).collect(Collectors.toList());
+}
+</code></pre></div><h3 id="foreach"><a href="#foreach" class="header-anchor">#</a> forEach</h3> <p>和 peek 方法类似，都接收一个消费者函数式接口，可以对每个元素进行对应的操作，但是和 peek 不同的是，<code>forEach</code> 执行之后，这个 Stream 就真的被消费掉了，之后这个 Stream 流就没有了，不可以再对它进行后续操作了，而 <code>peek</code>操作完之后，还是一个可操作的 Stream 对象。</p> <p>正好借着这个说一下，我们在使用 Stream API 的时候，都是一串链式操作，这是因为很多方法，比如接下来要说到的 <code>filter</code>方法等，返回值还是这个 Stream 类型的，也就是被当前方法处理过的 Stream 对象，所以 Stream API 仍然可以使用。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void forEach() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+    a.forEach(e-&gt;System.out.println(e.toUpperCase()));
+}
+</code></pre></div><h3 id="foreachordered"><a href="#foreachordered" class="header-anchor">#</a> forEachOrdered</h3> <p>功能与 <code>forEach</code>是一样的，不同的是，<code>forEachOrdered</code>是有顺序保证的，也就是对 Stream 中元素按插入时的顺序进行消费。为什么这么说呢，当开启并行的时候，<code>forEach</code>和 <code>forEachOrdered</code>的效果就不一样了。</p> <div class="language- extra-class"><pre class="language-text"><code>Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+a.parallel().forEach(e-&gt;System.out.println(e.toUpperCase()));
+</code></pre></div><p>当使用上面的代码时，输出的结果可能是 B、A、C 或者 A、C、B或者A、B、C，而使用下面的代码，则每次都是 A、 B、C</p> <div class="language- extra-class"><pre class="language-text"><code>Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+a.parallel().forEachOrdered(e-&gt;System.out.println(e.toUpperCase()));
+</code></pre></div><h3 id="limit"><a href="#limit" class="header-anchor">#</a> limit</h3> <p>获取前 n 条数据，类似于 MySQL 的limit，只不过只能接收一个参数，就是数据条数。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void limit() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+    a.limit(2).forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><p>上述代码打印的结果是 a、b。</p> <h3 id="skip"><a href="#skip" class="header-anchor">#</a> skip</h3> <p>跳过前 n 条数据，例如下面代码，返回结果是 c。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void skip() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+    a.skip(2).forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><h3 id="distinct"><a href="#distinct" class="header-anchor">#</a> distinct</h3> <p>元素去重，例如下面方法返回元素是 a、b、c，将重复的 b 只保留了一个。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void distinct() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;,&quot;b&quot;);
+    a.distinct().forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><h3 id="sorted"><a href="#sorted" class="header-anchor">#</a> sorted</h3> <p>有两个重载，一个无参数，另外一个有个 <code>Comparator</code>类型的参数。</p> <p>无参类型的按照自然顺序进行排序，只适合比较单纯的元素，比如数字、字母等。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void sorted() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a&quot;, &quot;c&quot;, &quot;b&quot;);
+    a.sorted().forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><p>有参数的需要自定义排序规则，例如下面这个方法，按照第二个字母的大小顺序排序，最后输出的结果是 a1、b3、c6。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void sortedWithComparator() {
+    Stream&lt;String&gt; a = Stream.of(&quot;a1&quot;, &quot;c6&quot;, &quot;b3&quot;);
+    a.sorted((x,y)-&gt;Integer.parseInt(x.substring(1))&gt;Integer.parseInt(y.substring(1))?1:-1).forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><p><strong>为了更好的说明接下来的几个 API ，我模拟了几条项目中经常用到的类似数据，10条用户信息。</strong></p> <div class="language- extra-class"><pre class="language-text"><code>private static List&lt;User&gt; getUserData() {
+    Random random = new Random();
+    List&lt;User&gt; users = new ArrayList&lt;&gt;();
+    for (int i = 1; i &lt;= 10; i++) {
+        User user = new User();
+        user.setUserId(i);
+        user.setUserName(String.format(&quot;古时的风筝 %s 号&quot;, i));
+        user.setAge(random.nextInt(100));
+        user.setGender(i % 2);
+        user.setPhone(&quot;18812021111&quot;);
+        user.setAddress(&quot;无&quot;);
+        users.add(user);
+    }
+    return users;
+}
+</code></pre></div><h3 id="filter"><a href="#filter" class="header-anchor">#</a> filter</h3> <p>用于条件筛选过滤，筛选出符合条件的数据。例如下面这个方法，筛选出性别为 0，年龄大于 50 的记录。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void filter(){
+    List&lt;User&gt; users = getUserData();
+    Stream&lt;User&gt; stream = users.stream();
+    stream.filter(user -&gt; user.getGender().equals(0) &amp;&amp; user.getAge()&gt;50).forEach(e-&gt;System.out.println(e));
+
+    /**
+     *等同于下面这种形式 匿名内部类
+     */
+//    stream.filter(new Predicate&lt;User&gt;() {
+//        @Override
+//        public boolean test(User user) {
+//            return user.getGender().equals(0) &amp;&amp; user.getAge()&gt;50;
+//        }
+//    }).forEach(e-&gt;System.out.println(e));
+}
+</code></pre></div><h3 id="map"><a href="#map" class="header-anchor">#</a> map</h3> <p><code>map</code>方法的接口方法声明如下，接受一个 <code>Function</code>函数式接口，把它翻译成映射最合适了，通过原始数据元素，映射出新的类型。</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;R&gt; Stream&lt;R&gt; map(Function&lt;? super T, ? extends R&gt; mapper);
+</code></pre></div><p>而 <code>Function</code>的声明是这样的，观察 <code>apply</code>方法，接受一个 T 型参数，返回一个 R 型参数。用于将一个类型转换成另外一个类型正合适，这也是 <code>map</code>的初衷所在，用于改变当前元素的类型，例如将 <code>Integer</code> 转为 <code>String</code>类型，将 DAO 实体类型，转换为 DTO 实例类型。</p> <p>当然了，T 和 R 的类型也可以一样，这样的话，就和 <code>peek</code>方法没什么不同了。</p> <div class="language- extra-class"><pre class="language-text"><code>@FunctionalInterface
+public interface Function&lt;T, R&gt; {
+
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param t the function argument
+     * @return the function result
+     */
+    R apply(T t);
+}
+</code></pre></div><p>例如下面这个方法，应该是业务系统的常用需求，将 User 转换为 API 输出的数据格式。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void map(){
+    List&lt;User&gt; users = getUserData();
+    Stream&lt;User&gt; stream = users.stream();
+    List&lt;UserDto&gt; userDtos = stream.map(user -&gt; dao2Dto(user)).collect(Collectors.toList());
+}
+
+private static UserDto dao2Dto(User user){
+    UserDto dto = new UserDto();
+    BeanUtils.copyProperties(user, dto);
+    //其他额外处理
+    return dto;
+}
+</code></pre></div><h3 id="maptoint"><a href="#maptoint" class="header-anchor">#</a> mapToInt</h3> <p>将元素转换成 int 类型，在 <code>map</code>方法的基础上进行封装。</p> <h3 id="maptolong"><a href="#maptolong" class="header-anchor">#</a> mapToLong</h3> <p>将元素转换成 Long 类型，在 <code>map</code>方法的基础上进行封装。</p> <h3 id="maptodouble"><a href="#maptodouble" class="header-anchor">#</a> mapToDouble</h3> <p>将元素转换成 Double 类型，在 <code>map</code>方法的基础上进行封装。</p> <h3 id="flatmap"><a href="#flatmap" class="header-anchor">#</a> flatMap</h3> <p>这是用在一些比较特别的场景下，当你的 Stream 是以下这几种结构的时候，需要用到 <code>flatMap</code>方法，用于将原有二维结构扁平化。</p> <ol><li><code>Stream&lt;String[]&gt;</code></li> <li><code>Stream&lt;Set&lt;String&gt;&gt;</code></li> <li><code>Stream&lt;List&lt;String&gt;&gt;</code></li></ol> <p>以上这三类结构，通过 <code>flatMap</code>方法，可以将结果转化为 <code>Stream&lt;String&gt;</code>这种形式，方便之后的其他操作。</p> <p>比如下面这个方法，将<code>List&lt;List&lt;User&gt;&gt;</code>扁平处理，然后再使用 <code>map</code>或其他方法进行操作。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void flatMap(){
+    List&lt;User&gt; users = getUserData();
+    List&lt;User&gt; users1 = getUserData();
+    List&lt;List&lt;User&gt;&gt; userList = new ArrayList&lt;&gt;();
+    userList.add(users);
+    userList.add(users1);
+    Stream&lt;List&lt;User&gt;&gt; stream = userList.stream();
+    List&lt;UserDto&gt; userDtos = stream.flatMap(subUserList-&gt;subUserList.stream()).map(user -&gt; dao2Dto(user)).collect(Collectors.toList());
+}
+</code></pre></div><h3 id="flatmaptoint"><a href="#flatmaptoint" class="header-anchor">#</a> flatMapToInt</h3> <p>用法参考 <code>flatMap</code>，将元素扁平为 int 类型，在 <code>flatMap</code>方法的基础上进行封装。</p> <h3 id="flatmaptolong"><a href="#flatmaptolong" class="header-anchor">#</a> flatMapToLong</h3> <p>用法参考 <code>flatMap</code>，将元素扁平为 Long 类型，在 <code>flatMap</code>方法的基础上进行封装。</p> <h3 id="flatmaptodouble"><a href="#flatmaptodouble" class="header-anchor">#</a> flatMapToDouble</h3> <p>用法参考 <code>flatMap</code>，将元素扁平为 Double 类型，在 <code>flatMap</code>方法的基础上进行封装。</p> <h3 id="collection"><a href="#collection" class="header-anchor">#</a> collection</h3> <p>在进行了一系列操作之后，我们最终的结果大多数时候并不是为了获取 Stream 类型的数据，而是要把结果变为 List、Map 这样的常用数据结构，而 <code>collection</code>就是为了实现这个目的。</p> <p>就拿 map 方法的那个例子说明，将对象类型进行转换后，最终我们需要的结果集是一个 <code>List&lt;UserDto &gt;</code>类型的，使用 <code>collect</code>方法将 Stream 转换为我们需要的类型。</p> <p>下面是 <code>collect</code>接口方法的定义：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;R, A&gt; R collect(Collector&lt;? super T, A, R&gt; collector);
+</code></pre></div><p>下面这个例子演示了将一个简单的 Integer Stream 过滤出大于 7 的值，然后转换成 <code>List&lt;Integer&gt;</code>集合，用的是 <code>Collectors.toList()</code>这个收集器。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void collect(){
+    Stream&lt;Integer&gt; integerStream = Stream.of(1,2,5,7,8,12,33);
+    List&lt;Integer&gt; list = integerStream.filter(s -&gt; s.intValue()&gt;7).collect(Collectors.toList());
+}
+</code></pre></div><p>很多同学表示看不太懂这个 <code>Collector</code>是怎么一个意思，来，我们看下面这段代码，这是 <code>collect</code>的另一个重载方法，你可以理解为它的参数是按顺序执行的，这样就清楚了，这就是个 ArrayList 从创建到调用 <code>addAll</code>方法的一个过程。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void collect(){
+    Stream&lt;Integer&gt; integerStream = Stream.of(1,2,5,7,8,12,33);
+    List&lt;Integer&gt; list = integerStream.filter(s -&gt; s.intValue()&gt;7).collect(ArrayList::new, ArrayList::add,
+            ArrayList::addAll);
+}
+</code></pre></div><p>我们在自定义 <code>Collector</code>的时候其实也是这个逻辑，不过我们根本不用自定义， <code>Collectors</code>已经为我们提供了很多拿来即用的收集器。比如我们经常用到<code>Collectors.toList()</code>、<code>Collectors.toSet()</code>、<code>Collectors.toMap()</code>。另外还有比如<code>Collectors.groupingBy()</code>用来分组，比如下面这个例子，按照 userId 字段分组，返回以 userId 为key，List 为value 的 Map，或者返回每个 key 的个数。</p> <div class="language- extra-class"><pre class="language-text"><code>// 返回 userId:List&lt;User&gt;
+Map&lt;String,List&lt;User&gt;&gt; map = user.stream().collect(Collectors.groupingBy(User::getUserId));
+
+// 返回 userId:每组个数
+Map&lt;String,Long&gt; map = user.stream().collect(Collectors.groupingBy(User::getUserId,Collectors.counting()));
+</code></pre></div><h3 id="toarray"><a href="#toarray" class="header-anchor">#</a> toArray</h3> <p><code>collection</code>是返回列表、map 等，<code>toArray</code>是返回数组，有两个重载，一个空参数，返回的是 <code>Object[]</code>。</p> <p>另一个接收一个 <code>IntFunction&lt;R&gt;</code>类型参数。</p> <div class="language- extra-class"><pre class="language-text"><code>@FunctionalInterface
+public interface IntFunction&lt;R&gt; {
+
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param value the function argument
+     * @return the function result
+     */
+    R apply(int value);
+}
+</code></pre></div><p>比如像下面这样使用，参数是 <code>User[]::new</code>也就是new 一个 User 数组，长度为最后的 Stream 长度。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void toArray() {
+    List&lt;User&gt; users = getUserData();
+    Stream&lt;User&gt; stream = users.stream();
+    User[] userArray = stream.filter(user -&gt; user.getGender().equals(0) &amp;&amp; user.getAge() &gt; 50).toArray(User[]::new);
+}
+</code></pre></div><h3 id="reduce"><a href="#reduce" class="header-anchor">#</a> reduce</h3> <p>它的作用是每次计算的时候都用到上一次的计算结果，比如求和操作，前两个数的和加上第三个数的和，再加上第四个数，一直加到最后一个数位置，最后返回结果，就是 <code>reduce</code>的工作过程。</p> <div class="language- extra-class"><pre class="language-text"><code>private static void reduce(){
+    Stream&lt;Integer&gt; integerStream = Stream.of(1,2,5,7,8,12,33);
+    Integer sum = integerStream.reduce(0,(x,y)-&gt;x+y);
+    System.out.println(sum);
+}
+</code></pre></div><p>另外 <code>Collectors</code>好多方法都用到了 <code>reduce</code>，比如 <code>groupingBy</code>、<code>minBy</code>、<code>maxBy</code>等等。</p> <h2 id="并行-stream"><a href="#并行-stream" class="header-anchor">#</a> 并行 Stream</h2> <p>Stream 本质上来说就是用来做数据处理的，为了加快处理速度，Stream API 提供了并行处理 Stream 的方式。通过 <code>users.parallelStream()</code>或者<code>users.stream().parallel()</code> 的方式来创建并行 Stream 对象，支持的 API 和普通 Stream 几乎是一致的。</p> <p>并行 Stream 默认使用 <code>ForkJoinPool</code>线程池，当然也支持自定义，不过一般情况下没有必要。ForkJoin 框架的分治策略与并行流处理正好契合。</p> <p>虽然并行这个词听上去很厉害，但并不是所有情况使用并行流都是正确的，很多时候完全没这个必要。</p> <p><strong>什么情况下使用或不应使用并行流操作呢？</strong></p> <ol><li>必须在多核 CPU 下才使用并行 Stream，听上去好像是废话。</li> <li>在数据量不大的情况下使用普通串行 Stream 就可以了，使用并行 Stream 对性能影响不大。</li> <li>CPU 密集型计算适合使用并行 Stream，而 IO 密集型使用并行 Stream 反而会更慢。</li> <li>虽然计算是并行的可能很快，但最后大多数时候还是要使用 <code>collect</code>合并的，如果合并代价很大，也不适合用并行 Stream。</li> <li>有些操作，比如 limit、 findFirst、forEachOrdered 等依赖于元素顺序的操作，都不适合用并行 Stream。</li></ol></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/ty-wssf/blog-docs/edit/master/docs/technology/java/other/解 Java 8 的 Lambda、函数式接口、Stream 用法和原理.md" target="_blank" rel="noopener noreferrer">帮助我们改善此页面！</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/16/2021, 2:27:17 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/other/Typora + 图床 + 码云.html" class="prev">
+        Typora + 图床 + 码云
+      </a></span> <!----></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.2473371e.js" defer></script><script src="/blog-docs/assets/js/2.37203b8b.js" defer></script><script src="/blog-docs/assets/js/86.0d2e40de.js" defer></script>
+  </body>
+</html>
