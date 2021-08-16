@@ -1,7 +1,8 @@
 module.exports = {
     title: '吴益龙的博客',
     description: '吴益龙的博客',
-    base: '',
+    // 部署到GitHub上设置基础路径，部署到vercel上不设置基础路径
+    //base: 'blog-docs',
     // 主题配置
     themeConfig: {
         // 最后更新时间
