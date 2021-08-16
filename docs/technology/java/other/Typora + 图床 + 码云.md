@@ -50,7 +50,7 @@
 
 配置好本地服务器，这个服务器主要是用来服务器本地其他应用的，比如后续我要用Typora上传，Typora就会通过此服务中介来上传到我们的码云中，网上说有时候电脑重启，端口会变，后续若变了，则在这里重启设置成原来端口即可
 
-![image-20210115233414759](C:\Users\Administrator\Desktop\新建文件夹\e8eadc100083b3021300820ddaad4a84.png)
+![image-20210816100434937](https://i.loli.net/2021/08/16/CmSJzd9ApuElwKT.png)
 
 
 

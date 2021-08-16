@@ -276,7 +276,7 @@ module.exports = {
                         '数据同步kettle详解',
                         'github国内加速解决方案',
                         'Typora + 图床 + 码云',
-                        'Nexus搭建Maven私服',
+                        '解 Java 8 的 Lambda、函数式接口、Stream 用法和原理',
                     ]
                 },
             ],
