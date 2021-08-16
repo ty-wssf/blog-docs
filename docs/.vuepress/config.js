@@ -54,6 +54,7 @@ module.exports = {
                 text: '在线工具', items: [
                     {
                         text: '在线编辑', items: [
+                            {text: 'WEBP转JPG - 在线转换图像文件', link: 'https://www.aconvert.com/cn/image/webp-to-jpg/'},
                             {text: 'PDF 转换器', link: 'https://smallpdf.com/cn/pdf-to-word'},
                             {text: 'JSON 编辑器', link: 'https://www.json.cn/'},
                             {text: 'MD 表格生成', link: 'https://tableconvert.com/?output=text'},
@@ -268,6 +269,7 @@ module.exports = {
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
                         '基于canal的mysql数据同步',
+                        'Nexus搭建Maven私服',
                         '常用脚本',
                         'vue使用nginx部署配置',
                         'ShardingSphere分表分库解决方案',
