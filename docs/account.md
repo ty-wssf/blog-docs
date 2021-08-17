@@ -1,6 +1,9 @@
 # 个人
 - 谷歌账号
 791128058@qq.com   /   wu@fang@top1
+- vercel 使用GitHub登录（静态网页部署平台）
+- coding
+791128058@qq.com   /   wu@fang@top1
 
 # 百诚汇通
 - jenkins
