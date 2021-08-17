@@ -77,6 +77,7 @@ module.exports = {
                 text: '常用网站', items: [
                     {text: '掘金', link: 'https://juejin.cn/'},
                     {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
+                    {text: '田小波的博客', link: 'https://www.tianxiaobo.com/'},
                 ]
             },
             {
