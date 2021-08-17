@@ -3,8 +3,10 @@
 yarn docs:dev # npm run docs:dev
 ```
 # pages
-- vercel pages
-https://blog-docs.vercel.app/
+- GitHub pages
+https://ty-wssf.github.io/blog-docs/
+- gitee pages
+https://wuyilong.gitee.io/blog-docs/
 
  # 页面添加评论功能
 
