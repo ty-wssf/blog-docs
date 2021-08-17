@@ -3,8 +3,8 @@
 yarn docs:dev # npm run docs:dev
 ```
 # pages
-- GitHub pages
-https://ty-wssf.github.io/blog-docs/
+- vercel pages
+https://blog-docs.vercel.app/
 
  # 页面添加评论功能
 
