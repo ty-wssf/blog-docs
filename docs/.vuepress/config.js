@@ -35,6 +35,7 @@ module.exports = {
                         text: 'java', items: [
                             {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
                             {text: 'SpringBoot专题', link: '/technology/java/SpringBoot专题/'},
+                            {text: '基于OAuth2.0的统一身份认证中心', link: '/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/'},
                             {
                                 text: 'SpingCloud Alibaba实战',
                                 link: '/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/'
@@ -78,6 +79,7 @@ module.exports = {
                     {text: '掘金', link: 'https://juejin.cn/'},
                     {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
                     {text: '田小波的博客', link: 'https://www.tianxiaobo.com/'},
+                    {text: '千锋教育-李卫民', link: 'https://funtl.com/'},
                 ]
             },
             {
@@ -169,6 +171,17 @@ module.exports = {
                         '使用 Spring Boot Actuator 监控应用',
                         '使用 spring-boot-admin 对 Spring Boot 服务进行监控',
                         'Spring Boot、微服务架构和大数据治理三者之间的故事'
+                    ]
+                }
+            ],
+            '/technology/java/基于OAuth2.0的统一身份认证中心/': [
+                {
+                    title: '基于OAuth2.0的统一身份认证中心',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Spring Security oAuth2',
                     ]
                 }
             ],
