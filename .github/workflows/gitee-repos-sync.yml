@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build-and-deploy: # 编译和部署
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -23,6 +23,10 @@ jobs:
           branch: pages # The branch the action should deploy to.
           folder: docs/.vuepress/dist # The folder the action should deploy.
 
+  Github Repos To Gitee: # 同步到gitee仓库
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
       - name: Sync Github Repos To Gitee  # 名字随便起
         uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
         with:
