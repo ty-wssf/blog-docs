@@ -172,36 +172,56 @@ workflow 文件的主体是`jobs`字段，表示要执行的一项或多项任�
 >       - master
 > 
 > jobs:
->   build-and-deploy:
+>   build-and-deploy: # 编译和部署
 >     runs-on: ubuntu-latest
 >     steps:
->     - name: Checkout 🛎️
->       uses: actions/checkout@v2.3.1
+>       - name: Checkout 🛎️
+>         uses: actions/checkout@v2.3.1
 > 
->     - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
->       run: |
->         npm install
->         npm run docs:build
+>       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+>         run: |
+>           npm install
+>           npm run docs:build
 > 
->     - name: Deploy 🚀
->       uses: JamesIves/github-pages-deploy-action@4.1.4
->       with:
->         branch: pages # The branch the action should deploy to.
->         folder: docs/.vuepress/dist # The folder the action should deploy.
+>       - name: Deploy 🚀
+>         uses: JamesIves/github-pages-deploy-action@4.1.4
+>         with:
+>           branch: pages # The branch the action should deploy to.
+>           folder: docs/.vuepress/dist # The folder the action should deploy.
 > 
->     - name: Sync Github Repos To Gitee  # 名字随便起
->       uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
->       with:
->         src: github/ty-wssf  # 源端账户名(github)
->         dst: gitee/wuyilong  # 目的端账户名(gitee)
->         dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}  # SSH密钥对中的私钥
->         dst_token:  ${{ secrets.GITEE_TOKEN }}  # Gitee账户的私人令牌
->         account_type: user  # 账户类型
->         clone_style: "https"  # 使用https方式进行clone，也可以使用ssh
->         debug: true  # 启用后会显示所有执行命令
->         force_update: true  # 启用后，强制同步，即强制覆盖目的端仓库
->         static_list: "blog-docs"  # 静态同步列表，在此填写需要同步的仓库名称，可填写多个
->         timeout: '600s'  # git超时设置，超时后会自动重试git操作
+>   Github-Repos-To-Gitee: # 同步到gitee仓库
+>     needs: build-and-deploy
+>     runs-on: ubuntu-latest
+>     steps:
+>       - name: Sync Github Repos To Gitee  # 名字随便起
+>         uses: Yikun/hub-mirror-action@v1.1  # 使用Yikun/hub-mirror-action
+>         with:
+>           src: github/ty-wssf  # 源端账户名(github)
+>           dst: gitee/wuyilong  # 目的端账户名(gitee)
+>           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}  # SSH密钥对中的私钥
+>           dst_token:  ${{ secrets.GITEE_TOKEN }}  # Gitee账户的私人令牌
+>           account_type: user  # 账户类型
+>           clone_style: "https"  # 使用https方式进行clone，也可以使用ssh
+>           debug: true  # 启用后会显示所有执行命令
+>           force_update: true  # 启用后，强制同步，即强制覆盖目的端仓库
+>           static_list: "blog-docs"  # 静态同步列表，在此填写需要同步的仓库名称，可填写多个
+>           timeout: '600s'  # git超时设置，超时后会自动重试git操作
+> 
+>   reload-pages: # 刷新 gitee pages服务
+>     needs: Github-Repos-To-Gitee
+>     runs-on: ubuntu-latest
+>     steps:
+>       - name: Build Gitee Pages
+>         uses: yanglbme/gitee-pages-action@main
+>         with:
+>           # 注意替换为你的 Gitee 用户名
+>           gitee-username: wuyilong
+>           # 注意在 Settings->Secrets 配置 GITEE_PASSWORD
+>           gitee-password: ${{ secrets.GITEE_PASSWORD }}
+>           # 注意替换为你的 Gitee 仓库，仓库名严格区分大小写，请准确填写，否则会出错
+>           gitee-repo: wuyilong/blog-docs
+>           # 要部署的分支，默认是 master，若是其他分支，则需要指定（指定的分支必须存在）
+>           branch: pages
 > ```
 
 上面这个 workflow 文件的要点如下。
