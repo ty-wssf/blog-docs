@@ -41,7 +41,7 @@ jobs:
           static_list: "blog-docs"  # 静态同步列表，在此填写需要同步的仓库名称，可填写多个
           timeout: '600s'  # git超时设置，超时后会自动重试git操作
 
-  reload-pages:
+  reload-pages: # 刷新 gitee pages服务
     needs: Github-Repos-To-Gitee
     runs-on: ubuntu-latest
     steps:
@@ -53,6 +53,6 @@ jobs:
           # 注意在 Settings->Secrets 配置 GITEE_PASSWORD
           gitee-password: ${{ secrets.GITEE_PASSWORD }}
           # 注意替换为你的 Gitee 仓库，仓库名严格区分大小写，请准确填写，否则会出错
-          gitee-repo: wuyilong/wuyilong
+          gitee-repo: wuyilong/blog-docs
           # 要部署的分支，默认是 master，若是其他分支，则需要指定（指定的分支必须存在）
           branch: pages
