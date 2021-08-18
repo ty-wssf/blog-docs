@@ -23,7 +23,7 @@ jobs:
           branch: pages # The branch the action should deploy to.
           folder: docs/.vuepress/dist # The folder the action should deploy.
 
-  Github Repos To Gitee: # 同步到gitee仓库
+  Github-Repos-To-Gitee: # 同步到gitee仓库
     needs: build-and-deploy
     runs-on: ubuntu-latest
     steps:
