@@ -152,6 +152,7 @@ module.exports = {
                         'Spring Boot 2 尝鲜-动态 Banner',
                         'Spring Boot 如何解决项目启动时初始化资源',
                         'Spring Boot 如何测试打包部署',
+                        'pom配置',
                         'Linux下SpringBoot Jar 如何实现service服务',
                         'springboot jar包安装成windows服务',
                         '使用 Docker 部署 Spring Boot',
