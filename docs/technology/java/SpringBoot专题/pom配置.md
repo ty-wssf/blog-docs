@@ -20,6 +20,18 @@
         </snapshots>
     </repository>
 </repositories>
+<pluginRepositories>
+    <pluginRepository>
+        <id>aliyun-plugin</id>
+        <url>https://maven.aliyun.com/repository/public</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </pluginRepository>
+</pluginRepositories>
 ```
 
 ## 统一编译jdk版本
@@ -39,5 +51,14 @@
         </plugin>
     </plugins>
 </build>
+```
+
+## SpringBoot的 maven 插件
+
+```
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+</plugin>
 ```
 
