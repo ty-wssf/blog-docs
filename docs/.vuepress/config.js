@@ -65,6 +65,7 @@ module.exports = {
                             {text: '二维码生成器', link: 'https://cli.im/'},
                             {text: '在线编码转换', link: 'http://tool.chinaz.com/tools/native_ascii.aspx'},
                             {text: 'YAML <--> Properties', link: 'https://www.toyaml.com/index.html'},
+                            {text: 'JWT解码', link: 'https://jwt.io/'},
                         ]
                     },
                     {
