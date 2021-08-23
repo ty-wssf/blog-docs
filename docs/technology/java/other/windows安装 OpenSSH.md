@@ -19,9 +19,9 @@ OpenSSH 可用于将安装了 OpenSSH 客户端的 Window 10（版本 1809 及�
 
 设置完成后，回到“应用”>“应用和功能”和“可选功能”，你应会看到已列出 OpenSSH 。
 
- 备注
-
+::: warning 备注
 安装 OpenSSH 服务器将创建并启用一个名为 `OpenSSH-Server-In-TCP` 的防火墙规则。 这允许端口 22 上的入站 SSH 流量。 如果未启用此规则且未打开此端口，那么连接将被拒绝或重置。
+:::
 
 ## 使用 PowerShell 安装 OpenSSH
 
