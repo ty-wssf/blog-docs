@@ -141,7 +141,7 @@ Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
 ### 下载安装包
 
-[openssh的二进制可执行版本](https://github.com/PowerShell/Win32-OpenSSH/releases m)
+[openssh的二进制可执行版本](https://github.com/PowerShell/Win32-OpenSSH/releases)
 
 ### 解压
 
@@ -176,13 +176,3 @@ net start ssh-agent
 ### 环境变量配置
 
 ![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master/img/image-20210823114103403.png)
-
-### 问题
-
-1. 权限不足，无法执行脚本
-
-   ```
-   Set-ExecutionPolicy RemoteSigned
-   ```
-
-   
