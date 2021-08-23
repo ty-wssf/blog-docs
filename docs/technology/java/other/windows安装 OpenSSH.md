@@ -149,6 +149,6 @@ Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
 ### 环境变量配置
 
-![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master//img/image-20210823114103403.png)
+![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master/img/image-20210823114103403.png)
 
 ##
