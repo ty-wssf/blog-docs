@@ -35,7 +35,10 @@ module.exports = {
                         text: 'java', items: [
                             {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
                             {text: 'SpringBoot专题', link: '/technology/java/SpringBoot专题/'},
-                            {text: '基于OAuth2.0的统一身份认证中心', link: '/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/'},
+                            {
+                                text: '基于OAuth2.0的统一身份认证中心',
+                                link: '/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/'
+                            },
                             {
                                 text: 'SpingCloud Alibaba实战',
                                 link: '/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/'
@@ -298,6 +301,7 @@ module.exports = {
                         '解 Java 8 的 Lambda、函数式接口、Stream 用法和原理',
                         'jwt与token+redis，哪种方案更好用？',
                         '加密与数字证书',
+                        'windows安装 OpenSSH',
                     ]
                 },
             ],
