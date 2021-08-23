@@ -141,14 +141,48 @@ Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
 ### 下载安装包
 
-[openssh的二进制可执行版本]: https://github.com/PowerShell/Win32-OpenSSH/releases
+[openssh的二进制可执行版本](https://github.com/PowerShell/Win32-OpenSSH/releases m)
 
 ### 解压
 
-解压即用
+### 安装
+
+```
+powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1
+```
+
+安装成功提示：
+
+```
+[SC] SetServiceObjectSecurity SUCCESS
+[SC] ChangeServiceConfig2 SUCCESS
+[SC] ChangeServiceConfig2 SUCCESS
+sshd and ssh-agent services successfully installed
+```
+
+如果端口没有打开， 需要执行如下命令打开SSH 需要的22端口。
+
+```
+netsh advfirewall firewall add rule name=sshd dir=in action=allow protocol=TCP localport=22
+```
+
+### 启动
+
+```
+net start sshd
+net start ssh-agent
+```
 
 ### 环境变量配置
 
 ![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master/img/image-20210823114103403.png)
 
-##
+#### 问题
+
+1. 权限不足，无法执行脚本
+
+   ```
+   Set-ExecutionPolicy RemoteSigned
+   ```
+
+   
