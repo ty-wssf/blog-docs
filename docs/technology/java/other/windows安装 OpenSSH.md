@@ -125,7 +125,7 @@ domain\username@SERVERNAME C:\Users\username>
 
 若要使用 PowerShell 卸载 OpenSSH 组件，请使用以下命令：
 
-PowerShell复制
+PowerShell
 
 ```powershell
 # Uninstall the OpenSSH Client
@@ -136,3 +136,19 @@ Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 ```
 
 如果在卸载时服务正在使用中，稍后可能需要重启 Windows。
+
+## 离线安装
+
+### 下载安装包
+
+[openssh的二进制可执行版本]: https://github.com/PowerShell/Win32-OpenSSH/releases
+
+### 解压
+
+解压即用
+
+### 环境变量配置
+
+![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master//img/image-20210823114103403.png)
+
+##
