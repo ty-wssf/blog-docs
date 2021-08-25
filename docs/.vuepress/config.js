@@ -102,19 +102,6 @@ module.exports = {
                     ]
                 }
             ],
-            '/install/': [
-                {
-                    title: '安装文档',   // 必要的
-                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
-                    collapsable: false, // 可选的, 默认值是 true,
-                    sidebarDepth: 2,    // 可选的, 默认值是 1
-                    children: [
-                        '',
-                        'mysql',
-                        'redis'
-                    ]
-                }
-            ],
             '/technology/前端/': [
                 {
                     title: '前端',   // 必要的
@@ -125,6 +112,55 @@ module.exports = {
                         'jQuery中封装ajax请求',
                     ]
                 }
+            ],
+            '/technology/java/spring/': [
+                {
+                    title: 'Spring IOC',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Spring IOC/SpringBean的生命流程',
+                        'Spring IOC/Spring IOC 容器源码分析系列文章导读',
+                        'Spring IOC/Spring IOC 容器源码分析 - 获取单例 bean',
+                        'Spring IOC/Spring IOC 容器源码分析 - 创建单例 bean 的过程',
+                        'Spring IOC/Spring IOC 容器源码分析 - 创建原始 bean 对象',
+                        'Spring IOC/Spring IOC 容器源码分析 - 循环依赖的解决办法',
+                        'Spring IOC/Spring IOC 容器源码分析 - 填充属性到 bean 原始对象',
+                        'Spring IOC/Spring IOC 容器源码分析 - 余下的初始化工作',
+                    ]
+                },
+                {
+                    title: 'Spring AOP',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Spring AOP/Spring AOP 源码分析系列文章导读',
+                        'Spring AOP/Spring AOP 源码分析 - 筛选合适的通知器',
+                        'Spring AOP/Spring AOP 源码分析 - 创建代理对象',
+                        'Spring AOP/Spring AOP 源码分析 - 拦截器链的执行过程',
+                    ]
+                },
+                {
+                    title: 'Spring MVC',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Spring MVC/Spring MVC 原理探秘 - 一个请求的旅行过程',
+                        'Spring MVC/Spring MVC 原理探秘 - 容器的创建过程',
+                    ]
+                },
+                {
+                    title: '其它',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        '核心接口',
+                    ]
+                },
             ],
             '/technology/java/SpringBoot专题/': [
                 {
