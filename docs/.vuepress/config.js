@@ -81,6 +81,8 @@ module.exports = {
                     {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
                     {text: '田小波的博客', link: 'https://www.tianxiaobo.com/'},
                     {text: '千锋教育-李卫民', link: 'https://funtl.com/'},
+                    {text: '千锋教育-李卫民', link: 'https://funtl.com/'},
+                    {text: 'segmentfault技术社区', link: 'https://segmentfault.com/'},
                 ]
             },
             {
@@ -158,7 +160,7 @@ module.exports = {
                     collapsable: false, // 可选的, 默认值是 true,
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
-                        '核心接口',
+                        '其他/核心接口',
                     ]
                 },
             ],
@@ -319,6 +321,7 @@ module.exports = {
                         'jwt与token+redis，哪种方案更好用？',
                         '加密与数字证书',
                         'windows安装 OpenSSH',
+                        'Spring 拦截器和过滤器的区别？'
                     ]
                 },
             ],
