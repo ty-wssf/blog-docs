@@ -29,7 +29,7 @@ module.exports = {
         // 顶部导航栏
         nav: [
             {text: '安装文档', link: '/install/'},
-            {text: '前端', link: '/前端/jQuery中封装ajax请求/'},
+            {text: '前端', link: '/technology/前端/jQuery中封装ajax请求/'},
             {
                 text: 'java', items: [
                     {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
