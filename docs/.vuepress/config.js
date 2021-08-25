@@ -29,30 +29,27 @@ module.exports = {
         // 顶部导航栏
         nav: [
             {text: '安装文档', link: '/install/'},
+            {text: '前端', link: '/前端/jQuery中封装ajax请求/'},
             {
-                text: '技术栈', items: [
+                text: 'java', items: [
+                    {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
+                    {text: 'SpringBoot专题', link: '/technology/java/SpringBoot专题/'},
                     {
-                        text: 'java', items: [
-                            {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
-                            {text: 'SpringBoot专题', link: '/technology/java/SpringBoot专题/'},
-                            {
-                                text: '基于OAuth2.0的统一身份认证中心',
-                                link: '/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/'
-                            },
-                            {
-                                text: 'SpingCloud Alibaba实战',
-                                link: '/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/'
-                            },
-                            {text: 'MyBatis', link: '/technology/java/MyBatis/MyBatis 源码分析系列文章导读/'},
-                            {text: 'Dubbo', link: '/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/'},
-                            {text: 'Docker', link: '/technology/java/Docker/Docker入门教程/'},
-                            {text: 'Jvm系列', link: '/technology/java/Jvm系列/Java类的加载机制/'},
-                            {text: '高并发', link: '/technology/java/thread/基础知识/并发编程的优缺点/'},
-                            {text: '算法', link: '/technology/java/算法/Java手写二叉搜索树算法/'},
-                            {text: '查缺补漏', link: '/technology/java/查缺补漏/Java面试题基础系列228道/'},
-                            {text: '其它', link: '/technology/java/other/基于canal的mysql数据同步/'},
-                        ]
+                        text: '基于OAuth2.0的统一身份认证中心',
+                        link: '/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/'
                     },
+                    {
+                        text: 'SpingCloud Alibaba实战',
+                        link: '/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/'
+                    },
+                    {text: 'MyBatis', link: '/technology/java/MyBatis/MyBatis 源码分析系列文章导读/'},
+                    {text: 'Dubbo', link: '/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/'},
+                    {text: 'Docker', link: '/technology/java/Docker/Docker入门教程/'},
+                    {text: 'Jvm系列', link: '/technology/java/Jvm系列/Java类的加载机制/'},
+                    {text: '高并发', link: '/technology/java/thread/基础知识/并发编程的优缺点/'},
+                    {text: '算法', link: '/technology/java/算法/Java手写二叉搜索树算法/'},
+                    {text: '查缺补漏', link: '/technology/java/查缺补漏/Java面试题基础系列228道/'},
+                    {text: '其它', link: '/technology/java/other/基于canal的mysql数据同步/'},
                 ]
             },
             {
