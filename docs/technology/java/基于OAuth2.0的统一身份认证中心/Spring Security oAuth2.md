@@ -198,3 +198,4 @@ http://localhost:8086/oauth/authorize?client_id=client&response_type=code
 - [spring oauth2实现单点登录，Vue+spring boot+oauth2前后端分离](https://www.jianshu.com/p/b549220e7b34)
 - [前后端分离项目 — 基于SpringSecurity OAuth2.0用户认证](https://segmentfault.com/a/1190000016583573)
 - [江南一点雨 SpringSecurity系列](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI1NDY0MTkzNQ==&action=getalbum&album_id=1319828555819286528&scene=173&from_msgid=2247489390&from_itemidx=2&count=3&nolastread=1#wechat_redirect)
+- [想飞的猿 spring oauth2系列博客](https://www.cnblogs.com/bug9/p/11383485.html)
