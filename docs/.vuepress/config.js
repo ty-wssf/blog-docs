@@ -81,6 +81,7 @@ module.exports = {
                     {text: '牛魔王的博客', link: 'https://www.moyundong.com/'},
                     {text: '田小波的博客', link: 'https://www.tianxiaobo.com/'},
                     {text: '千锋教育-李卫民', link: 'https://funtl.com/'},
+                    {text: 'segmentfault技术社区', link: 'https://segmentfault.com/'},
                 ]
             },
             {
