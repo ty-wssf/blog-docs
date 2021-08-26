@@ -70,7 +70,10 @@ module.exports = {
                     },
                     {
                         text: '客户端', items: [
-                            {text: 'dbForge Studio for MySQL', link: 'https://www.devart.com/dbforge/mysql/studio/download.html'},
+                            {
+                                text: 'dbForge Studio for MySQL',
+                                link: 'https://www.devart.com/dbforge/mysql/studio/download.html'
+                            },
                         ]
                     },
                     {
@@ -164,7 +167,7 @@ module.exports = {
                     collapsable: false, // 可选的, 默认值是 true,
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
-                        '核心接口',
+                        '其它/核心接口',
                     ]
                 },
             ],
