@@ -53,7 +53,7 @@ module.exports = {
                 ]
             },
             {
-                text: '在线工具', items: [
+                text: '工具', items: [
                     {
                         text: '在线编辑', items: [
                             {text: 'WEBP转JPG - 在线转换图像文件', link: 'https://www.aconvert.com/cn/image/webp-to-jpg/'},
@@ -66,6 +66,11 @@ module.exports = {
                             {text: '在线编码转换', link: 'http://tool.chinaz.com/tools/native_ascii.aspx'},
                             {text: 'YAML <--> Properties', link: 'https://www.toyaml.com/index.html'},
                             {text: 'JWT解码', link: 'https://jwt.io/'},
+                        ]
+                    },
+                    {
+                        text: '客户端', items: [
+                            {text: 'dbForge Studio for MySQL', link: 'https://www.devart.com/dbforge/mysql/studio/download.html'},
                         ]
                     },
                     {
@@ -320,7 +325,8 @@ module.exports = {
                         'jwt与token+redis，哪种方案更好用？',
                         '加密与数字证书',
                         'windows安装 OpenSSH',
-                        '看完这篇 Session、Cookie、Token，和面试官扯皮就没问题了'
+                        '看完这篇 Session、Cookie、Token，和面试官扯皮就没问题了',
+                        'dbForge Stutio使用'
                     ]
                 },
             ],
