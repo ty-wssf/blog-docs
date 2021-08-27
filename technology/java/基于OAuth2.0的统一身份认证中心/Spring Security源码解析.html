@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring Security源码解析 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.ed08c2e1.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.d20fb779.js" as="script"><link rel="preload" href="/blog-docs/assets/js/138.234ca194.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.ce89d165.js"><link rel="prefetch" href="/blog-docs/assets/js/100.10717d3c.js"><link rel="prefetch" href="/blog-docs/assets/js/101.246f6f43.js"><link rel="prefetch" href="/blog-docs/assets/js/102.f1ddcd17.js"><link rel="prefetch" href="/blog-docs/assets/js/103.bd8b40db.js"><link rel="prefetch" href="/blog-docs/assets/js/104.a4526c33.js"><link rel="prefetch" href="/blog-docs/assets/js/105.0646ba28.js"><link rel="prefetch" href="/blog-docs/assets/js/106.b1d1b81e.js"><link rel="prefetch" href="/blog-docs/assets/js/107.3c881a48.js"><link rel="prefetch" href="/blog-docs/assets/js/108.0a4c05b7.js"><link rel="prefetch" href="/blog-docs/assets/js/109.575a4236.js"><link rel="prefetch" href="/blog-docs/assets/js/11.e3304f6b.js"><link rel="prefetch" href="/blog-docs/assets/js/110.ad6d4915.js"><link rel="prefetch" href="/blog-docs/assets/js/111.f391cf2a.js"><link rel="prefetch" href="/blog-docs/assets/js/112.96ce185c.js"><link rel="prefetch" href="/blog-docs/assets/js/113.0d43be00.js"><link rel="prefetch" href="/blog-docs/assets/js/114.f7341cdb.js"><link rel="prefetch" href="/blog-docs/assets/js/115.04ce6274.js"><link rel="prefetch" href="/blog-docs/assets/js/116.90ade34a.js"><link rel="prefetch" href="/blog-docs/assets/js/117.c4f2beee.js"><link rel="prefetch" href="/blog-docs/assets/js/118.b37d8a5b.js"><link rel="prefetch" href="/blog-docs/assets/js/119.f99e10f6.js"><link rel="prefetch" href="/blog-docs/assets/js/12.733590c1.js"><link rel="prefetch" href="/blog-docs/assets/js/120.cde626b7.js"><link rel="prefetch" href="/blog-docs/assets/js/121.d04f0a9c.js"><link rel="prefetch" href="/blog-docs/assets/js/122.15ee3741.js"><link rel="prefetch" href="/blog-docs/assets/js/123.2821ba99.js"><link rel="prefetch" href="/blog-docs/assets/js/124.4cfff7f1.js"><link rel="prefetch" href="/blog-docs/assets/js/125.75e25795.js"><link rel="prefetch" href="/blog-docs/assets/js/126.507f0918.js"><link rel="prefetch" href="/blog-docs/assets/js/127.4be2d672.js"><link rel="prefetch" href="/blog-docs/assets/js/128.9dc6e18e.js"><link rel="prefetch" href="/blog-docs/assets/js/129.ac5b645e.js"><link rel="prefetch" href="/blog-docs/assets/js/13.a8ea97e8.js"><link rel="prefetch" href="/blog-docs/assets/js/130.bbd9bb69.js"><link rel="prefetch" href="/blog-docs/assets/js/131.253b54cc.js"><link rel="prefetch" href="/blog-docs/assets/js/132.bd88d8a9.js"><link rel="prefetch" href="/blog-docs/assets/js/133.2e84f1ca.js"><link rel="prefetch" href="/blog-docs/assets/js/134.e400909a.js"><link rel="prefetch" href="/blog-docs/assets/js/135.55d43dc5.js"><link rel="prefetch" href="/blog-docs/assets/js/136.1227db35.js"><link rel="prefetch" href="/blog-docs/assets/js/137.19babfe2.js"><link rel="prefetch" href="/blog-docs/assets/js/139.36e81f14.js"><link rel="prefetch" href="/blog-docs/assets/js/14.827a1cf8.js"><link rel="prefetch" href="/blog-docs/assets/js/140.c2418549.js"><link rel="prefetch" href="/blog-docs/assets/js/141.86aeadb2.js"><link rel="prefetch" href="/blog-docs/assets/js/142.b7a0c759.js"><link rel="prefetch" href="/blog-docs/assets/js/143.04ac0b87.js"><link rel="prefetch" href="/blog-docs/assets/js/144.92568639.js"><link rel="prefetch" href="/blog-docs/assets/js/145.77b6441c.js"><link rel="prefetch" href="/blog-docs/assets/js/146.1f0bfd8b.js"><link rel="prefetch" href="/blog-docs/assets/js/147.68c6adba.js"><link rel="prefetch" href="/blog-docs/assets/js/148.8ced0a33.js"><link rel="prefetch" href="/blog-docs/assets/js/149.993d438b.js"><link rel="prefetch" href="/blog-docs/assets/js/15.637f741c.js"><link rel="prefetch" href="/blog-docs/assets/js/150.e305a67d.js"><link rel="prefetch" href="/blog-docs/assets/js/151.1a46a12f.js"><link rel="prefetch" href="/blog-docs/assets/js/152.4747a27e.js"><link rel="prefetch" href="/blog-docs/assets/js/153.967d627c.js"><link rel="prefetch" href="/blog-docs/assets/js/154.64a5a7b4.js"><link rel="prefetch" href="/blog-docs/assets/js/155.7796b10f.js"><link rel="prefetch" href="/blog-docs/assets/js/156.9f899fbd.js"><link rel="prefetch" href="/blog-docs/assets/js/157.2f05d6a0.js"><link rel="prefetch" href="/blog-docs/assets/js/158.3fac9361.js"><link rel="prefetch" href="/blog-docs/assets/js/159.6f7c8565.js"><link rel="prefetch" href="/blog-docs/assets/js/16.5d52fc0a.js"><link rel="prefetch" href="/blog-docs/assets/js/160.f2baadd5.js"><link rel="prefetch" href="/blog-docs/assets/js/161.2d400185.js"><link rel="prefetch" href="/blog-docs/assets/js/162.c448573b.js"><link rel="prefetch" href="/blog-docs/assets/js/163.4e4d901e.js"><link rel="prefetch" href="/blog-docs/assets/js/164.b3f1b06b.js"><link rel="prefetch" href="/blog-docs/assets/js/165.9e2c6e56.js"><link rel="prefetch" href="/blog-docs/assets/js/166.bdcde127.js"><link rel="prefetch" href="/blog-docs/assets/js/17.6a09850e.js"><link rel="prefetch" href="/blog-docs/assets/js/18.9212e6a9.js"><link rel="prefetch" href="/blog-docs/assets/js/19.ed826c49.js"><link rel="prefetch" href="/blog-docs/assets/js/20.a6c2aad2.js"><link rel="prefetch" href="/blog-docs/assets/js/21.dca88f55.js"><link rel="prefetch" href="/blog-docs/assets/js/22.0b7ed5f9.js"><link rel="prefetch" href="/blog-docs/assets/js/23.8344b2d0.js"><link rel="prefetch" href="/blog-docs/assets/js/24.e3604683.js"><link rel="prefetch" href="/blog-docs/assets/js/25.fbbc0feb.js"><link rel="prefetch" href="/blog-docs/assets/js/26.5625581e.js"><link rel="prefetch" href="/blog-docs/assets/js/27.165490c1.js"><link rel="prefetch" href="/blog-docs/assets/js/28.8498a50b.js"><link rel="prefetch" href="/blog-docs/assets/js/29.29c25884.js"><link rel="prefetch" href="/blog-docs/assets/js/3.02690d91.js"><link rel="prefetch" href="/blog-docs/assets/js/30.8d933cc4.js"><link rel="prefetch" href="/blog-docs/assets/js/31.a82b7e58.js"><link rel="prefetch" href="/blog-docs/assets/js/32.3b45bc0f.js"><link rel="prefetch" href="/blog-docs/assets/js/33.8f7a40a4.js"><link rel="prefetch" href="/blog-docs/assets/js/34.e5b6ec1b.js"><link rel="prefetch" href="/blog-docs/assets/js/35.a9e8b3f0.js"><link rel="prefetch" href="/blog-docs/assets/js/36.57abdf22.js"><link rel="prefetch" href="/blog-docs/assets/js/37.267d16c1.js"><link rel="prefetch" href="/blog-docs/assets/js/38.0ed0c608.js"><link rel="prefetch" href="/blog-docs/assets/js/39.3d86f17b.js"><link rel="prefetch" href="/blog-docs/assets/js/4.04ab9679.js"><link rel="prefetch" href="/blog-docs/assets/js/40.172ae5ed.js"><link rel="prefetch" href="/blog-docs/assets/js/41.96837841.js"><link rel="prefetch" href="/blog-docs/assets/js/42.630b0385.js"><link rel="prefetch" href="/blog-docs/assets/js/43.e4f0d0c1.js"><link rel="prefetch" href="/blog-docs/assets/js/44.c198e4b6.js"><link rel="prefetch" href="/blog-docs/assets/js/45.70ca40c2.js"><link rel="prefetch" href="/blog-docs/assets/js/46.c8e07546.js"><link rel="prefetch" href="/blog-docs/assets/js/47.1453c8fc.js"><link rel="prefetch" href="/blog-docs/assets/js/48.794d0468.js"><link rel="prefetch" href="/blog-docs/assets/js/49.7302f2d5.js"><link rel="prefetch" href="/blog-docs/assets/js/5.1873b179.js"><link rel="prefetch" href="/blog-docs/assets/js/50.039d2cd4.js"><link rel="prefetch" href="/blog-docs/assets/js/51.df224e67.js"><link rel="prefetch" href="/blog-docs/assets/js/52.ef0a7b5c.js"><link rel="prefetch" href="/blog-docs/assets/js/53.5fb1462c.js"><link rel="prefetch" href="/blog-docs/assets/js/54.1c850916.js"><link rel="prefetch" href="/blog-docs/assets/js/55.46f54044.js"><link rel="prefetch" href="/blog-docs/assets/js/56.1326a7bd.js"><link rel="prefetch" href="/blog-docs/assets/js/57.e1d95ae3.js"><link rel="prefetch" href="/blog-docs/assets/js/58.1004fc5a.js"><link rel="prefetch" href="/blog-docs/assets/js/59.4cf8c682.js"><link rel="prefetch" href="/blog-docs/assets/js/6.ffc21dda.js"><link rel="prefetch" href="/blog-docs/assets/js/60.a4edddbd.js"><link rel="prefetch" href="/blog-docs/assets/js/61.0f76e20f.js"><link rel="prefetch" href="/blog-docs/assets/js/62.96379c85.js"><link rel="prefetch" href="/blog-docs/assets/js/63.1c75b40f.js"><link rel="prefetch" href="/blog-docs/assets/js/64.d9e39b92.js"><link rel="prefetch" href="/blog-docs/assets/js/65.56912e56.js"><link rel="prefetch" href="/blog-docs/assets/js/66.68fcd0b6.js"><link rel="prefetch" href="/blog-docs/assets/js/67.ef736f1a.js"><link rel="prefetch" href="/blog-docs/assets/js/68.b269f8c3.js"><link rel="prefetch" href="/blog-docs/assets/js/69.0f7e6c3d.js"><link rel="prefetch" href="/blog-docs/assets/js/7.31d0585b.js"><link rel="prefetch" href="/blog-docs/assets/js/70.c400f965.js"><link rel="prefetch" href="/blog-docs/assets/js/71.7e01cb5c.js"><link rel="prefetch" href="/blog-docs/assets/js/72.08a81b2e.js"><link rel="prefetch" href="/blog-docs/assets/js/73.136354c1.js"><link rel="prefetch" href="/blog-docs/assets/js/74.3bb69253.js"><link rel="prefetch" href="/blog-docs/assets/js/75.4031271e.js"><link rel="prefetch" href="/blog-docs/assets/js/76.838106a1.js"><link rel="prefetch" href="/blog-docs/assets/js/77.8a082888.js"><link rel="prefetch" href="/blog-docs/assets/js/78.ed6af29d.js"><link rel="prefetch" href="/blog-docs/assets/js/79.b373b24c.js"><link rel="prefetch" href="/blog-docs/assets/js/8.3a78e384.js"><link rel="prefetch" href="/blog-docs/assets/js/80.bcbe14ba.js"><link rel="prefetch" href="/blog-docs/assets/js/81.fcb13af9.js"><link rel="prefetch" href="/blog-docs/assets/js/82.2bdc8c49.js"><link rel="prefetch" href="/blog-docs/assets/js/83.3336363e.js"><link rel="prefetch" href="/blog-docs/assets/js/84.ab2ac408.js"><link rel="prefetch" href="/blog-docs/assets/js/85.9d465275.js"><link rel="prefetch" href="/blog-docs/assets/js/86.955a26cb.js"><link rel="prefetch" href="/blog-docs/assets/js/87.7cc0d217.js"><link rel="prefetch" href="/blog-docs/assets/js/88.12b15243.js"><link rel="prefetch" href="/blog-docs/assets/js/89.16827f45.js"><link rel="prefetch" href="/blog-docs/assets/js/9.5585259d.js"><link rel="prefetch" href="/blog-docs/assets/js/90.f5ca8bb6.js"><link rel="prefetch" href="/blog-docs/assets/js/91.cc12111f.js"><link rel="prefetch" href="/blog-docs/assets/js/92.ea43dad8.js"><link rel="prefetch" href="/blog-docs/assets/js/93.90356ef2.js"><link rel="prefetch" href="/blog-docs/assets/js/94.06c29b26.js"><link rel="prefetch" href="/blog-docs/assets/js/95.a80542c4.js"><link rel="prefetch" href="/blog-docs/assets/js/96.a3a20c7d.js"><link rel="prefetch" href="/blog-docs/assets/js/97.0cc17eed.js"><link rel="prefetch" href="/blog-docs/assets/js/98.5a57766c.js"><link rel="prefetch" href="/blog-docs/assets/js/99.76091519.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><a href="/blog-docs/technology/前端/jQuery中封装ajax请求/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java" class="dropdown-title"><span class="title">java</span> <span class="arrow down"></span></button> <button type="button" aria-label="java" class="mobile-dropdown-title"><span class="title">java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/" class="nav-link">
+  基于OAuth2.0的统一身份认证中心
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="工具" class="dropdown-title"><span class="title">工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="工具" class="mobile-dropdown-title"><span class="title">工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.aconvert.com/cn/image/webp-to-jpg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  WEBP转JPG - 在线转换图像文件
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://jwt.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JWT解码
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          客户端
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.devart.com/dbforge/mysql/studio/download.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  dbForge Studio for MySQL
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.tianxiaobo.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  田小波的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://funtl.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  千锋教育-李卫民
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://segmentfault.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  segmentfault技术社区
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><a href="/blog-docs/technology/前端/jQuery中封装ajax请求/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java" class="dropdown-title"><span class="title">java</span> <span class="arrow down"></span></button> <button type="button" aria-label="java" class="mobile-dropdown-title"><span class="title">java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/" class="nav-link">
+  基于OAuth2.0的统一身份认证中心
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="工具" class="dropdown-title"><span class="title">工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="工具" class="mobile-dropdown-title"><span class="title">工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.aconvert.com/cn/image/webp-to-jpg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  WEBP转JPG - 在线转换图像文件
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://jwt.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JWT解码
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          客户端
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.devart.com/dbforge/mysql/studio/download.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  dbForge Studio for MySQL
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.tianxiaobo.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  田小波的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://funtl.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  千锋教育-李卫民
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://segmentfault.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  segmentfault技术社区
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>基于OAuth2.0的统一身份认证中心</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2.html" class="sidebar-link">Spring Security oAuth2</a></li><li><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html" class="active sidebar-link">Spring Security源码解析</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#安全相关filter清单" class="sidebar-link">安全相关Filter清单</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#webasyncmanagerintegrationfilter" class="sidebar-link">WebAsyncManagerIntegrationFilter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#securitycontextpersistencefilter" class="sidebar-link">SecurityContextPersistenceFilter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#headerwriterfilter" class="sidebar-link">HeaderWriterFilter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#csrffilter" class="sidebar-link">CsrfFilter</a></li><li class="sidebar-sub-header"><a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.html#logoutfilter" class="sidebar-link">LogoutFilter</a></li></ul></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="spring-security源码解析"><a href="#spring-security源码解析" class="header-anchor">#</a> Spring Security源码解析</h1> <h2 id="安全相关filter清单"><a href="#安全相关filter清单" class="header-anchor">#</a> 安全相关Filter清单</h2> <table><thead><tr><th>名称</th> <th>简介</th></tr></thead> <tbody><tr><td>WebAsyncManagerIntegrationFilter</td> <td>为请求处理过程中可能发生的异步调用准备安全上下文获取途径</td></tr> <tr><td>SecurityContextPersistenceFilter</td> <td>整个请求处理过程所需的安全上下文对象SecurityContext的准备和清理<br>不管请求是否针对需要登录才能访问的页面，这里都会确保SecurityContextHolder中出现一个SecurityContext对象:<br>1.未登录状态访问登录保护页面:空SecurityContext对象，所含Authentication为null<br>2.登录状态访问某个页面:从SecurityContextRepository获取的SecurityContext对象&lt;br/</td></tr> <tr><td>HeaderWriterFilter</td> <td>将指定的头部信息写入响应对象</td></tr> <tr><td>CsrfFilter</td> <td>对请求进行csrf保护</td></tr> <tr><td>LogoutFilter</td> <td>检测用户退出登录请求并做相应退出登录处理</td></tr> <tr><td>UsernamePasswordAuthenticationFilter</td> <td>检测用户名/密码表单登录认证请求并作相应认证处理:<br>  1.session管理，比如为新登录用户创建新session(session fixation防护)和设置新的csrf token等<br>  2.经过完全认证的Authentication对象设置到SecurityContextHolder中的SecurityContext上;<br>  3.发布登录认证成功事件InteractiveAuthenticationSuccessEvent<br>  4.登录认证成功时的Remember Me处理<br>  5.登录认证成功时的页面跳转&lt;br/</td></tr> <tr><td>DefaultLoginPageGeneratingFilter</td> <td>生成缺省的登录页面</td></tr> <tr><td>DefaultLogoutPageGeneratingFilter</td> <td>生成缺省的退出登录页面</td></tr> <tr><td>BasicAuthenticationFilter</td> <td>检测和处理http basic认证</td></tr> <tr><td>RequestCacheAwareFilter</td> <td>提取请求缓存中缓存的请求<br>1.请求缓存在安全机制启动时指定<br>2.请求写入缓存在其他地方完成<br>3.典型应用场景:<br>    1.用户请求保护的页面，<br>    2.系统引导用户完成登录认证,<br>    3.然后自动跳转到到用户最初请求页面</td></tr> <tr><td>SecurityContextHolderAwareRequestFilter</td> <td>包装请求对象使之可以访问SecurityContextHolder,从而使请求真正意义上拥有接口HttpServletRequest中定义的getUserPrincipal这种访问安全信息的能力</td></tr> <tr><td>RememberMeAuthenticationFilter</td> <td>针对Remember Me登录认证机制的处理逻辑</td></tr> <tr><td>AnonymousAuthenticationFilter</td> <td>如果当前SecurityContext属性Authentication为null，将其替换为一个AnonymousAuthenticationToken</td></tr> <tr><td>SessionManagementFilter</td> <td>检测从请求处理开始到目前是否有用户登录认证，如果有做相应的session管理，比如针对为新登录用户创建新的session(session fixation防护)和设置新的csrf token等。</td></tr> <tr><td>ExceptionTranslationFilter</td> <td>处理AccessDeniedException和 AuthenticationException异常，将它们转换成相应的HTTP响应</td></tr> <tr><td>FilterSecurityInterceptor</td> <td>一个请求处理的安全处理过滤器链的最后一个，检查用户是否已经认证,如果未认证执行必要的认证，对目标资源的权限检查，如果认证或者权限不足，抛出相应的异常:AccessDeniedException或者AuthenticationException</td></tr> <tr><td></td> <td></td></tr></tbody></table> <p><strong>注意 :</strong></p> <ul><li><p>上面的Filter并不总是同时被起用，根据配置的不同，会启用不同的Filter。</p></li> <li><p>对于被起用的Filter，在对一个请求进行处理时，位于以上表格上部的过滤器先被调用。</p></li> <li><p>上面的Filter被启用时并不是直接添加到Servlet容器的Filter chain中,而是先被组织成一个FilterChainProxy, 然后这个Filter会被添加到Servlet容器的Filter chain中。</p> <blockquote><p>FilterChainProxy也是一个Filter,它应用了代理模式和组合模式，它将上面的各个Filter组织到一起在自己内部形成一个filter chain,当自己被调用到时，它其实把任务代理给自己内部的filter chain完成。</p></blockquote></li> <li><p>上面的Spring Security Filter被组合到一个FilterChainProxy的过程可以参考配置类WebSecurityConfiguration的方法Filter springSecurityFilterChain(),这是一个bean定义方法，使用的bean名称为AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME:springSecurityFilterChain。</p></li></ul> <h3 id="webasyncmanagerintegrationfilter"><a href="#webasyncmanagerintegrationfilter" class="header-anchor">#</a> WebAsyncManagerIntegrationFilter</h3> <h4 id="概述"><a href="#概述" class="header-anchor">#</a> 概述</h4> <p>此过滤器用于集成<code>SecurityContext</code>到<code>Spring</code>异步执行机制中的<code>WebAsyncManager</code>。</p> <h4 id="源代码解析"><a href="#源代码解析" class="header-anchor">#</a> 源代码解析</h4> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">// 此过滤器用于集成SecurityContext到Spring异步执行机制中的WebAsyncManager。</span>
+<span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">WebAsyncManagerIntegrationFilter</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Object</span> CALLABLE_INTERCEPTOR_KEY <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doFilterInternal</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span>
+                                    <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> filterChain<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 从请求属性上获取所绑定的`WebAsyncManager`，如果尚未绑定，先做绑定</span>
+        <span class="token comment">// 相应的属性名称为 :</span>
+        <span class="token comment">// org.springframework.web.context.request.async.WebAsyncManager.WEB_ASYNC_MANAGER</span>
+        <span class="token class-name">WebAsyncManager</span> asyncManager <span class="token operator">=</span> <span class="token class-name">WebAsyncUtils</span><span class="token punctuation">.</span><span class="token function">getAsyncManager</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 从 asyncManager 中获取 key 为 CALLABLE_INTERCEPTOR_KEY 的</span>
+        <span class="token comment">//  SecurityContextCallableProcessingInterceptor,  如果获取到的为 null，</span>
+        <span class="token comment">// 说明其中还没有 key 为 CALLABLE_INTERCEPTOR_KEY 的</span>
+        <span class="token comment">// SecurityContextCallableProcessingInterceptor, 新建一个并使用该 key</span>
+        <span class="token comment">// 注册上去</span>
+        <span class="token class-name">SecurityContextCallableProcessingInterceptor</span> securityProcessingInterceptor <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">SecurityContextCallableProcessingInterceptor</span><span class="token punctuation">)</span> asyncManager
+                <span class="token punctuation">.</span><span class="token function">getCallableInterceptor</span><span class="token punctuation">(</span>CALLABLE_INTERCEPTOR_KEY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>securityProcessingInterceptor <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 这里新建的 SecurityContextCallableProcessingInterceptor 实现了</span>
+            <span class="token comment">// 接口 CallableProcessingInterceptor，当它被应用于一次异步执行时，</span>
+            <span class="token comment">// 它的方法beforeConcurrentHandling() 会在调用者线程执行，该方法</span>
+            <span class="token comment">// 会相应地从当前线程获取SecurityContext,然后被调用者线程中执行设计的</span>
+            <span class="token comment">// 逻辑时，会使用这个SecurityContext，从而实现安全上下文从调用者线程</span>
+            <span class="token comment">// 到被调用者线程的传播</span>
+            asyncManager<span class="token punctuation">.</span><span class="token function">registerCallableInterceptor</span><span class="token punctuation">(</span>CALLABLE_INTERCEPTOR_KEY<span class="token punctuation">,</span>
+                    <span class="token keyword">new</span> <span class="token class-name">SecurityContextCallableProcessingInterceptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 上面是本过滤器的职责逻辑:为整个请求处理过程中可能的异步处理做安全上下文相关的</span>
+        <span class="token comment">// 准备。现在该任务已经完成，继续 filter chain 的调用。</span>
+        filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="securitycontextpersistencefilter"><a href="#securitycontextpersistencefilter" class="header-anchor">#</a> SecurityContextPersistenceFilter</h3> <p>####概述
+<strong><code>SecurityContextPersistenceFilter</code>有两个主要任务:</strong></p> <ol><li>在请求到达时处理之前，从<code>SecurityContextRepository</code>中获取安全上下文信息填充到<code>SecurityContextHolder;</code></li> <li>在请求处理结束后返回响应时，将SecurityContextHolder中的安全上下文信息保存回SecurityContextRepository,并清空SecurityContextHolder。</li></ol> <p>通过SecurityContextPersistenceFilter的这种机制，在整个请求处理过程中，开发人员都可以通过使用SecurityContextHolder获取当前访问用户的安全上下文信息。</p> <blockquote><p>缺省情况下，SecurityContextPersistenceFilter使用的SecurityContextRepository是HttpSessionSecurityContextRepository，也就是将安全上下文的信息保存在用户的会话中。</p></blockquote> <p>为了解决不同Serlvet容器上，尤其是weblogic上的兼容性问题，此Filter必须在整个request处理过程中被调用最多一次。</p> <p>该Filter也必须在任何认证机制逻辑发生之前被调用。因为这些认证机制都依赖于SecurityContextHolder所包含的安全上下文对象。</p> <h4 id="源代码解析-2"><a href="#源代码解析-2" class="header-anchor">#</a> 源代码解析</h4> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecurityContextPersistenceFilter</span> <span class="token keyword">extends</span> <span class="token class-name">GenericFilterBean</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// 确保该Filter在一个request处理过程中最多被调到用一次的机制：</span>
+    <span class="token comment">// 一旦该Fitler被调用过，他会在当前request增加该属性值为true，利用此标记</span>
+    <span class="token comment">// 可以避免Filter被调用二次。</span>
+    <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> FILTER_APPLIED <span class="token operator">=</span> <span class="token string">&quot;__spring_security_scpf_applied&quot;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 安全上下文存储库</span>
+    <span class="token keyword">private</span> <span class="token class-name">SecurityContextRepository</span> repo<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> forceEagerSessionCreation <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">SecurityContextPersistenceFilter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 缺省使用http session 作为安全上下文对象存储</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">HttpSessionSecurityContextRepository</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">SecurityContextPersistenceFilter</span><span class="token punctuation">(</span><span class="token class-name">SecurityContextRepository</span> repo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>repo <span class="token operator">=</span> repo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doFilter</span><span class="token punctuation">(</span><span class="token class-name">ServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">ServletResponse</span> res<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> chain<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">ServletException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">HttpServletRequest</span> request <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">)</span> req<span class="token punctuation">;</span>
+        <span class="token class-name">HttpServletResponse</span> response <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">)</span> res<span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span>FILTER_APPLIED<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// ensure that filter is only applied once per request</span>
+            <span class="token comment">// 检查调用标志，如果request上已经存在属性FILTER_APPLIED,</span>
+            <span class="token comment">// 表明该Filter在该request的处理过程中已经被调用过</span>
+            chain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">final</span> <span class="token keyword">boolean</span> debug <span class="token operator">=</span> logger<span class="token punctuation">.</span><span class="token function">isDebugEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 设置该Filter已经被调用的标记</span>
+        request<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span>FILTER_APPLIED<span class="token punctuation">,</span> <span class="token class-name">Boolean</span><span class="token punctuation">.</span>TRUE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>forceEagerSessionCreation<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">HttpSession</span> session <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>debug <span class="token operator">&amp;&amp;</span> session<span class="token punctuation">.</span><span class="token function">isNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">&quot;Eagerly created session: &quot;</span> <span class="token operator">+</span> session<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token class-name">HttpRequestResponseHolder</span> holder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HttpRequestResponseHolder</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span>
+                response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 从安全上下文存储库(缺省是http session)中读取安全上下文对象</span>
+        <span class="token class-name">SecurityContext</span> contextBeforeChainExecution <span class="token operator">=</span> repo<span class="token punctuation">.</span><span class="token function">loadContext</span><span class="token punctuation">(</span>holder<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 设置安全上下文对象到SecurityContextHolder然后才继续Filter chain的调用</span>
+            <span class="token class-name">SecurityContextHolder</span><span class="token punctuation">.</span><span class="token function">setContext</span><span class="token punctuation">(</span>contextBeforeChainExecution<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            chain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>holder<span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> holder<span class="token punctuation">.</span><span class="token function">getResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            <span class="token class-name">SecurityContext</span> contextAfterChainExecution <span class="token operator">=</span> <span class="token class-name">SecurityContextHolder</span>
+                    <span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// Crucial removal of SecurityContextHolder contents - do this before anything</span>
+            <span class="token comment">// else.</span>
+            <span class="token comment">// 当前请求已经被处理完成了，清除SecurityContextHolder并将最新的</span>
+            <span class="token comment">// 安全上下文对象保存回安全上下文存储库(缺省是http session)</span>
+            <span class="token class-name">SecurityContextHolder</span><span class="token punctuation">.</span><span class="token function">clearContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            repo<span class="token punctuation">.</span><span class="token function">saveContext</span><span class="token punctuation">(</span>contextAfterChainExecution<span class="token punctuation">,</span> holder<span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    holder<span class="token punctuation">.</span><span class="token function">getResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            request<span class="token punctuation">.</span><span class="token function">removeAttribute</span><span class="token punctuation">(</span>FILTER_APPLIED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>debug<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">&quot;SecurityContextHolder now cleared, as request processing completed&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setForceEagerSessionCreation</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> forceEagerSessionCreation<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>forceEagerSessionCreation <span class="token operator">=</span> forceEagerSessionCreation<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="headerwriterfilter"><a href="#headerwriterfilter" class="header-anchor">#</a> HeaderWriterFilter</h3> <h4 id="概述-2"><a href="#概述-2" class="header-anchor">#</a> 概述</h4> <p><code>Spring Securty</code> 使用该<code>Filter</code>在一个请求的处理过程中为响应对象增加一些头部信息。头部信息由外部提供，比如用于增加一些浏览器保护的头部，比如<code>X-Frame-Options,</code> <code>X-XSS-Protection</code>和<code>X-Content-Type-Options</code>等。</p> <p>具体的做法是在请求到达的时候将传入的响应对象包装成一个具有头部写入能力的<code>HeaderWriterResponse</code>对象，<code>HeaderWriterResponse</code>所具备的头部写入能力是这样的 :</p> <ol><li><p><code>HeaderWriterResponse</code> 继承自 <code>OnCommittedResponseWrapper</code> <code>OnCommittedResponseWrapper</code>会检测<code>response commit</code>,在这之前调用特定方法<code>onResponseCommitted</code>；</p> <blockquote><p>response commit 通常发生在include, redirect, sendError, flushBuffer这些事情发生时。</p></blockquote></li> <li><p>HeaderWriterResponse实现onResponseCommitted方法，该方法用于将指定的头部信息写入响应;</p></li> <li><p>HeaderWriterResponse实现了一个writeHeaders方法，该方法用于将指定的头部信息写入响应；</p></li></ol> <p>因为具备了上述能力，所以一旦在请求处理过程中检测到<code>response commit</code>,<code>onResponseCommitted</code>会被调用，
+如果没有检测到<code>response commit</code>,程序再次回到当前Filter时，它会主动调用<code>HeaderWriterResponse#writeHeaders</code>
+将头部信息写入响应。</p> <p>把头部信息写入响应的动作不会被执行超过一次，因为<code>onResponseCommitted</code>,<code>writeHeaders</code>方法都会检测一个头部信息是否已经写入的标记(具体请参考下面的源代码解析)。</p> <h4 id="源代码解析-3"><a href="#源代码解析-3" class="header-anchor">#</a> 源代码解析</h4> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HeaderWriterFilter</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * Collection of  HeaderWriter instances to write out the headers to the
+     * response.
+     * 将要写入响应头部的头部写入器，注意，这里不是直接提供头部信息让该Filter自己写入响应头部，
+     * 而是委托给各个头部写入器HeaderWriter完成，当前Filter并不关心每个头部信息如何写入的细节。
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HeaderWriter</span><span class="token punctuation">&gt;</span></span> headerWriters<span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * Creates a new instance. 构建一个当前Filter的实例，外部提供对响应对象的头部写入器
+     *
+     * @param headerWriters the  HeaderWriter instances to write out headers to the
+     *                      HttpServletResponse.
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">HeaderWriterFilter</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HeaderWriter</span><span class="token punctuation">&gt;</span></span> headerWriters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notEmpty</span><span class="token punctuation">(</span>headerWriters<span class="token punctuation">,</span> <span class="token string">&quot;headerWriters cannot be null or empty&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>headerWriters <span class="token operator">=</span> headerWriters<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doFilterInternal</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span>
+                                    <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> filterChain<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 将传入的response对象和头部写入器放在一起包装成一个HeaderWriterResponse对象，</span>
+        <span class="token comment">// 该HeaderWriterResponse本身带有执行头部写入器的能力(可以被外部主动调用,也可能在响应对象</span>
+        <span class="token comment">// 的某些事件发生时自主调用)，但此时并不执行这些头部写入器，只是将响应对象携带上需要的信息</span>
+        <span class="token comment">// 二次封装继续传递，在需要执行的时候再执行。</span>
+        <span class="token class-name">HeaderWriterResponse</span> headerWriterResponse <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HeaderWriterResponse</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span>
+                response<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>headerWriters<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">HeaderWriterRequest</span> headerWriterRequest <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HeaderWriterRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span>
+                headerWriterResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 头部写入器已经绑定到二次封装的headerWriterResponse上了，继续filter chain</span>
+            <span class="token comment">// 的执行</span>
+            filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>headerWriterRequest<span class="token punctuation">,</span> headerWriterResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 逻辑执行到这里，说明请求处理已经完成，已经处于回写响应对象给客户的阶段了，</span>
+            <span class="token comment">// 这里调用头部写入方法。</span>
+            <span class="token comment">// 注意，这里虽然调用头部写入方法，但真正的头部写入动作并不一定真正在这里发生,</span>
+            <span class="token comment">// 因为该动作有可能已经在其他Filter中发生，具体请参考OnCommittedResponseWrapper</span>
+            <span class="token comment">// 赋予HeaderWriterResponse的这种能力。</span>
+            headerWriterResponse<span class="token punctuation">.</span><span class="token function">writeHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 继承OnCommittedResponseWrapper实现一个自定义的HttpServletResponse，</span>
+    <span class="token comment">// HeaderWriterResponse 实现的核心逻辑是提供一个onResponseCommitted()方法实现，</span>
+    <span class="token comment">// 用于写入要求的头部信息到响应对象。</span>
+    <span class="token comment">// 而onResponseCommitted()会在response被commit前确保被调用，这一点是OnCommittedResponseWrapper</span>
+    <span class="token comment">// 的任务。一般来讲，在处理中发生 include,sendError, redirect, flushBuffer 时会导致 response commit,</span>
+    <span class="token comment">// 而OnCommittedResponseWrapper的设计目的就是就是在这些事件将要发生时，调用onResponseCommitted()。</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">HeaderWriterResponse</span> <span class="token keyword">extends</span> <span class="token class-name">OnCommittedResponseWrapper</span> <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HeaderWriter</span><span class="token punctuation">&gt;</span></span> headerWriters<span class="token punctuation">;</span>
+
+        <span class="token class-name">HeaderWriterResponse</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span>
+                             <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HeaderWriter</span><span class="token punctuation">&gt;</span></span> headerWriters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>request <span class="token operator">=</span> request<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>headerWriters <span class="token operator">=</span> headerWriters<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">/*
+         * (non-Javadoc)
+         *
+         * @see org.springframework.security.web.util.OnCommittedResponseWrapper#
+         * onResponseCommitted()
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onResponseCommitted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 将头部信息写入响应对象</span>
+            <span class="token function">writeHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 一旦完成头部写入，设置一个标记声明这件事情，从而可以避免</span>
+            <span class="token comment">// 对该方法的再次调用或者对writeHeaders()不会导致重复写入</span>
+            <span class="token comment">// 头部信息到响应对象</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">disableOnResponseCommitted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">writeHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDisableOnResponseCommitted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 先检查是否已经将头部写入响应的标记，如果已经写入则不再二次写入</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment">// 将头部写入响应</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">HeaderWriter</span> headerWriter <span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>headerWriters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                headerWriter<span class="token punctuation">.</span><span class="token function">writeHeaders</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>request<span class="token punctuation">,</span> <span class="token function">getHttpResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> <span class="token class-name">HttpServletResponse</span> <span class="token function">getHttpResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">)</span> <span class="token function">getResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">HeaderWriterRequest</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServletRequestWrapper</span> <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HeaderWriterResponse</span> response<span class="token punctuation">;</span>
+
+        <span class="token class-name">HeaderWriterRequest</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HeaderWriterResponse</span> response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>response <span class="token operator">=</span> response<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">RequestDispatcher</span> <span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HeaderWriterRequestDispatcher</span><span class="token punctuation">(</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">HeaderWriterRequestDispatcher</span> <span class="token keyword">implements</span> <span class="token class-name">RequestDispatcher</span> <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">RequestDispatcher</span> delegate<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HeaderWriterResponse</span> response<span class="token punctuation">;</span>
+
+        <span class="token class-name">HeaderWriterRequestDispatcher</span><span class="token punctuation">(</span><span class="token class-name">RequestDispatcher</span> delegate<span class="token punctuation">,</span> <span class="token class-name">HeaderWriterResponse</span> response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>delegate <span class="token operator">=</span> delegate<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>response <span class="token operator">=</span> response<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forward</span><span class="token punctuation">(</span><span class="token class-name">ServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">ServletResponse</span> response<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>delegate<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">include</span><span class="token punctuation">(</span><span class="token class-name">ServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">ServletResponse</span> response<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>response<span class="token punctuation">.</span><span class="token function">onResponseCommitted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>delegate<span class="token punctuation">.</span><span class="token function">include</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="csrffilter"><a href="#csrffilter" class="header-anchor">#</a> CsrfFilter</h3> <h4 id="概述-3"><a href="#概述-3" class="header-anchor">#</a> 概述</h4> <p><code>Spring Security Web</code>使用该Filter解决Cross-Site Request Forgery (CSRF)攻击,使用的模式是Synchronizer token pattern (STP)。</p> <blockquote><p><code>STP</code>模式本意是每个请求都生成一个不同的,随机的,不可预测的<code>token</code>用于<code>CSRF</code>保护。这种严格的模式<code>CSRF</code>保护能力很强。但是每请求必验给服务端增加了额外的负担，另外它也要求浏览器必须保持正确的事件顺序，从而会带来一些可用性上的问题(比如用户打开了多个Tab的情况)。所以<code>Spring Security</code>中把这种限制放宽到了每个<code>session</code>使用一个<code>csrf token</code>，并且仅针对会对服务器进行状态更新的HTTP动作:PATCH, POST, PUT,DELETE等。</p></blockquote> <h4 id="源代码解析-4"><a href="#源代码解析-4" class="header-anchor">#</a> 源代码解析</h4> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">CsrfFilter</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * The default RequestMatcher that indicates if CSRF protection is required or
+     * not. The default is to ignore GET, HEAD, TRACE, OPTIONS and process all other
+     * requests.
+     * 用于检测哪些请求需要csrf保护，这里的缺省配置是：GET, HEAD, TRACE, OPTIONS这种只读的
+     * HTTP动词都被忽略不做csrf保护，而其他PATCH, POST, PUT,DELETE等会修改服务器状态的HTTP
+     * 动词会受到当前Filter的csrf保护。
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">RequestMatcher</span> DEFAULT_CSRF_MATCHER <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultRequiresCsrfMatcher</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Log</span> logger <span class="token operator">=</span> <span class="token class-name">LogFactory</span><span class="token punctuation">.</span><span class="token function">getLog</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">CsrfTokenRepository</span> tokenRepository<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">RequestMatcher</span> requireCsrfProtectionMatcher <span class="token operator">=</span> DEFAULT_CSRF_MATCHER<span class="token punctuation">;</span>
+    <span class="token comment">// 用于CSRF保护验证逻辑失败进行处理</span>
+    <span class="token keyword">private</span> <span class="token class-name">AccessDeniedHandler</span> accessDeniedHandler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AccessDeniedHandlerImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 构造函数，使用指定的csrf token存储库构造一个CsrfFilter实例</span>
+    <span class="token comment">// 缺省情况下，使用Spring Security 的 Springboot web 应用，选择使用的</span>
+    <span class="token comment">// csrfTokenRepository是一个做了惰性封装的HttpSessionCsrfTokenRepository实例。</span>
+    <span class="token comment">// 也就是说相应的 csrf token保存在http session中。</span>
+    <span class="token keyword">public</span> <span class="token class-name">CsrfFilter</span><span class="token punctuation">(</span><span class="token class-name">CsrfTokenRepository</span> csrfTokenRepository<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>csrfTokenRepository<span class="token punctuation">,</span> <span class="token string">&quot;csrfTokenRepository cannot be null&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tokenRepository <span class="token operator">=</span> csrfTokenRepository<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(javax.servlet
+     * .http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * javax.servlet.FilterChain)
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doFilterInternal</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span>
+                                    <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> filterChain<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        request<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 从csrf token存储库中获取针对当前请求的csrf token。</span>
+        <span class="token class-name">CsrfToken</span> csrfToken <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>tokenRepository<span class="token punctuation">.</span><span class="token function">loadToken</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 记录针对当前请求是否不存在csrf token</span>
+        <span class="token keyword">final</span> <span class="token keyword">boolean</span> missingToken <span class="token operator">=</span> csrfToken <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>missingToken<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 如果存储库中尚不存在针对当前请求的csrf token，生成一个，把它关联到</span>
+            <span class="token comment">// 当前请求保存到csrf token存储库中</span>
+            csrfToken <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>tokenRepository<span class="token punctuation">.</span><span class="token function">generateToken</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tokenRepository<span class="token punctuation">.</span><span class="token function">saveToken</span><span class="token punctuation">(</span>csrfToken<span class="token punctuation">,</span> request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 将从存储库中获取得到的或者新建并保存到存储库的csrf token保存为请求的两个属性</span>
+        request<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token class-name">CsrfToken</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> csrfToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        request<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span>csrfToken<span class="token punctuation">.</span><span class="token function">getParameterName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> csrfToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>requireCsrfProtectionMatcher<span class="token punctuation">.</span><span class="token function">matches</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 检测当前请求是否需要csrf保护，如果不需要，放行继续执行filter chain的其他逻辑</span>
+            filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 尝试从请求头部或者参数中获取浏览器端传递过来的实际的csrf token。</span>
+        <span class="token comment">// 缺省情况下，从头部取出时使用header name: X-CSRF-TOKEN</span>
+        <span class="token comment">// 从请求中获取参数时使用的参数名称是 : _csrf</span>
+        <span class="token class-name">String</span> actualToken <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getHeader</span><span class="token punctuation">(</span>csrfToken<span class="token punctuation">.</span><span class="token function">getHeaderName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>actualToken <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            actualToken <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span>csrfToken<span class="token punctuation">.</span><span class="token function">getParameterName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>csrfToken<span class="token punctuation">.</span><span class="token function">getToken</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>actualToken<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// csrf token存储库中取出的token和浏览器端传递过来的token不相等的情况有两种:</span>
+            <span class="token comment">// 1. 针对该请求在存储库中并不存在csrf token</span>
+            <span class="token comment">// 2. 针对该请求在存储库中的csrf token和请求参数实际携带的不一致</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">isDebugEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">&quot;Invalid CSRF token found for &quot;</span>
+                        <span class="token operator">+</span> <span class="token class-name">UrlUtils</span><span class="token punctuation">.</span><span class="token function">buildFullRequestUrl</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>missingToken<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 1. 针对该请求在存储库中并不存在csrf token ， 处理方案:</span>
+                <span class="token comment">// 抛出异常 MissingCsrfTokenException</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>accessDeniedHandler<span class="token punctuation">.</span><span class="token function">handle</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span>
+                        <span class="token keyword">new</span> <span class="token class-name">MissingCsrfTokenException</span><span class="token punctuation">(</span>actualToken<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 2. 针对该请求在存储库中的csrf token和请求参数实际携带的不一致,处理方案:</span>
+                <span class="token comment">// 抛出异常 InvalidCsrfTokenException</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>accessDeniedHandler<span class="token punctuation">.</span><span class="token function">handle</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span>
+                        <span class="token keyword">new</span> <span class="token class-name">InvalidCsrfTokenException</span><span class="token punctuation">(</span>csrfToken<span class="token punctuation">,</span> actualToken<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// 当前请求需要经该Filter的csrf验证逻辑并且通过了csrf验证，放行，继续执行filter chain</span>
+        <span class="token comment">// 其他部分逻辑</span>
+        filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Specifies a RequestMatcher that is used to determine if CSRF protection
+     * should be applied. If the RequestMatcher returns true for a given request,
+     * then CSRF protection is applied.
+     *
+     * 指定一个RequestMatcher用来检测一个请求是否需要应用csrf保护验证逻辑。
+     *
+     * The default is to apply CSRF protection for any HTTP method other than GET, HEAD,
+     * TRACE, OPTIONS.
+     * 缺省行为是针对GET, HEAD,TRACE, OPTIONS这种只读性的HTTP请求不做csrf保护验证，验证其他
+     * 那些会更新服务器状态的HTTP请求，比如PATCH, POST, PUT,DELETE等。
+     *
+     *
+     * @param requireCsrfProtectionMatcher the RequestMatcher used to determine if
+     * CSRF protection should be applied.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setRequireCsrfProtectionMatcher</span><span class="token punctuation">(</span>
+            <span class="token class-name">RequestMatcher</span> requireCsrfProtectionMatcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>requireCsrfProtectionMatcher<span class="token punctuation">,</span>
+                <span class="token string">&quot;requireCsrfProtectionMatcher cannot be null&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>requireCsrfProtectionMatcher <span class="token operator">=</span> requireCsrfProtectionMatcher<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Specifies a AccessDeniedHandler that should be used when CSRF protection
+     * fails.
+     * 指定一个AccessDeniedHandler用于CSRF保护验证逻辑失败进行处理。
+     *
+     * The default is to use AccessDeniedHandlerImpl with no arguments.
+     * 缺省行为是使用一个不但参数的AccessDeniedHandlerImpl实例。
+     *
+     * @param accessDeniedHandler the AccessDeniedHandler to use
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAccessDeniedHandler</span><span class="token punctuation">(</span><span class="token class-name">AccessDeniedHandler</span> accessDeniedHandler<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>accessDeniedHandler<span class="token punctuation">,</span> <span class="token string">&quot;accessDeniedHandler cannot be null&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>accessDeniedHandler <span class="token operator">=</span> accessDeniedHandler<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 用于检测哪些HTTP请求需要应用csrf保护的RequestMatcher，</span>
+    <span class="token comment">// 缺省行为是针对GET, HEAD,TRACE, OPTIONS这种只读性的HTTP请求不做csrf保护，</span>
+    <span class="token comment">// 其他那些会更新服务器状态的HTTP请求，比如PATCH, POST, PUT,DELETE等需要csrf保护。</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">DefaultRequiresCsrfMatcher</span> <span class="token keyword">implements</span> <span class="token class-name">RequestMatcher</span> <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> allowedMethods <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span>
+                <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">&quot;GET&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;HEAD&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;TRACE&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;OPTIONS&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/*
+         * (non-Javadoc)
+         *
+         * @see
+         * org.springframework.security.web.util.matcher.RequestMatcher#matches(javax.
+         * servlet.http.HttpServletRequest)
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">matches</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>allowedMethods<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="logoutfilter"><a href="#logoutfilter" class="header-anchor">#</a> LogoutFilter</h3> <h4 id="概述-4"><a href="#概述-4" class="header-anchor">#</a> 概述</h4> <p>在进行安全配置时，不管是明确指定还是使用缺省配置，最终安全配置中都会包含以下退出登录配置信息:</p> <ul><li><p>怎样的请求是一个退出登录请求</p> <ul><li>这里包含两部分信息: url, http method</li></ul></li> <li><p>成功退出登录过程需要做哪些事情</p> <ul><li>也就是各种配置的LogoutHandler</li> <li>核心LogoutHandler:SecurityContextLogoutHandler–销毁session和SecurityContextHolder内容</li></ul></li> <li><p>成功退出登录后跳转到哪里</p> <ul><li>也就是配置中的 logoutSuccessUrl</li></ul></li></ul> <p>基于以上配置信息，<code>LogoutFilter</code>被设计用于检测用户退出登录请求,执行相应的处理工作以及退出登录后的页面跳转。</p> <h4 id="源代码解析-5"><a href="#源代码解析-5" class="header-anchor">#</a> 源代码解析</h4> <div class="language- extra-class"><pre class="language-text"><code>public class LogoutFilter extends GenericFilterBean {
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    private RequestMatcher logoutRequestMatcher;
+
+    private final LogoutHandler handler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
+
+    // ~ Constructors
+    // ===================================================================================================
+
+    /**
+     * Constructor which takes a LogoutSuccessHandler instance to determine the
+     * target destination after logging out. The list of LogoutHandlers are
+     * intended to perform the actual logout functionality (such as clearing the security
+     * context, invalidating the session, etc.).
+     * 缺省情况下，这里的LogoutSuccessHandler是一个SimpleUrlLogoutSuccessHandler实例，
+     * 在退出登录成功时跳转到/。
+     * &lt;p&gt;
+     * 安全配置信息中还会包含对cookie,remember me 等安全机制的配置，这些机制中在用户成功退出
+     * 登录时也会执行一些相应的清场工作，这些工作就是通过参数handlers传递进来的。这些handlers
+     * 中最核心的一个就是SecurityContextLogoutHandler,它会销毁session和针对当前请求的
+     * SecurityContextHolder中的安全上下文对象，这是真正意义上的退出登录。
+     */
+    public LogoutFilter(LogoutSuccessHandler logoutSuccessHandler,
+                        LogoutHandler... handlers) {
+        this.handler = new CompositeLogoutHandler(handlers);
+        Assert.notNull(logoutSuccessHandler, &quot;logoutSuccessHandler cannot be null&quot;);
+        this.logoutSuccessHandler = logoutSuccessHandler;
+        setFilterProcessesUrl(&quot;/logout&quot;);
+    }
+
+    // 另外一个构造函数，如果没有指定logoutSuccessHandler,而是只指定了logoutSuccessUrl,
+    // 该方法会根据logoutSuccessUrl构造一个logoutSuccessHandler：SimpleUrlLogoutSuccessHandler
+    public LogoutFilter(String logoutSuccessUrl, LogoutHandler... handlers) {
+        this.handler = new CompositeLogoutHandler(handlers);
+        Assert.isTrue(
+                !StringUtils.hasLength(logoutSuccessUrl)
+                        || UrlUtils.isValidRedirectUrl(logoutSuccessUrl),
+                () -&gt; logoutSuccessUrl + &quot; isn't a valid redirect URL&quot;);
+        SimpleUrlLogoutSuccessHandler urlLogoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        if (StringUtils.hasText(logoutSuccessUrl)) {
+            urlLogoutSuccessHandler.setDefaultTargetUrl(logoutSuccessUrl);
+        }
+        logoutSuccessHandler = urlLogoutSuccessHandler;
+        setFilterProcessesUrl(&quot;/logout&quot;);
+    }
+
+    // ~ Methods
+    // ========================================================================================================
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        if (requiresLogout(request, response)) {
+            // 检测到用户请求了退出当前登录,现在执行退出登录逻辑
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;Logging out user '&quot; + auth
+                        + &quot;' and transferring to logout destination&quot;);
+            }
+
+            this.handler.logout(request, response, auth);
+
+            // 缺省情况下，这里的LogoutSuccessHandler是一个SimpleUrlLogoutSuccessHandler实例，
+            // 在退出登录成功时跳转到/。
+            // 上面已经成功退出了用户登录，现在跳转到相应的页面
+            logoutSuccessHandler.onLogoutSuccess(request, response, auth);
+
+            // 注意,这里完成了用户退出登录动作和页面跳转，所以当前请求的处理任务已经结束,
+            // 也就是说不用再继续filter chain的执行了，直接函数返回即可。
+            return;
+        }
+
+        // 不是用户请求退出登录的情况，继续执行 filter chain 。
+        chain.doFilter(request, response);
+    }
+
+    /**
+     * Allow subclasses to modify when a logout should take place.
+     * 根据当前请求和安全配置检测是否用户在请求退出登录，如果是用户在请求退出登录的情况返回true，
+     * 否则返回false
+     *
+     * @param request  the request
+     * @param response the response
+     * @return true if logout should occur, false otherwise
+     */
+    protected boolean requiresLogout(HttpServletRequest request,
+                                     HttpServletResponse response) {
+        //     logoutRequestMatcher 是配置时明确指定的，或者是根据其他配置计算出来的
+        return logoutRequestMatcher.matches(request);
+    }
+
+    // 配置阶段会将用户明确指定的logoutRequestMatcher或者根据其他配置计算出来的logoutRequestMatcher
+    // 通过该方法设置到当前Filter对象
+    public void setLogoutRequestMatcher(RequestMatcher logoutRequestMatcher) {
+        Assert.notNull(logoutRequestMatcher, &quot;logoutRequestMatcher cannot be null&quot;);
+        this.logoutRequestMatcher = logoutRequestMatcher;
+    }
+
+    // 调用该方法则会将当前Filter的logoutRequestMatcher设置为一个根据filterProcessesUrl计算出来的
+    //AntPathRequestMatcher,该matcher会仅根据请求url进行匹配，而不管http method是什么
+    //
+    // 在该Filter的构造函数中就调用了该方法setFilterProcessesUrl(&quot;/logout&quot;),从而构建了一个缺省的
+    // AntPathRequestMatcher,表示只要用户访问 url /logout,不管http method是什么，都认为用户想要
+    // 退出登录。但实际上，该初始值都会被配置过程中根据用户配置信息计算出的AntPathRequestMatcher
+    // 调用上面的setLogoutRequestMatcher(logoutRequestMatcher)覆盖该matcher
+    public void setFilterProcessesUrl(String filterProcessesUrl) {
+        this.logoutRequestMatcher = new AntPathRequestMatcher(filterProcessesUrl);
+    }
+}
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/ty-wssf/blog-docs/edit/master/docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security源码解析.md" target="_blank" rel="noopener noreferrer">帮助我们改善此页面！</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">8/27/2021, 9:22:46 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2.html" class="prev">
+        Spring Security oAuth2
+      </a></span> <!----></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.ed08c2e1.js" defer></script><script src="/blog-docs/assets/js/2.d20fb779.js" defer></script><script src="/blog-docs/assets/js/138.234ca194.js" defer></script>
+  </body>
+</html>
