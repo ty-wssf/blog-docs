@@ -213,6 +213,7 @@ module.exports = {
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
                         'Spring Security oAuth2',
+                        'Spring Security源码解析',
                     ]
                 }
             ],
