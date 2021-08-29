@@ -1181,3 +1181,1032 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
     }
 }
 ```
+
+### DefaultLoginPageGeneratingFilter
+
+#### 概述
+当开发人员在安全配置中没有配置登录页面时，`Spring Security Web`会自动构造一个登录页面给用户。完成这一任务是通过一个过滤器来完成的，该过滤器就是`DefaultLoginPageGeneratingFilter`。
+
+**该过滤器支持两种登录情景:**
+
+- 用户名/密码表单登录
+- OpenID表单登录
+
+无论以上哪种登录情景，该过滤器都会使用以下信息用于构建登录HTML页面 :
+
+- 当前请求是否为登录页面请求的匹配器定义–由配置明确指定或者使用缺省值 `/login`
+
+- 当前请求是否跳转自登录错误处理以及相应异常信息 – 缺省对应url : `/login?error`
+
+- 当前请求是否跳转自退出登录成功处理 – 缺省对应url : `/login?logout`
+
+- 配置指定使用用户名/密码表单登录还是`OpenID`表单登录
+
+- 表单构建信息
+
+  - `csrf token`信息
+  - 针对用户名/密码表单登录的表单构建信息
+    - 登录表单提交处理地址
+    - 用户名表单字段名称
+    - 密码表单字段名称
+    - `RememberMe` 表单字段名称
+
+  - 针对OpenID表单登录的表单构建信息
+    - 登录表单提交处理地址
+    - `OpenID`表单字段名称
+    - `RememberMe` 表单字段名称
+
+该过滤器被请求到达时会首先看是不是自己关注的请求，如果是，则会根据相应信息构建一个登录页面`HTML`直接写回浏览器端，对该请求的处理也到此结束，不再继续调用`filter chain`中的其他逻辑。
+
+#### 生成的用户名/密码表单登录页面效果
+
+由该Filter生成的用户名/密码表单登录页面如下所示：
+
+![用户名/密码登录页面效果](https://img-blog.csdnimg.cn/20181203102339102.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
+
+对应的 HTML 大致如下:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Please sign in</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+  </head>
+  <body>
+     <div class="container">
+      <form class="form-signin" method="post" action="/login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <p>
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        </p>
+        <p>
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+<p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
+<input name="_csrf" type="hidden" value="befcd3c2-6ee1-461d-a7ba-316dce846d4a" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+</body></html>
+
+#### 生成的OpenID表单登录页面效果
+
+由该Filter生成的OpenID表单登录页面如下所示：
+
+![OpenId登录页面效果](https://img-blog.csdnimg.cn/20181203104714316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
+
+对应的 HTML 大致如下:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Please sign in</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+  </head>
+  <body>
+     <div class="container">
+      <form name="oidf" class="form-signin" method="post" action="/login/openid">
+        <h2 class="form-signin-heading">Login with OpenID Identity</h2>
+        <p>
+          <label for="username" class="sr-only">Identity</label>
+          <input type="text" id="username" name="openid_identifier" class="form-control" placeholder="Username" required autofocus>
+        </p>
+<p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
+<input name="_csrf" type="hidden" value="9efcd951-5bf6-488f-93c2-83bd2240c2dc" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+</body></html>
+
+#### 源代码解析
+
+```java
+/*
+ * Copyright 2002-2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.security.web.authentication.ui;
+
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.util.HtmlUtils;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+
+/**
+ * For internal use with namespace configuration in the case where a user doesn't
+ * configure a login page. The configuration code will insert this filter in the chain
+ * instead.
+ * 内部使用的一个过滤器，当用户没有指定一个登录页面时，安全配置逻辑自动插入这样一个过滤器用于
+ * 自动生成一个登录页面。
+ * <p>
+ * Will only work if a redirect is used to the login page.
+ *
+ * @author Luke Taylor
+ * @since 2.0
+ */
+public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
+    public static final String DEFAULT_LOGIN_PAGE_URL = "/login";
+    public static final String ERROR_PARAMETER_NAME = "error";
+    private String loginPageUrl;
+    private String logoutSuccessUrl;
+    private String failureUrl;
+    private boolean formLoginEnabled;
+    private boolean openIdEnabled;
+    private boolean oauth2LoginEnabled;
+    // 用于构造用户名/密码表单登录页面的参数
+    // 表单提交时的认证处理地址
+    private String authenticationUrl;
+    // 用户名表单字段的名称
+    private String usernameParameter;
+    //  密码表单字段的名称
+    private String passwordParameter;
+    // rememberMe表单字段的名称
+    private String rememberMeParameter;
+    // 用于构造openID表单登录页面的参数
+    // 提交时的认证处理地址
+    private String openIDauthenticationUrl;
+    //  用户名表单字段的名称
+    private String openIDusernameParameter;
+    // rememberMe表单字段的名称
+    private String openIDrememberMeParameter;
+    private Map<String, String> oauth2AuthenticationUrlToClientName;
+    private Function<HttpServletRequest, Map<String, String>> resolveHiddenInputs = request -> Collections
+            .emptyMap();
+
+
+    public DefaultLoginPageGeneratingFilter() {
+    }
+
+    public DefaultLoginPageGeneratingFilter(AbstractAuthenticationProcessingFilter filter) {
+        if (filter instanceof UsernamePasswordAuthenticationFilter) {
+            init((UsernamePasswordAuthenticationFilter) filter, null);
+        } else {
+            init(null, filter);
+        }
+    }
+
+    public DefaultLoginPageGeneratingFilter(
+            UsernamePasswordAuthenticationFilter authFilter,
+            AbstractAuthenticationProcessingFilter openIDFilter) {
+        init(authFilter, openIDFilter);
+    }
+
+    // 支持两种登录方式:用户名/密码表单登录,openID登录，根据提供的filter参数的类型
+    // 判断使用了哪种登录方式
+    private void init(UsernamePasswordAuthenticationFilter authFilter,
+                      AbstractAuthenticationProcessingFilter openIDFilter) {
+        // 登录页面，缺省为 /logoin
+        this.loginPageUrl = DEFAULT_LOGIN_PAGE_URL;
+        // 默认的退出登录成功页面 /login?logout
+        this.logoutSuccessUrl = DEFAULT_LOGIN_PAGE_URL + "?logout";
+        // 登录出错页面, 缺省为 /login?error
+        this.failureUrl = DEFAULT_LOGIN_PAGE_URL + "?" + ERROR_PARAMETER_NAME;
+        if (authFilter != null) {
+            formLoginEnabled = true;
+            usernameParameter = authFilter.getUsernameParameter();
+            passwordParameter = authFilter.getPasswordParameter();
+
+            if (authFilter.getRememberMeServices() instanceof AbstractRememberMeServices) {
+                rememberMeParameter = ((AbstractRememberMeServices) authFilter
+                        .getRememberMeServices()).getParameter();
+            }
+        }
+
+        if (openIDFilter != null) {
+            openIdEnabled = true;
+            openIDusernameParameter = "openid_identifier";
+
+            if (openIDFilter.getRememberMeServices() instanceof AbstractRememberMeServices) {
+                openIDrememberMeParameter = ((AbstractRememberMeServices) openIDFilter
+                        .getRememberMeServices()).getParameter();
+            }
+        }
+    }
+
+    /**
+     * Sets a Function used to resolve a Map of the hidden inputs where the key is the
+     * name of the input and the value is the value of the input. Typically this is used
+     * to resolve the CSRF token.
+     *
+     * @param resolveHiddenInputs the function to resolve the inputs
+     */
+    public void setResolveHiddenInputs(
+            Function<HttpServletRequest, Map<String, String>> resolveHiddenInputs) {
+        Assert.notNull(resolveHiddenInputs, "resolveHiddenInputs cannot be null");
+        this.resolveHiddenInputs = resolveHiddenInputs;
+    }
+
+    public boolean isEnabled() {
+        return formLoginEnabled || openIdEnabled || oauth2LoginEnabled;
+    }
+
+    public void setLogoutSuccessUrl(String logoutSuccessUrl) {
+        this.logoutSuccessUrl = logoutSuccessUrl;
+    }
+
+    public String getLoginPageUrl() {
+        return loginPageUrl;
+    }
+
+    public void setLoginPageUrl(String loginPageUrl) {
+        this.loginPageUrl = loginPageUrl;
+    }
+
+    public void setFailureUrl(String failureUrl) {
+        this.failureUrl = failureUrl;
+    }
+
+    public void setFormLoginEnabled(boolean formLoginEnabled) {
+        this.formLoginEnabled = formLoginEnabled;
+    }
+
+    public void setOpenIdEnabled(boolean openIdEnabled) {
+        this.openIdEnabled = openIdEnabled;
+    }
+
+    public void setOauth2LoginEnabled(boolean oauth2LoginEnabled) {
+        this.oauth2LoginEnabled = oauth2LoginEnabled;
+    }
+
+    public void setAuthenticationUrl(String authenticationUrl) {
+        this.authenticationUrl = authenticationUrl;
+    }
+
+    public void setUsernameParameter(String usernameParameter) {
+        this.usernameParameter = usernameParameter;
+    }
+
+    public void setPasswordParameter(String passwordParameter) {
+        this.passwordParameter = passwordParameter;
+    }
+
+    public void setRememberMeParameter(String rememberMeParameter) {
+        this.rememberMeParameter = rememberMeParameter;
+        this.openIDrememberMeParameter = rememberMeParameter;
+    }
+
+    public void setOpenIDauthenticationUrl(String openIDauthenticationUrl) {
+        this.openIDauthenticationUrl = openIDauthenticationUrl;
+    }
+
+    public void setOpenIDusernameParameter(String openIDusernameParameter) {
+        this.openIDusernameParameter = openIDusernameParameter;
+    }
+
+    public void setOauth2AuthenticationUrlToClientName(Map<String, String> oauth2AuthenticationUrlToClientName) {
+        this.oauth2AuthenticationUrlToClientName = oauth2AuthenticationUrlToClientName;
+    }
+
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        // 检测是否登录错误页面请求
+        boolean loginError = isErrorPage(request);
+        // 检测是否退出登录成功页面请求
+        boolean logoutSuccess = isLogoutSuccess(request);
+        // 检测是否登录页面请求
+        if (isLoginUrlRequest(request) || loginError || logoutSuccess) {
+            // 如果是上面三种任何一种情况，则自动生成一个登录HTML页面写回响应，
+            // 该方法返回，当前请求的处理结束。
+
+            // 生成登录页面的HTML内容
+            String loginPageHtml = generateLoginPageHtml(request, loginError,
+                    logoutSuccess);
+            response.setContentType("text/html;charset=UTF-8");
+            response.setContentLength(loginPageHtml.getBytes(StandardCharsets.UTF_8).length);
+            // 将登录页面HTML内容写回浏览器
+            response.getWriter().write(loginPageHtml);
+
+            // 当前请求的处理已经结果，方法返回，不再继续filter chain的调用
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+
+    // 生成登录页面
+    // 会根据当前是用户名/密码表单登录请求还是openID表单登录请求生成不同的HTML
+    private String generateLoginPageHtml(HttpServletRequest request, boolean loginError,
+                                         boolean logoutSuccess) {
+        String errorMsg = "Invalid credentials";
+
+        if (loginError) {
+            // 如果是登录错误，则从session中获取登录错误异常信息，该错误信息会组织到
+            // 回写给浏览器端的HTML页面中
+            HttpSession session = request.getSession(false);
+
+            if (session != null) {
+                AuthenticationException ex = (AuthenticationException) session
+                        .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+                errorMsg = ex != null ? ex.getMessage() : "Invalid credentials";
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<!DOCTYPE html>\n"
+                + "<html lang=\"en\">\n"
+                + "  <head>\n"
+                + "    <meta charset=\"utf-8\">\n"
+                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n"
+                + "    <meta name=\"description\" content=\"\">\n"
+                + "    <meta name=\"author\" content=\"\">\n"
+                + "    <title>Please sign in</title>\n"
+                + "    <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M\" crossorigin=\"anonymous\">\n"
+                + "    <link href=\"https://getbootstrap.com/docs/4.0/examples/signin/signin.css\" rel=\"stylesheet\" crossorigin=\"anonymous\"/>\n"
+                + "  </head>\n"
+                + "  <body>\n"
+                + "     <div class=\"container\">\n");
+
+        String contextPath = request.getContextPath();
+        if (this.formLoginEnabled) { // 针对用户名/密码表单登录的情形构建相应的表单
+            sb.append("      <form class=\"form-signin\" method=\"post\" action=\"" + contextPath + this.authenticationUrl + "\">\n"
+                    + "        <h2 class=\"form-signin-heading\">Please sign in</h2>\n"
+                    + createError(loginError, errorMsg) // 出现登录错误的情况下，需要把登录错误信息追加到页面中
+                    + createLogoutSuccess(logoutSuccess) // 如果该页面登录请求跳转自退出登录成功，在页面中追加该信息
+                    + "        <p>\n"
+                    + "          <label for=\"username\" class=\"sr-only\">Username</label>\n"
+                    + "          <input type=\"text\" id=\"username\" name=\"" + this.usernameParameter + "\" class=\"form-control\" placeholder=\"Username\" required autofocus>\n"
+                    + "        </p>\n"
+                    + "        <p>\n"
+                    + "          <label for=\"password\" class=\"sr-only\">Password</label>\n"
+                    + "          <input type=\"password\" id=\"password\" name=\"" + this.passwordParameter + "\" class=\"form-control\" placeholder=\"Password\" required>\n"
+                    + "        </p>\n"
+                    + createRememberMe(this.rememberMeParameter)
+                    + renderHiddenInputs(request)
+                    + "        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Sign in</button>\n"
+                    + "      </form>\n");
+        }
+
+        if (openIdEnabled) { // 针对OpenID表单登录的情形构建相应的表单
+            sb.append("      <form name=\"oidf\" class=\"form-signin\" method=\"post\" action=\"" + contextPath + this.openIDauthenticationUrl + "\">\n"
+                    + "        <h2 class=\"form-signin-heading\">Login with OpenID Identity</h2>\n"
+                    + createError(loginError, errorMsg)
+                    + createLogoutSuccess(logoutSuccess)
+                    + "        <p>\n"
+                    + "          <label for=\"username\" class=\"sr-only\">Identity</label>\n"
+                    + "          <input type=\"text\" id=\"username\" name=\"" + this.openIDusernameParameter + "\" class=\"form-control\" placeholder=\"Username\" required autofocus>\n"
+                    + "        </p>\n"
+                    + createRememberMe(this.openIDrememberMeParameter)
+                    + renderHiddenInputs(request)
+                    + "        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Sign in</button>\n"
+                    + "      </form>\n");
+        }
+
+        if (oauth2LoginEnabled) {
+            sb.append("<h2 class=\"form-signin-heading\">Login with OAuth 2.0</h2>");
+            sb.append(createError(loginError, errorMsg));
+            sb.append(createLogoutSuccess(logoutSuccess));
+            sb.append("<table class=\"table table-striped\">\n");
+            for (Map.Entry<String, String> clientAuthenticationUrlToClientName : oauth2AuthenticationUrlToClientName.entrySet()) {
+                sb.append(" <tr><td>");
+                String url = clientAuthenticationUrlToClientName.getKey();
+                sb.append("<a href=\"").append(contextPath).append(url).append("\">");
+                String clientName = HtmlUtils.htmlEscape(clientAuthenticationUrlToClientName.getValue());
+                sb.append(clientName);
+                sb.append("</a>");
+                sb.append("</td></tr>\n");
+            }
+            sb.append("</table>\n");
+        }
+        sb.append("</div>\n");
+        sb.append("</body></html>");
+
+        return sb.toString();
+    }
+
+    // 如果请求的属性:CsrfToken.class.getName()有值，则渲染一个隐藏的针对csrf token的表单输入框
+    // 默认名称是 _csrf
+    private String renderHiddenInputs(HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> input : this.resolveHiddenInputs.apply(request).entrySet()) {
+            sb.append("<input name=\"").append(input.getKey()).append("\" type=\"hidden\" value=\"").append(input.getValue()).append("\" />\n");
+        }
+        return sb.toString();
+    }
+
+    private String createRememberMe(String paramName) {
+        if (paramName == null) {
+            return "";
+        }
+        return "<p><input type='checkbox' name='"
+                + paramName
+                + "'/> Remember me on this computer.</p>\n";
+    }
+
+    private boolean isLogoutSuccess(HttpServletRequest request) {
+        return logoutSuccessUrl != null && matches(request, logoutSuccessUrl);
+    }
+
+    // 检测当前请求是否是一个登录页面请求
+    private boolean isLoginUrlRequest(HttpServletRequest request) {
+        return matches(request, loginPageUrl);
+    }
+
+    // 检测当前请求是否是一个登录错误页面请求
+    private boolean isErrorPage(HttpServletRequest request) {
+        return matches(request, failureUrl);
+    }
+
+    private static String createError(boolean isError, String message) {
+        return isError ? "<div class=\"alert alert-danger\" role=\"alert\">" + HtmlUtils.htmlEscape(message) + "</div>" : "";
+    }
+
+    private static String createLogoutSuccess(boolean isLogoutSuccess) {
+        return isLogoutSuccess ? "<div class=\"alert alert-success\" role=\"alert\">You have been signed out</div>" : "";
+    }
+
+    private boolean matches(HttpServletRequest request, String url) {
+        if (!"GET".equals(request.getMethod()) || url == null) {
+            // 参数检查:
+            // 1. 对登录页面的请求仅仅支持GET方式
+            // 2. url 不能为空
+            return false;
+        }
+        // 获取请求uri，注意其中不包含QueryString部分
+        String uri = request.getRequestURI();
+        int pathParamIndex = uri.indexOf(';');
+
+        if (pathParamIndex > 0) {
+            // strip everything after the first semi-colon
+            uri = uri.substring(0, pathParamIndex);
+        }
+
+        if (request.getQueryString() != null) {
+            uri += "?" + request.getQueryString();
+        }
+
+        // 比较请求的uri和预期的url是否相同
+        if ("".equals(request.getContextPath())) {
+            return uri.equals(url);
+        }
+
+        return uri.equals(request.getContextPath() + url);
+    }
+}
+```
+
+### DefaultLogoutPageGeneratingFilter
+
+#### 概述
+`DefaultLogoutPageGeneratingFilter`用于生成一个缺省的用户退出登录页面，默认情况下，当用户请求为`GET /logout`时，该过滤器会起作用，生成并展示相应的用户退出登录表单页面。用户点击其中的表单提交按钮会提交用户退出登录请求到`POST /logout`，缺省情况下，也就是由`LogoutFilte`r过滤器来执行相应的用户退出登录逻辑。
+
+该用户退出登录页面如下所示：
+
+![缺省用户退出登录页面](https://img-blog.csdnimg.cn/20181203132346883.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
+
+其HTML代码大致如下:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Confirm Log Out?</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+  </head>
+  <body>
+     <div class="container">
+      <form class="form-signin" method="post" action="/logout">
+        <h2 class="form-signin-heading">Are you sure you want to log out?</h2>
+<input name="_csrf" type="hidden" value="2cd42ccd-9fc3-4e27-8535-e40934742b97" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log Out</button>
+      </form>
+    </div>
+  </body>
+</html>
+
+#### 源码解析
+
+```java
+/*
+ * Copyright 2002-2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.security.web.authentication.ui;
+
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+
+/**
+ * Generates a default log out page.
+ *
+ * @author Rob Winch
+ * @since 5.1
+ */
+public class DefaultLogoutPageGeneratingFilter extends OncePerRequestFilter {
+    // 缺省用户请求退出登录页面识别匹配器 : GET, /logout
+    private RequestMatcher matcher = new AntPathRequestMatcher("/logout", "GET");
+
+    private Function<HttpServletRequest, Map<String, String>> resolveHiddenInputs = request -> Collections
+            .emptyMap();
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        if (this.matcher.matches(request)) {
+            // 如果当前请求是请求退出登录页面，则渲染该页面给用户并结束对请求的处理
+            renderLogout(request, response);
+        } else {
+            // 如果当前请求不是请求退出登录页面，继续filter chain的调用
+            filterChain.doFilter(request, response);
+        }
+    }
+
+    // 往response中写入一个HTML，这个HTML包含一个FORM表单，该表单包含一个按钮，点击该按钮提交该表单
+    // 到退出登录处理URL(也就是由LogoutFilter所负责的逻辑)
+    private void renderLogout(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String page = "<!DOCTYPE html>\n"
+                + "<html lang=\"en\">\n"
+                + "  <head>\n"
+                + "    <meta charset=\"utf-8\">\n"
+                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n"
+                + "    <meta name=\"description\" content=\"\">\n"
+                + "    <meta name=\"author\" content=\"\">\n"
+                + "    <title>Confirm Log Out?</title>\n"
+                + "    <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M\" crossorigin=\"anonymous\">\n"
+                + "    <link href=\"https://getbootstrap.com/docs/4.0/examples/signin/signin.css\" rel=\"stylesheet\" crossorigin=\"anonymous\"/>\n"
+                + "  </head>\n"
+                + "  <body>\n"
+                + "     <div class=\"container\">\n"
+                + "      <form class=\"form-signin\" method=\"post\" action=\"" + request.getContextPath() + "/logout\">\n"
+                + "        <h2 class=\"form-signin-heading\">Are you sure you want to log out?</h2>\n"
+                + renderHiddenInputs(request)
+                + "        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Log Out</button>\n"
+                + "      </form>\n"
+                + "    </div>\n"
+                + "  </body>\n"
+                + "</html>";
+
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().write(page);
+    }
+
+    /**
+     * Sets a Function used to resolve a Map of the hidden inputs where the key is the
+     * name of the input and the value is the value of the input. Typically this is used
+     * to resolve the CSRF token.
+     *
+     * @param resolveHiddenInputs the function to resolve the inputs
+     */
+    public void setResolveHiddenInputs(
+            Function<HttpServletRequest, Map<String, String>> resolveHiddenInputs) {
+        Assert.notNull(resolveHiddenInputs, "resolveHiddenInputs cannot be null");
+        this.resolveHiddenInputs = resolveHiddenInputs;
+    }
+
+    // 将一些隐藏输入字段，比如csrf token等，追加到退出登录页面
+    private String renderHiddenInputs(HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> input : this.resolveHiddenInputs.apply(request).entrySet()) {
+            sb.append("<input name=\"").append(input.getKey()).append("\" type=\"hidden\" value=\"").append(input.getValue()).append("\" />\n");
+        }
+        return sb.toString();
+    }
+}
+```
+
+### BasicAuthenticationFilter
+
+#### 概述
+处理HTTP请求中的`BASIC authorization`头部，把认证结果写入`SecurityContextHolder`。
+
+当一个HTTP请求中包含一个名字为`Authorization`的头部，并且其值格式是`Basic xxx`时，该Filter会认为这是一个`BASIC authorization`头部，其中xxx部分应该是一个base64编码的`{username}:{password}`字符串。比如用户名/密码分别为 admin/secret, 则对应的该头部是 : `Basic YWRtaW46c2VjcmV0` 。
+
+该过滤器会从 `HTTP BASIC authorization`头部解析出相应的用户名和密码然后调用AuthenticationManager进行认证，成功的话会把认证了的结果写入到`SecurityContextHolder`中`SecurityContext`的属性`authentication`上面。同时还会做其他一些处理，比如`Remember Me`相关处理等等。
+
+如果头部分析失败，该过滤器会抛出异常`BadCredentialsException`。
+
+如果认证失败，则会清除`SecurityContextHolder`中的`SecurityContext`。并且不再继续`filter chain`的执行。
+
+#### 源代码解析
+
+```
+/*
+ * Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.security.web.authentication.www;
+
+import java.io.IOException;
+import java.util.Base64;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.NullRememberMeServices;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+/**
+ * Processes a HTTP request's BASIC authorization headers, putting the result into the
+ * <code>SecurityContextHolder</code>.
+ *
+ * <p>
+ * For a detailed background on what this filter is designed to process, refer to
+ * <a href="http://www.faqs.org/rfcs/rfc1945.html">RFC 1945, Section 11.1</a>. Any realm
+ * name presented in the HTTP request is ignored.
+ *
+ * <p>
+ * In summary, this filter is responsible for processing any request that has a HTTP
+ * request header of <code>Authorization</code> with an authentication scheme of
+ * <code>Basic</code> and a Base64-encoded <code>username:password</code> token. For
+ * example, to authenticate user "Aladdin" with password "open sesame" the following
+ * header would be presented:
+ *
+ * <pre>
+ *
+ * Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+ * </pre>
+ *
+ * <p>
+ * This filter can be used to provide BASIC authentication services to both remoting
+ * protocol clients (such as Hessian and SOAP) as well as standard user agents (such as
+ * Internet Explorer and Netscape).
+ * <p>
+ * If authentication is successful, the resulting {@link Authentication} object will be
+ * placed into the <code>SecurityContextHolder</code>.
+ *
+ * <p>
+ * If authentication fails and <code>ignoreFailure</code> is <code>false</code> (the
+ * default), an {@link AuthenticationEntryPoint} implementation is called (unless the
+ * <tt>ignoreFailure</tt> property is set to <tt>true</tt>). Usually this should be
+ * {@link BasicAuthenticationEntryPoint}, which will prompt the user to authenticate again
+ * via BASIC authentication.
+ *
+ * <p>
+ * Basic authentication is an attractive protocol because it is simple and widely
+ * deployed. However, it still transmits a password in clear text and as such is
+ * undesirable in many situations. Digest authentication is also provided by Spring
+ * Security and should be used instead of Basic authentication wherever possible. See
+ * {@link org.springframework.security.web.authentication.www.DigestAuthenticationFilter}.
+ * <p>
+ * Note that if a {@link RememberMeServices} is set, this filter will automatically send
+ * back remember-me details to the client. Therefore, subsequent requests will not need to
+ * present a BASIC authentication header as they will be authenticated using the
+ * remember-me mechanism.
+ *
+ * @author Ben Alex
+ */
+public class BasicAuthenticationFilter extends OncePerRequestFilter {
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    // 创建Authentication对象时设置details属性所使用的详情来源
+    private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
+    private AuthenticationEntryPoint authenticationEntryPoint;
+    private AuthenticationManager authenticationManager;
+    private RememberMeServices rememberMeServices = new NullRememberMeServices();
+    private boolean ignoreFailure = false;
+    private String credentialsCharset = "UTF-8";
+
+    /**
+     * Creates an instance which will authenticate against the supplied
+     * {@code AuthenticationManager} and which will ignore failed authentication attempts,
+     * allowing the request to proceed down the filter chain.
+     *
+     * @param authenticationManager the bean to submit authentication requests to
+     */
+    public BasicAuthenticationFilter(AuthenticationManager authenticationManager) {
+        Assert.notNull(authenticationManager, "authenticationManager cannot be null");
+        this.authenticationManager = authenticationManager;
+        this.ignoreFailure = true;
+    }
+
+    /**
+     * Creates an instance which will authenticate against the supplied
+     * {@code AuthenticationManager} and use the supplied {@code AuthenticationEntryPoint}
+     * to handle authentication failures.
+     *
+     * @param authenticationManager    the bean to submit authentication requests to
+     * @param authenticationEntryPoint will be invoked when authentication fails.
+     *                                 Typically an instance of {@link BasicAuthenticationEntryPoint}.
+     */
+    public BasicAuthenticationFilter(AuthenticationManager authenticationManager,
+                                     AuthenticationEntryPoint authenticationEntryPoint) {
+        Assert.notNull(authenticationManager, "authenticationManager cannot be null");
+        Assert.notNull(authenticationEntryPoint,
+                "authenticationEntryPoint cannot be null");
+        this.authenticationManager = authenticationManager;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
+
+    // ~ Methods
+    // ========================================================================================================
+
+    @Override
+    public void afterPropertiesSet() {
+        Assert.notNull(this.authenticationManager,
+                "An AuthenticationManager is required");
+
+        if (!isIgnoreFailure()) {
+            Assert.notNull(this.authenticationEntryPoint,
+                    "An AuthenticationEntryPoint is required");
+        }
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        final boolean debug = this.logger.isDebugEnabled();
+
+        // 获取请求头部 Authorization
+        String header = request.getHeader("Authorization");
+
+        if (header == null || !header.toLowerCase().startsWith("basic ")) {
+            // 如果头部 Authorization 未设置或者不是 basic 认证头部，则当前
+            // 请求不是该过滤器关注的对象，直接放行，继续filter chain 的执行
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // 这是一个 http basic authentication 请求的情况，也就是说，已经检测到
+        // 请求头部 Authorization 的值符合格式(大小写不敏感) : "basic xxxxxx"
+        try {
+            // 分析头部 Authorization 获取用户名和密码
+            String[] tokens = extractAndDecodeHeader(header, request);
+            assert tokens.length == 2;
+
+            // 现在 tokens[0] 表示用户名， tokens[1] 表示密码
+            String username = tokens[0];
+
+            if (debug) {
+                this.logger
+                        .debug("Basic Authentication Authorization header found for user '"
+                                + username + "'");
+            }
+
+            // 检测针对所请求的用户名 username 是否需要认证
+            if (authenticationIsRequired(username)) {
+                // 如果需要认证，使用所获取到的用户名/密码构建一个 UsernamePasswordAuthenticationToken,
+                // 然后执行认证流程
+                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                        username, tokens[1]);
+                authRequest.setDetails(
+                        this.authenticationDetailsSource.buildDetails(request));
+                // 执行认证
+                Authentication authResult = this.authenticationManager
+                        .authenticate(authRequest);
+
+                if (debug) {
+                    this.logger.debug("Authentication success: " + authResult);
+                }
+
+                // 认证成功，将完全认证的Authentication authRequest设置到 SecurityContextHolder
+                // 中的 SecurityContext 上。
+                SecurityContextHolder.getContext().setAuthentication(authResult);
+
+                // 认证成功时 RememberMe 相关处理
+                this.rememberMeServices.loginSuccess(request, response, authResult);
+
+                // 认证成功时的其他处理: 其实这个个空方法，什么都没做
+                onSuccessfulAuthentication(request, response, authResult);
+            }
+
+        } catch (AuthenticationException failed) {
+            // 认证失败，清除 SecurityContextHolder 的安全上下文
+            SecurityContextHolder.clearContext();
+
+            if (debug) {
+                this.logger.debug("Authentication request for failed: " + failed);
+            }
+
+            // 认证失败 RememberMe 相关处理
+            this.rememberMeServices.loginFail(request, response);
+
+            // 认证失败时的其他处理: 其实这个个空方法，什么都没做
+            onUnsuccessfulAuthentication(request, response, failed);
+
+            if (this.ignoreFailure) {
+                chain.doFilter(request, response);
+            } else {
+                this.authenticationEntryPoint.commence(request, response, failed);
+            }
+
+            return;
+        }
+
+        // 如果当前请求并非含有 http basic authentication 头部的请求，则直接放行，继续filter chain的执行
+        chain.doFilter(request, response);
+    }
+
+    /**
+     * Decodes the header into a username and password.
+     * 从指定的 http basic authentication 请求头部解码出一个用户名和密码
+     *
+     * @throws BadCredentialsException if the Basic header is not present or is not valid
+     *                                 Base64
+     */
+    private String[] extractAndDecodeHeader(String header, HttpServletRequest request)
+            throws IOException {
+        //     截取头部前6个字符之后的内容部分,使用字符集编码方式UTF-8
+        // 举例: 整个头部值为 "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==",
+        //       这里则是获取"QWxhZGRpbjpvcGVuIHNlc2FtZQ=="部分
+        byte[] base64Token = header.substring(6).getBytes("UTF-8");
+        // 使用 Base64 字符编码方式解码 base64Token
+        byte[] decoded;
+        try {
+            decoded = Base64.getDecoder().decode(base64Token);
+        } catch (IllegalArgumentException e) {
+            throw new BadCredentialsException(
+                    "Failed to decode basic authentication token");
+        }
+
+        // 使用指定的字符集credentialsCharset重新构建"{用户名}:{密码}"字符串
+        // credentialsCharset 缺省也是 UTF-8
+        String token = new String(decoded, getCredentialsCharset(request));
+
+        // 提取用户名,密码并返回之
+        int delim = token.indexOf(":");
+
+        if (delim == -1) {
+            throw new BadCredentialsException("Invalid basic authentication token");
+        }
+        return new String[]{token.substring(0, delim), token.substring(delim + 1)};
+    }
+
+    private boolean authenticationIsRequired(String username) {
+        // Only reauthenticate if username doesn't match SecurityContextHolder and user
+        // isn't authenticated
+        // (see SEC-53)
+        Authentication existingAuth = SecurityContextHolder.getContext()
+                .getAuthentication();
+
+        // 检测 SecurityContextHolder 中 SecurityContext 的 Authentication,
+        // 如果它为 null 或者尚未认证，则认为需要认证
+        if (existingAuth == null || !existingAuth.isAuthenticated()) {
+            return true;
+        }
+
+        // Limit username comparison to providers which use usernames (ie
+        // UsernamePasswordAuthenticationToken)
+        // (see SEC-348)
+        // 如果 SecurityContextHolder 中 SecurityContext 的 Authentication 是
+        // 已经认证状态，但是其中的用户名和这里的 username 不相同，也认为需要认证
+        if (existingAuth instanceof UsernamePasswordAuthenticationToken
+                && !existingAuth.getName().equals(username)) {
+            return true;
+        }
+
+        // Handle unusual condition where an AnonymousAuthenticationToken is already
+        // present
+        // This shouldn't happen very often, as BasicProcessingFitler is meant to be
+        // earlier in the filter
+        // chain than AnonymousAuthenticationFilter. Nevertheless, presence of both an
+        // AnonymousAuthenticationToken
+        // together with a BASIC authentication request header should indicate
+        // reauthentication using the
+        // BASIC protocol is desirable. This behaviour is also consistent with that
+        // provided by form and digest,
+        // both of which force re-authentication if the respective header is detected (and
+        // in doing so replace
+        // any existing AnonymousAuthenticationToken). See SEC-610.
+        // 如果 SecurityContextHolder 中 SecurityContext 的 Authentication 是匿名认证，
+        // 则认为需要认证
+        if (existingAuth instanceof AnonymousAuthenticationToken) {
+            return true;
+        }
+
+        // 如果 SecurityContextHolder 中 SecurityContext 的 Authentication 是已认证状态,
+        // 并且是针对当前username的，则认为不需要认证
+        return false;
+    }
+
+    protected void onSuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response, Authentication authResult) throws IOException {
+    }
+
+    protected void onUnsuccessfulAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response, AuthenticationException failed)
+            throws IOException {
+    }
+
+    protected AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return this.authenticationEntryPoint;
+    }
+
+    protected AuthenticationManager getAuthenticationManager() {
+        return this.authenticationManager;
+    }
+
+    protected boolean isIgnoreFailure() {
+        return this.ignoreFailure;
+    }
+
+    public void setAuthenticationDetailsSource(
+            AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource) {
+        Assert.notNull(authenticationDetailsSource,
+                "AuthenticationDetailsSource required");
+        this.authenticationDetailsSource = authenticationDetailsSource;
+    }
+
+    public void setRememberMeServices(RememberMeServices rememberMeServices) {
+        Assert.notNull(rememberMeServices, "rememberMeServices cannot be null");
+        this.rememberMeServices = rememberMeServices;
+    }
+
+    public void setCredentialsCharset(String credentialsCharset) {
+        Assert.hasText(credentialsCharset, "credentialsCharset cannot be null or empty");
+        this.credentialsCharset = credentialsCharset;
+    }
+
+    protected String getCredentialsCharset(HttpServletRequest httpRequest) {
+        return this.credentialsCharset;
+    }
+}
+```
