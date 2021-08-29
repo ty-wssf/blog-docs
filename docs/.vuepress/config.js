@@ -30,6 +30,7 @@ module.exports = {
         nav: [
             {text: '安装文档', link: '/install/'},
             {text: '前端', link: '/technology/前端/jQuery中封装ajax请求/'},
+            {text: 'Rust编程语言', link: '/technology/Rust/Rust编程语言入门/'},
             {
                 text: 'java', items: [
                     {text: 'Spring专题', link: '/technology/java/spring/Spring IOC/SpringBean的生命流程/'},
@@ -120,6 +121,17 @@ module.exports = {
                     sidebarDepth: 2,    // 可选的, 默认值是 1
                     children: [
                         'jQuery中封装ajax请求',
+                    ]
+                }
+            ],
+            '/technology/Rust/': [
+                {
+                    title: 'Rust',   // 必要的
+                    //path: '/install/',      // 可选的, 标题的跳转链接，应为绝对路径且必须存在
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 2,    // 可选的, 默认值是 1
+                    children: [
+                        'Rust编程语言入门',
                     ]
                 }
             ],
