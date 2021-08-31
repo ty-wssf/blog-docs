@@ -344,7 +344,8 @@ module.exports = {
                         '加密与数字证书',
                         'windows安装 OpenSSH',
                         '看完这篇 Session、Cookie、Token，和面试官扯皮就没问题了',
-                        'dbForge Stutio使用'
+                        'dbForge Stutio使用',
+                        'MinIO 搭建可视化对象存储服务'
                     ]
                 },
             ],
