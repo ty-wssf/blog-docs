@@ -41,17 +41,9 @@ http://dl.minio.org.cn/server/minio/release/windows-amd64/
 
 #### 运行 MinIO 服务
 
-```docker
-docker run -p 9000:9000 -p 9001:9001 --name minio \
-  -v /mydata/minio/data1:/data1 \
-  -v /mydata/minio/data2:/data2 \
-  -v /mydata/minio/data3:/data3 \
-  -v /mydata/minio/data4:/data4 \
-  -v /mydata/minio/config:/root/.minio \
-  -e "MINIO_ROOT_USER=root" \
-  -e "MINIO_ROOT_PASSWORD=minio123456789" \
-  -d minio/minio server /data1 /data2 /data3 /data4 \
-  --console-address ':9001'
+```
+## 单机
+minio.exe server D:\minioData
 ```
 
 ## MinIO Console 的简单使用
