@@ -57,6 +57,7 @@ module.exports = {
                 text: '工具', items: [
                     {
                         text: '在线编辑', items: [
+                            {text: '在线图表编辑工具', link: 'https://app.diagrams.net/'},
                             {text: 'WEBP转JPG - 在线转换图像文件', link: 'https://www.aconvert.com/cn/image/webp-to-jpg/'},
                             {text: 'PDF 转换器', link: 'https://smallpdf.com/cn/pdf-to-word'},
                             {text: 'JSON 编辑器', link: 'https://www.json.cn/'},
