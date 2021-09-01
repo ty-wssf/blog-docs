@@ -1770,7 +1770,7 @@ public class DefaultLogoutPageGeneratingFilter extends OncePerRequestFilter {
 
 #### 源代码解析
 
-```
+```java
 /*
  * Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
  *
