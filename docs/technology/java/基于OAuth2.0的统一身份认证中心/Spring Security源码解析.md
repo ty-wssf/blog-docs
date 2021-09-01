@@ -2390,3 +2390,560 @@ public class SecurityContextHolderAwareRequestFilter extends GenericFilterBean {
     }
 }
 ```
+
+### RememberMeAuthenticationFilter
+
+#### 概述
+缺省情况下，如果安全配置开启了`Remember Me`机制，用户在登录界面上会看到`Remember Me`选择框，如果用户选择了该选择框，会导致生成一个名为`remember-me`,属性`httpOnly`为`true`的`cookie`，其值是一个`RememberMe token`。
+
+> `RememberMe token`是一个`Base64`编码的字符串，解码后格式为`{用户名}:{Token过期时间戳}:{Token签名摘要}`,比如:`admin:1545787408479:d0b0e7a53960e94b521bee3f02ba0bf5`
+
+而该过滤器在每次请求到达时会检测`SecurityContext`属性`Authentication`是否已经设置。如果没有设置，会进入该过滤器的职责逻辑。它尝试获取名为`remember-me`的`cookie`,获取到的话会认为这是一次`Remember Me`登录尝试，从中分析出用户名,`Token`过期时间戳，签名摘要，针对用户库验证这些信息，认证通过的话，就会往SecurityContext里面设置`Authentication`为一个针对请求中所指定用户的`RememberMeAuthenticationToken`。
+
+认证成功的话，也会向应用上下文发布事件`InteractiveAuthenticationSuccessEvent`。
+
+默认情况下不管认证成功还是失败，请求都会被继续执行。
+
+> 不过也可以指定一个`AuthenticationSuccessHandler`给当前过滤器，这样当`Remember Me`登录认证成功时，处理委托给该`AuthenticationSuccessHandler`,而不再继续原请求的处理。利用这种机制，可以为`Remember Me`登录认证成功指定特定的跳转地址。
+>
+
+`Remember Me`登录认证成功并不代表用户一定可以访问到目标页面，因为如果`Remember Me`登录认证成功对应用户访问权限级别为`isRememberMe`，而目标页面需要更高的访问权限级别`fullyAuthenticated`,这时候请求最终会被拒绝访问目标页面，原因是权限不足(虽然认证通过)。
+
+> 如果你想观察该过滤器的行为，可以这么做：
+>
+> 1. 在配置中开启`Remember Me`机制，则此过滤器会被使用;
+> 2. 启动应用，打开浏览器,提供正确的用户名密码，选择`Remember Me`选项,然后提交完成一次成功的登录;
+> 3. 关闭整个浏览器;
+> 4. 重新打开刚刚关闭的浏览器;
+> 5. 直接访问某个受`rememberMe`访问级别保护的页面，你会看到该过滤器的职责逻辑被执行，目标页面可以访问。
+>    注意 : 这里如果访问某个受`fullyAuthenticated`访问级别保护的页面，目标页面则不能访问，浏览器会被跳转到登录页面。
+
+#### 源代码解析
+
+```java
+public class RememberMeAuthenticationFilter extends GenericFilterBean implements
+        ApplicationEventPublisherAware {
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    private ApplicationEventPublisher eventPublisher;
+    private AuthenticationSuccessHandler successHandler;
+    private AuthenticationManager authenticationManager;
+    private RememberMeServices rememberMeServices;
+
+    public RememberMeAuthenticationFilter(AuthenticationManager authenticationManager,
+                                          RememberMeServices rememberMeServices) {
+        Assert.notNull(authenticationManager, "authenticationManager cannot be null");
+        Assert.notNull(rememberMeServices, "rememberMeServices cannot be null");
+        this.authenticationManager = authenticationManager;
+        this.rememberMeServices = rememberMeServices;
+    }
+
+    // ~ Methods
+    // ========================================================================================================
+
+    @Override
+    public void afterPropertiesSet() {
+        Assert.notNull(authenticationManager, "authenticationManager must be specified");
+        Assert.notNull(rememberMeServices, "rememberMeServices must be specified");
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // 如果SecurityContext中authentication为空则尝试 remember me 自动认证,
+            // 缺省情况下这里rememberMeServices会是一个TokenBasedRememberMeServices,
+            // 其自动 remember me 认证过程如下:
+            // 1. 获取 cookie remember-me 的值 , 一个base64 编码串;
+            // 2. 从上面cookie之中解析出信息:用户名，token 过期时间，token 签名
+            // 3. 检查用户是否存在，token是否过期，token 签名是否一致,
+            // 上面三个步骤都通过的情况下再检查一下账号是否锁定，过期，禁用，密码过期等现象,
+            // 如果上面这些验证都通过，则认为认证成功，会构造一个
+            // RememberMeAuthenticationToken并返回
+            // 上面的认证失败会有rememberMeAuth==null
+            Authentication rememberMeAuth = rememberMeServices.autoLogin(request,
+                    response);
+
+            if (rememberMeAuth != null) {
+                // Attempt authenticaton via AuthenticationManager
+                try {
+                    // 如果上面的 Remember Me 认证成功，则需要使用 authenticationManager
+                    // 认证该rememberMeAuth
+                    rememberMeAuth = authenticationManager.authenticate(rememberMeAuth);
+
+                    // Store to SecurityContextHolder
+                    // 将认证成功的rememberMeAuth放到SecurityContextHolder中的SecurityContext
+                    SecurityContextHolder.getContext().setAuthentication(rememberMeAuth);
+
+                    // 成功时的其他操作:空方法，其实没有其他在这里做
+                    onSuccessfulAuthentication(request, response, rememberMeAuth);
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SecurityContextHolder populated with remember-me token: '"
+                                + SecurityContextHolder.getContext().getAuthentication()
+                                + "'");
+                    }
+
+                    // Fire event
+                    if (this.eventPublisher != null) {
+                        // 发布事件 InteractiveAuthenticationSuccessEvent 到应用上下文
+                        eventPublisher
+                                .publishEvent(new InteractiveAuthenticationSuccessEvent(
+                                        SecurityContextHolder.getContext()
+                                                .getAuthentication(), this.getClass()));
+                    }
+
+                    if (successHandler != null) {
+                        // 如果指定了 successHandler ,则调用它，
+                        // 缺省情况下这个 successHandler  为 null
+                        successHandler.onAuthenticationSuccess(request, response,
+                                rememberMeAuth);
+
+                        // 如果指定了 successHandler，在它调用之后，不再继续 filter chain 的执行
+                        return;
+                    }
+
+                } catch (AuthenticationException authenticationException) {
+                    // Remember Me 认证失败的情况
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                                "SecurityContextHolder not populated with remember-me token, as "
+                                        + "AuthenticationManager rejected Authentication returned by RememberMeServices: '"
+                                        + rememberMeAuth
+                                        + "'; invalidating remember-me token",
+                                authenticationException);
+                    }
+
+                    // rememberMeServices 的认证失败处理
+                    rememberMeServices.loginFail(request, response);
+
+                    // 空方法，这里什么都不做
+                    onUnsuccessfulAuthentication(request, response,
+                            authenticationException);
+                }
+            }
+
+            chain.doFilter(request, response);
+        } else {
+            if (logger.isDebugEnabled()) {
+                logger.debug("SecurityContextHolder not populated with remember-me token, as it already contained: '"
+                        + SecurityContextHolder.getContext().getAuthentication() + "'");
+            }
+
+            // 继续 filter chain 执行
+            chain.doFilter(request, response);
+        }
+    }
+
+    /**
+     * Called if a remember-me token is presented and successfully authenticated by the
+     * {@code RememberMeServices} {@code autoLogin} method and the
+     * {@code AuthenticationManager}.
+     */
+    protected void onSuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response, Authentication authResult) {
+    }
+
+    /**
+     * Called if the {@code AuthenticationManager} rejects the authentication object
+     * returned from the {@code RememberMeServices} {@code autoLogin} method. This method
+     * will not be called when no remember-me token is present in the request and
+     * {@code autoLogin} reurns null.
+     */
+    protected void onUnsuccessfulAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response, AuthenticationException failed) {
+    }
+
+    public RememberMeServices getRememberMeServices() {
+        return rememberMeServices;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
+    /**
+     * Allows control over the destination a remembered user is sent to when they are
+     * successfully authenticated. By default, the filter will just allow the current
+     * request to proceed, but if an {@code AuthenticationSuccessHandler} is set, it will
+     * be invoked and the {@code doFilter()} method will return immediately, thus allowing
+     * the application to redirect the user to a specific URL, regardless of whatthe
+     * original request was for.
+     * 缺省情况下，Remember Me 登录认证成功时filter chain会继续执行。但是也允许指定一个
+     * AuthenticationSuccessHandler , 这样就可以控制 Remember Me 登录认证成功时的目标
+     * 跳转地址(当然会忽略原始的请求目标)。
+     *
+     * @param successHandler the strategy to invoke immediately before returning from
+     *                       {@code doFilter()}.
+     */
+    public void setAuthenticationSuccessHandler(
+            AuthenticationSuccessHandler successHandler) {
+        Assert.notNull(successHandler, "successHandler cannot be null");
+        this.successHandler = successHandler;
+    }
+
+}
+```
+
+### AnonymousAuthenticationFilter
+
+#### 概述
+此过滤器过滤请求,检测`SecurityContextHolder`中是否存在`Authentication`对象，如果不存在，说明用户尚未登录，此时为其提供一个匿名`Authentication`对象:`AnonymousAuthentication`。
+
+> 注意:在整个请求处理的开始,无论当前请求所对应的`session`中用户是否已经登录,`SecurityContextPersistenceFilter`
+> 都会确保`SecurityContextHolder`中保持一个`SecurityContext`对象。但如果用户尚未登录，这个的`SecurityContext`对
+> 象会是一个空对象，也就是其属性`Authentication`为null。然后在该请求处理过程中，如果一直到当前Filter执
+> 行,`SecurityContextHolder`中`SecurityContext`对象属性`Authentication`仍是null,该`AnonymousAuthenticationFilter`就将其
+> 修改为一个`AnonymousAuthentication`对象，表明这是一个匿名访问。
+
+#### 源代码解析
+
+```java
+/*
+ * Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.security.web.authentication;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.GenericFilterBean;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Detects if there is no {@code Authentication} object in the
+ * {@code SecurityContextHolder}, and populates it with one if needed.
+ * 检测 SecurityContextHolder中是否存在Authentication对象，如果不存在，说明
+ * 用户尚未登录，此时为其提供一个匿名 Authentication: AnonymousAuthentication对象。
+ *
+ * @author Ben Alex
+ * @author Luke Taylor
+ */
+public class AnonymousAuthenticationFilter extends GenericFilterBean implements
+        InitializingBean {
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    // 用于构造匿名Authentication中详情属性的详情来源对象，这里使用一个WebAuthenticationDetailsSource
+    private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
+    private String key;
+    private Object principal;
+    private List<GrantedAuthority> authorities;
+
+    /**
+     * Creates a filter with a principal named "anonymousUser" and the single authority
+     * "ROLE_ANONYMOUS".
+     * 使用外部指定的key构造一个AnonymousAuthenticationFilter:
+     * 1. 缺省情况下，Spring Security 配置机制为这里指定的key是一个随机的uuid;
+     * 2. 所对应的 princpial(含义指当前登录主体) 是一个字符串"anonymousUser";
+     * 3. 所拥护的角色是 "ROLE_ANONYMOUS";
+     *
+     * @param key the key to identify tokens created by this filter
+     */
+    public AnonymousAuthenticationFilter(String key) {
+        this(key, "anonymousUser", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+    }
+
+    /**
+     * 使用外部指定的参数构造一个AnonymousAuthenticationFilter
+     *
+     * @param key         key the key to identify tokens created by this filter
+     * @param principal   the principal which will be used to represent anonymous users
+     * @param authorities the authority list for anonymous users
+     */
+    public AnonymousAuthenticationFilter(String key, Object principal,
+                                         List<GrantedAuthority> authorities) {
+        Assert.hasLength(key, "key cannot be null or empty");
+        Assert.notNull(principal, "Anonymous authentication principal must be set");
+        Assert.notNull(authorities, "Anonymous authorities must be set");
+        this.key = key;
+        this.principal = principal;
+        this.authorities = authorities;
+    }
+
+    // ~ Methods
+    // ========================================================================================================
+
+    @Override
+    public void afterPropertiesSet() {
+        // 在当前Filter bean被创建时调用，主要目的是断言三个主要属性都必须已经有效设置
+        Assert.hasLength(key, "key must have length");
+        Assert.notNull(principal, "Anonymous authentication principal must be set");
+        Assert.notNull(authorities, "Anonymous authorities must be set");
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // 如果SecurityContextHolder中SecurityContext对象的属性authentication是null,
+            // 将其替换成一个匿名 Authentication: AnonymousAuthentication
+            SecurityContextHolder.getContext().setAuthentication(
+                    createAuthentication((HttpServletRequest) req));
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Populated SecurityContextHolder with anonymous token: '"
+                        + SecurityContextHolder.getContext().getAuthentication() + "'");
+            }
+        } else {
+            if (logger.isDebugEnabled()) {
+                logger.debug("SecurityContextHolder not populated with anonymous token, as it already contained: '"
+                        + SecurityContextHolder.getContext().getAuthentication() + "'");
+            }
+        }
+
+        // 对SecurityContextHolder中SecurityContext对象的属性authentication做过以上处理之后，继续
+        // filter chain 的执行
+        chain.doFilter(req, res);
+    }
+
+    // 根据指定属性key,princpial,authorities和当前环境(servlet web环境)构造一个AnonymousAuthenticationToken
+    protected Authentication createAuthentication(HttpServletRequest request) {
+        AnonymousAuthenticationToken auth = new AnonymousAuthenticationToken(key,
+                principal, authorities);
+        auth.setDetails(authenticationDetailsSource.buildDetails(request));
+
+        return auth;
+    }
+
+    // 可以外部指定Authentication对象的详情来源, 缺省情况下使用的是WebAuthenticationDetailsSource,
+    // 已经在属性authenticationDetailsSource初始化指定
+    public void setAuthenticationDetailsSource(
+            AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource) {
+        Assert.notNull(authenticationDetailsSource,
+                "AuthenticationDetailsSource required");
+        this.authenticationDetailsSource = authenticationDetailsSource;
+    }
+
+    public Object getPrincipal() {
+        return principal;
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+}
+```
+
+### SessionManagementFilter
+
+#### 概述
+该过滤器会检测从当前请求处理开始到目前为止的过程中是否发生了用户登录认证行为(比如这是一个用户名/密码表单提交的请求处理过程)，如果检测到这一情况，执行相应的`session`认证策略(一个`SessionAuthenticationStrategy`)，然后继续继续请求的处理。
+
+针对`Servlet 3.1+`,缺省所使用的`SessionAuthenticationStrategy`会是一个`ChangeSessionIdAuthenticationStrategy`和`CsrfAuthenticationStrategy`组合。`ChangeSessionIdAuthenticationStrategy`会为登录的用户创建一个新的`session`，而`CsrfAuthenticationStrategy`会创建新的`csrf token`用于`CSRF`保护。
+
+如果当前过滤器链中启用了`UsernamePasswordAuthenticationFilter`,实际上本过滤器`SessionManagementFilter`并不会真正被执行到上面所说的逻辑。因为在`UsernamePasswordAuthenticationFilter`中，一旦用户登录认证发生它会先执行上述的逻辑。因此到`SessionManagementFilter`执行的时候，它会发现安全上下文存储库中已经有相应的安全上下文了，从而不再重复执行上面的逻辑。
+
+另外需要注意的是，如果相应的`session`认证策略执行失败的话，整个成功的用户登录认证行为会被该过滤器否定，相应新建的`SecurityContextHolder`中的安全上下文会被清除，所设定的`AuthenticationFailureHandler`逻辑会被执行。
+
+#### 源代码解析
+
+```java
+/**
+ * Detects that a user has been authenticated since the start of the request and, if they
+ * have, calls the configured {@link SessionAuthenticationStrategy} to perform any
+ * session-related activity such as activating session-fixation protection mechanisms or
+ * checking for multiple concurrent logins.
+ * <p>
+ * 检测从当前请求处理最初到现在整个处理过程中是否发生了用户登录认证，如果确实发生了，调用所配置的
+ * SessionAuthenticationStrategy(session认证策略)执行与session相关的操作。比如针对session-fxation攻击
+ * 保护机制对应的策略可能是为废弃登录前的session为登录用户生成一个新的session等。
+ *
+ * @author Martin Algesten
+ * @author Luke Taylor
+ * @since 2.0
+ */
+public class SessionManagementFilter extends GenericFilterBean {
+    // ~ Static fields/initializers
+    // =====================================================================================
+
+    static final String FILTER_APPLIED = "__spring_security_session_mgmt_filter_applied";
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    // 安全上下文存储库，要和当前请求处理过程中其他filter配合，一般由配置阶段使用统一配置设置进来
+    // 缺省使用基于http session的安全上下文存储库:HttpSessionSecurityContextRepository
+    private final SecurityContextRepository securityContextRepository;
+    // session 认证策略
+    // 缺省是一个 CompositeSessionAuthenticationStrategy 对象，应用了组合模式，组合一些其他的
+    // session 认证策略实现，比如针对Servlet 3.1+,缺省会是 ChangeSessionIdAuthenticationStrategy跟
+    // CsrfAuthenticationStrategy组合
+    private SessionAuthenticationStrategy sessionAuthenticationStrategy;
+    // 用于识别一个Authentication是哪种类型:anonymous ? remember ?
+    // 配置阶段统一指定，缺省使用 AuthenticationTrustResolverImpl
+    private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
+    // 遇到无效session时的处理策略，缺省值为null
+    private InvalidSessionStrategy invalidSessionStrategy = null;
+    // 认证失败处理器，比如form用户名/密码登录如果失败可能会引导用户重新发起表单认证
+    // 缺省使用SimpleUrlAuthenticationFailureHandler
+    private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+
+    public SessionManagementFilter(SecurityContextRepository securityContextRepository) {
+        this(securityContextRepository, new SessionFixationProtectionStrategy());
+    }
+
+    public SessionManagementFilter(SecurityContextRepository securityContextRepository,
+                                   SessionAuthenticationStrategy sessionStrategy) {
+        Assert.notNull(securityContextRepository,
+                "SecurityContextRepository cannot be null");
+        Assert.notNull(sessionStrategy, "SessionAuthenticationStrategy cannot be null");
+        this.securityContextRepository = securityContextRepository;
+        this.sessionAuthenticationStrategy = sessionStrategy;
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        if (request.getAttribute(FILTER_APPLIED) != null) {
+            // 如果在当前请求过程中该过滤器已经应用过，则不在二次应用，继续filter chain的执行
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // 该过滤器要执行了，在请求上设置该过滤器已经执行过的标记，避免在该请求的同一处理过程中
+        // 本过滤器执行二遍
+        request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
+
+        // 检测securityContextRepository是否已经保存了针对当前请求的安全上下文对象 ：
+        // 1. 未登录用户访问登录保护url的情况 : 否
+        // 2. 未登录用户访问登录页面url的情况 : (不会走到这里，已经被登录页面生成Filter拦截)
+        // 3. 未登录用户访问公开url的情况 : 否
+        // 4. 登录用户访问公开url的情况 : 是
+        // 5. 登录用户访问登录保护url的情况 : 是
+        // 6. 登录用户访问公开url的情况 : 是
+        if (!securityContextRepository.containsContext(request)) {
+            // 如果securityContextRepository中没有保存安全上下文对象，
+            // 但是SecurityContextHolder中安全上下文对象的authentication属性
+            // 不为null或者匿名，则说明从请求处理开始到现在出现了用户登录认证成功的情况
+            Authentication authentication = SecurityContextHolder.getContext()
+                    .getAuthentication();
+
+            if (authentication != null && !trustResolver.isAnonymous(authentication)) {
+                // The user has been authenticated during the current request, so call the
+                // session strategy
+                // 认证登录成功的情况被检测到，执行相应的session认证策略
+                try {
+                    sessionAuthenticationStrategy.onAuthentication(authentication,
+                            request, response);
+                } catch (SessionAuthenticationException e) {
+                    // 如果session认证策略执行出现异常，则拒绝该用户登录认证，
+                    // 清除已经登录成功的安全上下文，并调用相应的failureHandler认证失败逻辑
+                    // The session strategy can reject the authentication
+                    logger.debug(
+                            "SessionAuthenticationStrategy rejected the authentication object",
+                            e);
+                    SecurityContextHolder.clearContext();
+                    failureHandler.onAuthenticationFailure(request, response, e);
+
+                    return;
+                }
+                // Eagerly save the security context to make it available for any possible
+                // re-entrant
+                // requests which may occur before the current request completes.
+                // SEC-1396.
+                // 如果该请求处理过程中出现了用户成功登录的情况，并且相应的session认证策略已经
+                // 执行成功，直接在securityContextRepository保存新建的针对已经登录用户的安全上下文，
+                // 这样之后，在当前请求处理结束前，遇到任何可重入的请求，它们就可以利用该信息了。
+                securityContextRepository.saveContext(SecurityContextHolder.getContext(),
+                        request, response);
+            } else {
+                // No security context or authentication present. Check for a session
+                // timeout
+                // authentication 为 null 或者 匿名 或者 RememberMe 的情况,
+                // 检测是否遇到了session过期或者提供了无效的session id，如果遇到了，
+                // 并且设置了相应的无效session处理器invalidSessionStrategy，则最相应的处理
+                if (request.getRequestedSessionId() != null
+                        && !request.isRequestedSessionIdValid()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Requested session ID "
+                                + request.getRequestedSessionId() + " is invalid.");
+                    }
+
+                    if (invalidSessionStrategy != null) {
+                        invalidSessionStrategy
+                                .onInvalidSessionDetected(request, response);
+                        return;
+                    }
+                }
+            }
+        }
+
+        chain.doFilter(request, response);
+    }
+
+    /**
+     * Sets the strategy which will be invoked instead of allowing the filter chain to
+     * prceed, if the user agent requests an invalid session Id. If the property is not
+     * set, no action will be taken.
+     *
+     * @param invalidSessionStrategy the strategy to invoke. Typically a
+     *                               {@link SimpleRedirectInvalidSessionStrategy}.
+     */
+    public void setInvalidSessionStrategy(InvalidSessionStrategy invalidSessionStrategy) {
+        this.invalidSessionStrategy = invalidSessionStrategy;
+    }
+
+    /**
+     * The handler which will be invoked if the <tt>AuthenticatedSessionStrategy</tt>
+     * raises a <tt>SessionAuthenticationException</tt>, indicating that the user is not
+     * allowed to be authenticated for this session (typically because they already have
+     * too many sessions open).
+     */
+    public void setAuthenticationFailureHandler(
+            AuthenticationFailureHandler failureHandler) {
+        Assert.notNull(failureHandler, "failureHandler cannot be null");
+        this.failureHandler = failureHandler;
+    }
+
+    /**
+     * Sets the {@link AuthenticationTrustResolver} to be used. The default is
+     * {@link AuthenticationTrustResolverImpl}.
+     *
+     * @param trustResolver the {@link AuthenticationTrustResolver} to use. Cannot be
+     *                      null.
+     */
+    public void setTrustResolver(AuthenticationTrustResolver trustResolver) {
+        Assert.notNull(trustResolver, "trustResolver cannot be null");
+        this.trustResolver = trustResolver;
+    }
+
+}
+```
+
