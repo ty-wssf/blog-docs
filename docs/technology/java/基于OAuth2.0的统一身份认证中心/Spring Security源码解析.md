@@ -2131,3 +2131,262 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
     }
 }
 ```
+
+### RequestCacheAwareFilter
+
+#### 概述
+`Spring Security Web`对请求提供了缓存机制，如果某个请求被缓存，它的提取和使用是交给`RequestCacheAwareFilter`完成的。
+
+系统在启动时，`Spring Security Web`会首先尝试从容器中获取一个`RequestCache bean`,获取失败的话，会构建一个缺省的`RequestCache`对象，然后实例化该过滤器 。
+
+如果容器中不存在`RequestCache bean`,`Spring Security Web`所使用的缺省`RequestCache`是一个`HttpSessionRequestCache`,它会将请求保存在`http session`中，而且不是所有的请求都会被缓存，而是只有符合以下条件的请求才被缓存 ：
+
+1. 必须是 GET /**
+
+2. 并且不能是 /**/favicon.*
+3. 并且不能是 application.json
+4. 并且不能是 XMLHttpRequest (也就是一般意义上的 ajax 请求)
+5. 上面请求缓存条件的定义在RequestCacheConfigurer#createDefaultSavedRequestMatcher中。
+
+> 上面请求缓存条件的定义在`RequestCacheConfigurer#createDefaultSavedRequestMatcher`中。
+
+#### 源代码分析
+
+```java
+/*
+ * Copyright 2002-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.security.web.savedrequest;
+
+import org.springframework.util.Assert;
+import org.springframework.web.filter.GenericFilterBean;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * Responsible for reconstituting the saved request if one is cached and it matches the
+ * current request.
+ * <p>
+ * It will call
+ * {@link RequestCache#getMatchingRequest(HttpServletRequest, HttpServletResponse)
+ * getMatchingRequest} on the configured <tt>RequestCache</tt>. If the method returns a
+ * value (a wrapper of the saved request), it will pass this to the filter chain's
+ * <tt>doFilter</tt> method. If null is returned by the cache, the original request is
+ * used and the filter has no effect.
+ * 用于用户登录成功后，重新恢复因为登录被打断的请求
+ * @author Luke Taylor
+ * @since 3.0
+ */
+public class RequestCacheAwareFilter extends GenericFilterBean {
+
+    private RequestCache requestCache;
+
+    // 使用http session 作为请求缓存的构造函数
+    public RequestCacheAwareFilter() {
+        this(new HttpSessionRequestCache());
+    }
+
+    // 外部指定请求缓存对象的构造函数
+    public RequestCacheAwareFilter(RequestCache requestCache) {
+        Assert.notNull(requestCache, "requestCache cannot be null");
+        this.requestCache = requestCache;
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest wrappedSavedRequest = requestCache.getMatchingRequest(
+                (HttpServletRequest) request, (HttpServletResponse) response);
+
+        chain.doFilter(wrappedSavedRequest == null ? request : wrappedSavedRequest,
+                response);
+    }
+
+}
+```
+
+### SecurityContextHolderAwareRequestFilter
+
+#### 概述
+`SecurityContextHolderAwareRequestFilter`对请求`HttpServletRequest`采用`Wrapper/Decorator`模式包装成一个可以访问`SecurityContextHolder`中安全上下文的`SecurityContextHolderAwareRequestWrapper`。这样接口`HttpServletRequest`上定义的`getUserPrincipal`这种安全相关的方法才能访问到相应的安全信息。
+
+> 针对`Servlet 2.5`和`Servlet 3`,该过滤器使用了不一样的工厂，但最终都是使用`SecurityContextHolderAwareRequestWrapper`封装请求使其具备访问`SecurityContextHolder`安全上下文的能力。
+
+#### 源代码解析
+
+```java
+public class SecurityContextHolderAwareRequestFilter extends GenericFilterBean {
+    // ~ Instance fields
+    // ================================================================================================
+
+    // 缺省角色名称的前缀
+    private String rolePrefix = "ROLE_";
+
+    // 用于封装HttpServletRequest的工厂类，最终目的是封装HttpServletRequest
+    // 使之具有访问SecurityContextHolder中安全上下文的能力。
+    // 针对 Servlet 2.5 和 Servlet 3 使用的不同实现类。
+    private HttpServletRequestFactory requestFactory;
+
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    private AuthenticationManager authenticationManager;
+
+    private List<LogoutHandler> logoutHandlers;
+
+    // 判断认证对象Authentication是何种类型:是否匿名Authentication,
+    // 是否 Remember Me Authentication。
+    // 缺省使用实现AuthenticationTrustResolverImpl,
+    // 根据对象Authentication所使用的实现类是AnonymousAuthenticationToken
+    // 还是RememberMeAuthenticationToken达到上述目的
+    private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
+
+    // ~ Methods
+    // ========================================================================================================
+    // 指定角色前缀，
+    public void setRolePrefix(String rolePrefix) {
+        Assert.notNull(rolePrefix, "Role prefix must not be null");
+        this.rolePrefix = rolePrefix;
+        // 角色前缀变更时更新requestFactory工厂
+        updateFactory();
+    }
+
+    /**
+     * <p>
+     * Sets the {@link AuthenticationEntryPoint} used when integrating
+     * {@link HttpServletRequest} with Servlet 3 APIs. Specifically, it will be used when
+     * {@link HttpServletRequest#authenticate(HttpServletResponse)} is called and the user
+     * is not authenticated.
+     * </p>
+     * <p>
+     * If the value is null (default), then the default container behavior will be be
+     * retained when invoking {@link HttpServletRequest#authenticate(HttpServletResponse)}
+     * .
+     * </p>
+     *
+     * @param authenticationEntryPoint the {@link AuthenticationEntryPoint} to use when
+     *                                 invoking {@link HttpServletRequest#authenticate(HttpServletResponse)} if the user
+     *                                 is not authenticated.
+     * @throws IllegalStateException if the Servlet 3 APIs are not found on the classpath
+     */
+    public void setAuthenticationEntryPoint(
+            AuthenticationEntryPoint authenticationEntryPoint) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
+
+    /**
+     * <p>
+     * Sets the {@link AuthenticationManager} used when integrating
+     * {@link HttpServletRequest} with Servlet 3 APIs. Specifically, it will be used when
+     * {@link HttpServletRequest#login(String, String)} is invoked to determine if the
+     * user is authenticated.
+     * </p>
+     * <p>
+     * If the value is null (default), then the default container behavior will be
+     * retained when invoking {@link HttpServletRequest#login(String, String)}.
+     * </p>
+     *
+     * @param authenticationManager the {@link AuthenticationManager} to use when invoking
+     *                              {@link HttpServletRequest#login(String, String)}
+     * @throws IllegalStateException if the Servlet 3 APIs are not found on the classpath
+     */
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    /**
+     * <p>
+     * Sets the {@link LogoutHandler}s used when integrating with
+     * {@link HttpServletRequest} with Servlet 3 APIs. Specifically it will be used when
+     * {@link HttpServletRequest#logout()} is invoked in order to log the user out. So
+     * long as the {@link LogoutHandler}s do not commit the {@link HttpServletResponse}
+     * (expected), then the user is in charge of handling the response.
+     * </p>
+     * <p>
+     * If the value is null (default), the default container behavior will be retained
+     * when invoking {@link HttpServletRequest#logout()}.
+     * </p>
+     *
+     * @param logoutHandlers the {@code List&lt;LogoutHandler&gt;}s when invoking
+     *                       {@link HttpServletRequest#logout()}.
+     * @throws IllegalStateException if the Servlet 3 APIs are not found on the classpath
+     */
+    public void setLogoutHandlers(List<LogoutHandler> logoutHandlers) {
+        this.logoutHandlers = logoutHandlers;
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        chain.doFilter(this.requestFactory.create((HttpServletRequest) req,
+                (HttpServletResponse) res), res);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws ServletException {
+        // 本Filter因为继承自GenericFilterBean，从而隐含地实现了接口InitializingBean，
+        // 所以会有此方法。而此方法会在该Filter bean被初始化时调用。此时会确定具体使用的
+        // requestFactory 实例
+        super.afterPropertiesSet();
+        updateFactory();
+    }
+
+    private void updateFactory() {
+        // 更新封装HttpServletRequest的工厂实例requestFactory，
+        // 根据当前使用的Servlet版本的不同使用不同的工厂类
+        String rolePrefix = this.rolePrefix;
+        this.requestFactory = isServlet3() ? createServlet3Factory(rolePrefix)
+                : new HttpServlet25RequestFactory(this.trustResolver, rolePrefix);
+    }
+
+    /**
+     * Sets the {@link AuthenticationTrustResolver} to be used. The default is
+     * {@link AuthenticationTrustResolverImpl}.
+     *
+     * @param trustResolver the {@link AuthenticationTrustResolver} to use. Cannot be
+     *                      null.
+     */
+    public void setTrustResolver(AuthenticationTrustResolver trustResolver) {
+        Assert.notNull(trustResolver, "trustResolver cannot be null");
+        this.trustResolver = trustResolver;
+        // trustResolver 变更时更新requestFactory工厂
+        updateFactory();
+    }
+
+    private HttpServletRequestFactory createServlet3Factory(String rolePrefix) {
+        HttpServlet3RequestFactory factory = new HttpServlet3RequestFactory(rolePrefix);
+        factory.setTrustResolver(this.trustResolver);
+        factory.setAuthenticationEntryPoint(this.authenticationEntryPoint);
+        factory.setAuthenticationManager(this.authenticationManager);
+        factory.setLogoutHandlers(this.logoutHandlers);
+        return factory;
+    }
+
+    /**
+     * Returns true if the Servlet 3 APIs are detected.
+     *
+     * @return
+     */
+    private boolean isServlet3() {
+        return ClassUtils.hasMethod(ServletRequest.class, "startAsync");
+    }
+}
+```
