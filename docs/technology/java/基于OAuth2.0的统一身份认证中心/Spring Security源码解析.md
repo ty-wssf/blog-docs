@@ -1224,36 +1224,6 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 
 ![用户名/密码登录页面效果](https://img-blog.csdnimg.cn/20181203102339102.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
 
-对应的 HTML 大致如下:
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Please sign in</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-  </head>
-  <body>
-     <div class="container">
-      <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <p>
-          <label for="username" class="sr-only">Username</label>
-          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        </p>
-        <p>
-          <label for="password" class="sr-only">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-<p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
-<input name="_csrf" type="hidden" value="befcd3c2-6ee1-461d-a7ba-316dce846d4a" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-</body></html>
 
 #### 生成的OpenID表单登录页面效果
 
@@ -1261,32 +1231,6 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 
 ![OpenId登录页面效果](https://img-blog.csdnimg.cn/20181203104714316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
 
-对应的 HTML 大致如下:
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Please sign in</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-  </head>
-  <body>
-     <div class="container">
-      <form name="oidf" class="form-signin" method="post" action="/login/openid">
-        <h2 class="form-signin-heading">Login with OpenID Identity</h2>
-        <p>
-          <label for="username" class="sr-only">Identity</label>
-          <input type="text" id="username" name="openid_identifier" class="form-control" placeholder="Username" required autofocus>
-        </p>
-<p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
-<input name="_csrf" type="hidden" value="9efcd951-5bf6-488f-93c2-83bd2240c2dc" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-</body></html>
 
 #### 源代码解析
 
@@ -1695,29 +1639,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 ![缺省用户退出登录页面](https://img-blog.csdnimg.cn/20181203132346883.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FuZHlfemhhbmcyMDA3,size_16,color_FFFFFF,t_70)
 
-其HTML代码大致如下:
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Confirm Log Out?</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-  </head>
-  <body>
-     <div class="container">
-      <form class="form-signin" method="post" action="/logout">
-        <h2 class="form-signin-heading">Are you sure you want to log out?</h2>
-<input name="_csrf" type="hidden" value="2cd42ccd-9fc3-4e27-8535-e40934742b97" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Log Out</button>
-      </form>
-    </div>
-  </body>
-</html>
 
 #### 源码解析
 
