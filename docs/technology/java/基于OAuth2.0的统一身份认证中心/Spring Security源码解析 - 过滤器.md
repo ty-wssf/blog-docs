@@ -2947,3 +2947,974 @@ public class SessionManagementFilter extends GenericFilterBean {
 }
 ```
 
+### ExceptionTranslationFilter
+
+#### 概述
+该过滤器的作用是处理过滤器链中发生的 `AccessDeniedException` 和 `AuthenticationException` 异常，将它们转换成相应的HTTP响应。
+
+当检测到 `AuthenticationException` 异常时，该过滤器会启动 `authenticationEntryPoint`,也就是启动认证流程。
+
+当检测到 `AccessDeniedException` 异常时，该过滤器先判断当前用户是否为匿名访问或者`Remember Me`访问。如果是这两种情况之一，会启动 `authenticationEntryPoint`逻辑。如果安全配置开启了用户名/密码表单认证，通常这个`authenticationEntryPoint`会对应到一个`LoginUrlAuthenticationEntryPoint`。它执行时会将用户带到登录页面，开启登录认证流程。
+
+如果不是匿名访问或者`Remember Me`访问，接下来的处理会交给一个 `AccessDeniedHandler` 来完成。缺省情况下，这个 `AccessDeniedHandler` 的实现类是 `AccessDeniedHandlerImpl`，它会:
+
+1. 请求添加`HTTP 403`异常属性,记录相应的异常;
+2. 然后往写入响应HTTP状态码`403`;
+3. 并`foward`到相应的错误页面。
+
+使用该过滤器必须要设置以下属性:
+
+1. `authenticationEntryPoint`:用于启动认证流程的处理器(handler)
+2. `requestCache`:认证过程中涉及到保存请求时使用的请求缓存策略，缺省情况下是基于`session`的`HttpSessionRequestCache`
+
+> 如果你想观察该过滤器的行为，可以在未登录状态下访问一个受登录保护的页面，系统会抛出`AccessDeniedException`并最终进入该Filter的职责流程。
+
+#### 源代码解析
+
+```java
+/*
+ * Copyright 2004-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.security.web.access;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.util.ThrowableAnalyzer;
+import org.springframework.security.web.util.ThrowableCauseExtractor;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.GenericFilterBean;
+
+import org.springframework.context.support.MessageSourceAccessor;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class ExceptionTranslationFilter extends GenericFilterBean {
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    private AccessDeniedHandler accessDeniedHandler = new AccessDeniedHandlerImpl();
+    private AuthenticationEntryPoint authenticationEntryPoint;
+    // 用于判断一个Authentication是否Anonymous,Remember Me,
+    // 缺省使用 AuthenticationTrustResolverImpl
+    private AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+    // 用于分析一个Throwable抛出的原因，使用本类自定义的嵌套类DefaultThrowableAnalyzer，
+    // 主要是加入了对ServletException的分析
+    private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
+
+    // 请求缓存，缺省使用HttpSessionRequestCache，在遇到异常启动认证过程时会用到,
+    // 因为要先把原始请求缓存下来，一旦认证成功结果，需要把原始请求提出重新跳转到相应URL
+    private RequestCache requestCache = new HttpSessionRequestCache();
+
+    private final MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+
+    public ExceptionTranslationFilter(AuthenticationEntryPoint authenticationEntryPoint) {
+        this(authenticationEntryPoint, new HttpSessionRequestCache());
+    }
+
+    public ExceptionTranslationFilter(AuthenticationEntryPoint authenticationEntryPoint,
+                                      RequestCache requestCache) {
+        Assert.notNull(authenticationEntryPoint,
+                "authenticationEntryPoint cannot be null");
+        Assert.notNull(requestCache, "requestCache cannot be null");
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.requestCache = requestCache;
+    }
+
+    // ~ Methods
+    // ========================================================================================================
+
+    @Override
+    public void afterPropertiesSet() {
+        Assert.notNull(authenticationEntryPoint,
+                "authenticationEntryPoint must be specified");
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        // 在任何请求到达时不做任何操作，直接放行，继续filter chain的执行，
+        // 但是使用一个 try-catch 来捕获filter chain中接下来会发生的各种异常，
+        // 重点关注其中的以下异常，其他异常继续向外抛出 :
+        // AuthenticationException : 认证失败异常,通常因为认证信息错误导致
+        // AccessDeniedException : 访问被拒绝异常，通常因为权限不足导致
+        try {
+            chain.doFilter(request, response);
+
+            logger.debug("Chain processed normally");
+        } catch (IOException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            // Try to extract a SpringSecurityException from the stacktrace
+            Throwable[] causeChain = throwableAnalyzer.determineCauseChain(ex);
+            // 检测ex是否由AuthenticationException或者AccessDeniedException异常导致
+            RuntimeException ase = (AuthenticationException) throwableAnalyzer
+                    .getFirstThrowableOfType(AuthenticationException.class, causeChain);
+
+            if (ase == null) {
+                ase = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(
+                        AccessDeniedException.class, causeChain);
+            }
+
+            if (ase != null) {
+                if (response.isCommitted()) {
+                    // 如果response已经提交，则没办法向响应中转换和写入这些异常了，只好抛一个异常
+                    throw new ServletException("Unable to handle the Spring Security Exception because the response is already committed.", ex);
+                }
+                // 如果ex是由AuthenticationException或者AccessDeniedException异常导致，
+                // 并且响应尚未提交，这里将这些Spring Security异常翻译成相应的 http response。
+                handleSpringSecurityException(request, response, chain, ase);
+            } else {
+                // Rethrow ServletExceptions and RuntimeExceptions as-is
+                if (ex instanceof ServletException) {
+                    throw (ServletException) ex;
+                } else if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
+                }
+
+                // Wrap other Exceptions. This shouldn't actually happen
+                // as we've already covered all the possibilities for doFilter
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return authenticationEntryPoint;
+    }
+
+    protected AuthenticationTrustResolver getAuthenticationTrustResolver() {
+        return authenticationTrustResolver;
+    }
+
+    // 此方法仅用于处理两种Spring Security 异常:
+    // AuthenticationException , AccessDeniedException
+    private void handleSpringSecurityException(HttpServletRequest request,
+                                               HttpServletResponse response, FilterChain chain, RuntimeException exception)
+            throws IOException, ServletException {
+        if (exception instanceof AuthenticationException) {
+            logger.debug(
+                    "Authentication exception occurred; redirecting to authentication entry point",
+                    exception);
+
+            // 如果是 AuthenticationException 异常，启动认证流程
+            sendStartAuthentication(request, response, chain,
+                    (AuthenticationException) exception);
+        } else if (exception instanceof AccessDeniedException) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authenticationTrustResolver.isAnonymous(authentication) || authenticationTrustResolver.isRememberMe(authentication)) {
+                // 如果当前认证token是匿名或者RememberMe token
+                logger.debug(
+                        "Access is denied (user is " + (authenticationTrustResolver.isAnonymous(authentication) ? "anonymous" : "not fully authenticated") + "); redirecting to authentication entry point",
+                        exception);
+
+                // 如果是 AccessDeniedException 异常，而且当前登录主体是匿名状态或者
+                // Remember Me认证，则也启动认证流程
+                sendStartAuthentication(
+                        request,
+                        response,
+                        chain,
+                        new InsufficientAuthenticationException(
+                                messages.getMessage(
+                                        "ExceptionTranslationFilter.insufficientAuthentication",
+                                        "Full authentication is required to access this resource")));
+            } else {
+                logger.debug(
+                        "Access is denied (user is not anonymous); delegating to AccessDeniedHandler",
+                        exception);
+
+                // 如果是 AccessDeniedException 异常,而且当前用户不是匿名，也不是
+                // Remember Me, 而是真正经过认证的某个用户，则说明是该用户权限不足,
+                // 则交给 accessDeniedHandler 处理，缺省告知其权限不足
+                // 注意 : 如果当前被请求的页面被配置成RememberMe权限可访问，但实际上
+                // 当前当前安全上下文中的token是fullAuthenticated的，则也会走到这个流程
+                accessDeniedHandler.handle(request, response,
+                        (AccessDeniedException) exception);
+            }
+        }
+    }
+
+    // 发起认证流程
+    protected void sendStartAuthentication(HttpServletRequest request,
+                                           HttpServletResponse response, FilterChain chain,
+                                           AuthenticationException reason) throws ServletException, IOException {
+        // SEC-112: Clear the SecurityContextHolder's Authentication, as the
+        // existing Authentication is no longer considered valid
+        // 将SecurityContextHolder中SecurityContext的authentication设置为null
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        // 保存当前请求，一旦认证成功，认证机制会再次提取该请求并跳转到该请求对应的页面
+        requestCache.saveRequest(request, response);
+
+        // 准备工作已经做完，开始认证流程
+        logger.debug("Calling Authentication entry point.");
+        authenticationEntryPoint.commence(request, response, reason);
+    }
+
+    public void setAccessDeniedHandler(AccessDeniedHandler accessDeniedHandler) {
+        Assert.notNull(accessDeniedHandler, "AccessDeniedHandler required");
+        this.accessDeniedHandler = accessDeniedHandler;
+    }
+
+    public void setAuthenticationTrustResolver(
+            AuthenticationTrustResolver authenticationTrustResolver) {
+        Assert.notNull(authenticationTrustResolver,
+                "authenticationTrustResolver must not be null");
+        this.authenticationTrustResolver = authenticationTrustResolver;
+    }
+
+    public void setThrowableAnalyzer(ThrowableAnalyzer throwableAnalyzer) {
+        Assert.notNull(throwableAnalyzer, "throwableAnalyzer must not be null");
+        this.throwableAnalyzer = throwableAnalyzer;
+    }
+
+    /**
+     * Default implementation of <code>ThrowableAnalyzer</code> which is capable of also
+     * unwrapping <code>ServletException</code>s.
+     */
+    private static final class DefaultThrowableAnalyzer extends ThrowableAnalyzer {
+        /**
+         * @see org.springframework.security.web.util.ThrowableAnalyzer#initExtractorMap()
+         */
+        @Override
+        protected void initExtractorMap() {
+            super.initExtractorMap();
+
+            registerExtractor(ServletException.class, new ThrowableCauseExtractor() {
+                @Override
+                public Throwable extractCause(Throwable throwable) {
+                    ThrowableAnalyzer.verifyThrowableHierarchy(throwable,
+                            ServletException.class);
+                    return ((ServletException) throwable).getRootCause();
+                }
+            });
+        }
+
+    }
+
+}
+```
+
+### FilterSecurityInterceptor
+
+#### 概述
+此过滤器`FilterSecurityInterceptor`是一个请求处理过程中安全机制过滤器链中最后一个`filter`,它执行真正的`HTTP`资源安全控制。
+
+具体代码实现上，`FilterSecurityInterceptor`主要是将请求上下文包装成一个`FilterInvocation`然后对它进行操作。`FilterSecurityInterceptor`仅仅包含调用`FilterInvocation`的主要流程。具体的安全控制细节，在其基类`AbstractSecurityInterceptor`中实现。
+
+#### 源代码解析
+
+```java
+/*
+ * Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.security.web.access.intercept;
+
+import org.springframework.security.access.SecurityMetadataSource;
+import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
+import org.springframework.security.access.intercept.InterceptorStatusToken;
+import org.springframework.security.web.FilterInvocation;
+
+import javax.servlet.*;
+import java.io.IOException;
+
+/**
+ * Performs security handling of HTTP resources via a filter implementation.
+ * <p>
+ * The <code>SecurityMetadataSource</code> required by this security interceptor is of
+ * type {@link FilterInvocationSecurityMetadataSource}.
+ * <p>
+ * Refer to {@link AbstractSecurityInterceptor} for details on the workflow.
+ * </p>
+ *
+ * @author Ben Alex
+ * @author Rob Winch
+ */
+public class FilterSecurityInterceptor extends AbstractSecurityInterceptor implements
+        Filter {
+    // ~ Static fields/initializers
+    // =====================================================================================
+
+    private static final String FILTER_APPLIED = "__spring_security_filterSecurityInterceptor_filterApplied";
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    private FilterInvocationSecurityMetadataSource securityMetadataSource;
+    private boolean observeOncePerRequest = true;
+
+    // ~ Methods
+    // ========================================================================================================
+
+    /**
+     * Not used (we rely on IoC container lifecycle services instead)
+     *
+     * @param arg0 ignored
+     * @throws ServletException never thrown
+     */
+    @Override
+    public void init(FilterConfig arg0) throws ServletException {
+    }
+
+    /**
+     * Not used (we rely on IoC container lifecycle services instead)
+     */
+    @Override
+    public void destroy() {
+    }
+
+    /**
+     * Method that is actually called by the filter chain. Simply delegates to the
+     * {@link #invoke(FilterInvocation)} method.
+     *
+     * @param request  the servlet request
+     * @param response the servlet response
+     * @param chain    the filter chain
+     * @throws IOException      if the filter chain fails
+     * @throws ServletException if the filter chain fails
+     */
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException {
+        // 封装请求上下文为一个FilterInvocation,然后调用该FilterInvocation执行安全认证
+        FilterInvocation fi = new FilterInvocation(request, response, chain);
+        invoke(fi);
+    }
+
+    public FilterInvocationSecurityMetadataSource getSecurityMetadataSource() {
+        return this.securityMetadataSource;
+    }
+
+    @Override
+    public SecurityMetadataSource obtainSecurityMetadataSource() {
+        return this.securityMetadataSource;
+    }
+
+    public void setSecurityMetadataSource(FilterInvocationSecurityMetadataSource newSource) {
+        this.securityMetadataSource = newSource;
+    }
+
+    @Override
+    public Class<?> getSecureObjectClass() {
+        return FilterInvocation.class;
+    }
+
+    public void invoke(FilterInvocation fi) throws IOException, ServletException {
+        if ((fi.getRequest() != null)
+                && (fi.getRequest().getAttribute(FILTER_APPLIED) != null)
+                && observeOncePerRequest) {
+            // filter already applied to this request and user wants us to observe
+            // once-per-request handling, so don't re-do security checking
+            // 如果被指定为在整个请求处理过程中只能执行最多一次 ,并且监测到已经执行过,
+            // 则直接放行，继续 filter chain 的执行
+            fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
+        } else {
+            // first time this request being called, so perform security checking
+            if (fi.getRequest() != null && observeOncePerRequest) {
+                // 如果被指定为在整个请求处理过程中只能执行最多一次 ,并且监测到尚未执行,
+                // 则设置已经执行标志，随后执行职责逻辑
+                fi.getRequest().setAttribute(FILTER_APPLIED, Boolean.TRUE);
+            }
+
+            // 这里是该过滤器进行安全检查的职责逻辑,具体实现在基类AbstractSecurityInterceptor
+            // 主要是进行必要的认证和授权检查，如果遇到相关异常则抛出异常，之后的过滤器链
+            // 调用不会继续进行
+            InterceptorStatusToken token = super.beforeInvocation(fi);
+
+            try {
+                // 如果上面通过安全检查，这里继续过滤器的执行
+                fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
+            } finally {
+                super.finallyInvocation(token);
+            }
+
+            super.afterInvocation(token, null);
+        }
+    }
+
+    // 指定是否在整个请求处理过程中该过滤器只被执行一次，缺省是 true。
+    // 也存在在整个请求处理过程中该过滤器需要执行多次的情况，比如JSP foward/include
+    // 等情况。
+    public boolean isObserveOncePerRequest() {
+        return observeOncePerRequest;
+    }
+
+    public void setObserveOncePerRequest(boolean observeOncePerRequest) {
+        this.observeOncePerRequest = observeOncePerRequest;
+    }
+}
+```
+
+```java
+/*
+ * Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.security.access.intercept;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.*;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityMetadataSource;
+import org.springframework.security.access.event.AuthenticationCredentialsNotFoundEvent;
+import org.springframework.security.access.event.AuthorizationFailureEvent;
+import org.springframework.security.access.event.AuthorizedEvent;
+import org.springframework.security.access.event.PublicInvocationEvent;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Abstract class that implements security interception for secure objects.
+ * <p>
+ * The <code>AbstractSecurityInterceptor</code> will ensure the proper startup
+ * configuration of the security interceptor. It will also implement the proper handling
+ * of secure object invocations, namely:
+ * <ol>
+ * <li>Obtain the {@link Authentication} object from the {@link SecurityContextHolder}.</li>
+ * <li>Determine if the request relates to a secured or public invocation by looking up
+ * the secure object request against the {@link SecurityMetadataSource}.</li>
+ * <li>For an invocation that is secured (there is a list of <code>ConfigAttribute</code>s
+ * for the secure object invocation):
+ * <ol type="a">
+ * <li>If either the
+ * {@link org.springframework.security.core.Authentication#isAuthenticated()} returns
+ * <code>false</code>, or the {@link #alwaysReauthenticate} is <code>true</code>,
+ * authenticate the request against the configured {@link AuthenticationManager}. When
+ * authenticated, replace the <code>Authentication</code> object on the
+ * <code>SecurityContextHolder</code> with the returned value.</li>
+ * <li>Authorize the request against the configured {@link AccessDecisionManager}.</li>
+ * <li>Perform any run-as replacement via the configured {@link RunAsManager}.</li>
+ * <li>Pass control back to the concrete subclass, which will actually proceed with
+ * executing the object. A {@link InterceptorStatusToken} is returned so that after the
+ * subclass has finished proceeding with execution of the object, its finally clause can
+ * ensure the <code>AbstractSecurityInterceptor</code> is re-called and tidies up
+ * correctly using {@link #finallyInvocation(InterceptorStatusToken)}.</li>
+ * <li>The concrete subclass will re-call the <code>AbstractSecurityInterceptor</code> via
+ * the {@link #afterInvocation(InterceptorStatusToken, Object)} method.</li>
+ * <li>If the <code>RunAsManager</code> replaced the <code>Authentication</code> object,
+ * return the <code>SecurityContextHolder</code> to the object that existed after the call
+ * to <code>AuthenticationManager</code>.</li>
+ * <li>If an <code>AfterInvocationManager</code> is defined, invoke the invocation manager
+ * and allow it to replace the object due to be returned to the caller.</li>
+ * </ol>
+ * </li>
+ * <li>For an invocation that is public (there are no <code>ConfigAttribute</code>s for
+ * the secure object invocation):
+ * <ol type="a">
+ * <li>As described above, the concrete subclass will be returned an
+ * <code>InterceptorStatusToken</code> which is subsequently re-presented to the
+ * <code>AbstractSecurityInterceptor</code> after the secure object has been executed. The
+ * <code>AbstractSecurityInterceptor</code> will take no further action when its
+ * {@link #afterInvocation(InterceptorStatusToken, Object)} is called.</li>
+ * </ol>
+ * </li>
+ * <li>Control again returns to the concrete subclass, along with the <code>Object</code>
+ * that should be returned to the caller. The subclass will then return that result or
+ * exception to the original caller.</li>
+ * </ol>
+ *
+ * @author Ben Alex
+ * @author Rob Winch
+ */
+public abstract class AbstractSecurityInterceptor implements InitializingBean,
+        ApplicationEventPublisherAware, MessageSourceAware {
+    // ~ Static fields/initializers
+    // =====================================================================================
+
+    protected final Log logger = LogFactory.getLog(getClass());
+
+    // ~ Instance fields
+    // ================================================================================================
+
+    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+    private ApplicationEventPublisher eventPublisher;
+    private AccessDecisionManager accessDecisionManager;
+    private AfterInvocationManager afterInvocationManager;
+    private AuthenticationManager authenticationManager = new NoOpAuthenticationManager();
+    private RunAsManager runAsManager = new NullRunAsManager();
+
+    private boolean alwaysReauthenticate = false;
+    private boolean rejectPublicInvocations = false;
+    private boolean validateConfigAttributes = true;
+    private boolean publishAuthorizationSuccess = false;
+
+    // ~ Methods
+    // ========================================================================================================
+
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(getSecureObjectClass(),
+                "Subclass must provide a non-null response to getSecureObjectClass()");
+        Assert.notNull(this.messages, "A message source must be set");
+        Assert.notNull(this.authenticationManager, "An AuthenticationManager is required");
+        Assert.notNull(this.accessDecisionManager, "An AccessDecisionManager is required");
+        Assert.notNull(this.runAsManager, "A RunAsManager is required");
+        Assert.notNull(this.obtainSecurityMetadataSource(),
+                "An SecurityMetadataSource is required");
+        Assert.isTrue(this.obtainSecurityMetadataSource()
+                        .supports(getSecureObjectClass()),
+                () -> "SecurityMetadataSource does not support secure object class: "
+                        + getSecureObjectClass());
+        Assert.isTrue(this.runAsManager.supports(getSecureObjectClass()),
+                () -> "RunAsManager does not support secure object class: "
+                        + getSecureObjectClass());
+        Assert.isTrue(this.accessDecisionManager.supports(getSecureObjectClass()),
+                () -> "AccessDecisionManager does not support secure object class: "
+                        + getSecureObjectClass());
+
+        if (this.afterInvocationManager != null) {
+            Assert.isTrue(this.afterInvocationManager.supports(getSecureObjectClass()),
+                    () -> "AfterInvocationManager does not support secure object class: "
+                            + getSecureObjectClass());
+        }
+
+        if (this.validateConfigAttributes) {
+            Collection<ConfigAttribute> attributeDefs = this
+                    .obtainSecurityMetadataSource().getAllConfigAttributes();
+
+            if (attributeDefs == null) {
+                logger.warn("Could not validate configuration attributes as the SecurityMetadataSource did not return "
+                        + "any attributes from getAllConfigAttributes()");
+                return;
+            }
+
+            Set<ConfigAttribute> unsupportedAttrs = new HashSet<>();
+
+            for (ConfigAttribute attr : attributeDefs) {
+                if (!this.runAsManager.supports(attr)
+                        && !this.accessDecisionManager.supports(attr)
+                        && ((this.afterInvocationManager == null) || !this.afterInvocationManager
+                        .supports(attr))) {
+                    unsupportedAttrs.add(attr);
+                }
+            }
+
+            if (unsupportedAttrs.size() != 0) {
+                throw new IllegalArgumentException(
+                        "Unsupported configuration attributes: " + unsupportedAttrs);
+            }
+
+            logger.debug("Validated configuration attributes");
+        }
+    }
+
+    protected InterceptorStatusToken beforeInvocation(Object object) {
+        Assert.notNull(object, "Object was null");
+        final boolean debug = logger.isDebugEnabled();
+
+        if (!getSecureObjectClass().isAssignableFrom(object.getClass())) {
+            throw new IllegalArgumentException(
+                    "Security invocation attempted for object "
+                            + object.getClass().getName()
+                            + " but AbstractSecurityInterceptor only configured to support secure objects of type: "
+                            + getSecureObjectClass());
+        }
+
+        // 从安全配置中获取安全元数据,记录在 attributes
+        Collection<ConfigAttribute> attributes = this.obtainSecurityMetadataSource()
+                .getAttributes(object);
+
+        if (attributes == null || attributes.isEmpty()) {
+            // 说明该安全对象没有配置安全控制，可以被公开访问
+            if (rejectPublicInvocations) {
+                // 如果系统配置了拒绝公开调用，则抛出异常拒绝当前请求
+                throw new IllegalArgumentException(
+                        "Secure object invocation "
+                                + object
+                                + " was denied as public invocations are not allowed via this interceptor. "
+                                + "This indicates a configuration error because the "
+                                + "rejectPublicInvocations property is set to 'true'");
+            }
+
+            if (debug) {
+                logger.debug("Public object - authentication not attempted");
+            }
+
+            publishEvent(new PublicInvocationEvent(object));
+
+            // 该资源没有设置安全，可以公开访问，不做相应的安全检查，返回 null，
+            // 表示不需要做后续处理
+            return null; // no further work post-invocation
+        }
+
+        if (debug) {
+            logger.debug("Secure object: " + object + "; Attributes: " + attributes);
+        }
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // 如果安全认证token不存在，则抛出异常 AuthenticationCredentialsNotFoundException
+            credentialsNotFound(messages.getMessage(
+                    "AbstractSecurityInterceptor.authenticationNotFound",
+                    "An Authentication object was not found in the SecurityContext"),
+                    object, attributes);
+        }
+
+        // 如果安全认证token存在，则检查是否需要认证，如果需要，则执行认证并更行
+        // 安全上下文中的安全认证token，如果认证失败，抛出异常 AuthenticationException
+        Authentication authenticated = authenticateIfRequired();
+
+        // Attempt authorization
+        try {
+            // 现在已经确保用户通过了认证，现在基于登录的当前用户信息，和目标资源的安全配置属性
+            // 进行相应的权限检查,如果检查失败，则抛出相应的异常 AccessDeniedException
+            this.accessDecisionManager.decide(authenticated, object, attributes);
+        } catch (AccessDeniedException accessDeniedException) {
+            publishEvent(new AuthorizationFailureEvent(object, attributes, authenticated,
+                    accessDeniedException));
+
+            throw accessDeniedException;
+        }
+
+        if (debug) {
+            logger.debug("Authorization successful");
+        }
+
+        if (publishAuthorizationSuccess) {
+            publishEvent(new AuthorizedEvent(object, attributes, authenticated));
+        }
+
+        // Attempt to run as a different user
+        // 如果设置了 RunAsManager， 尝试将当前安全认证token修改为另外一个run-as用户,
+        // 缺省是 NullRunAsManager， 其实相当于没有启用 run-as, 下面的 runAs 缺省会是
+        // null
+        Authentication runAs = this.runAsManager.buildRunAs(authenticated, object,
+                attributes);
+
+        if (runAs == null) {
+            if (debug) {
+                logger.debug("RunAsManager did not change Authentication object");
+            }
+
+            // no further work post-invocation
+            // 注意这里第二个参数为 false, 表示请求处理完之后再次回到该filter时不需要在刷新安全认证token
+            return new InterceptorStatusToken(SecurityContextHolder.getContext(), false,
+                    attributes, object);
+        } else {
+            if (debug) {
+                logger.debug("Switching to RunAs Authentication: " + runAs);
+            }
+
+            SecurityContext origCtx = SecurityContextHolder.getContext();
+            SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+            SecurityContextHolder.getContext().setAuthentication(runAs);
+
+            // need to revert to token.Authenticated post-invocation
+            // 注意这里第二个参数为 true, 表示请求处理完之后再次回到该filter时需要在刷新安全认证token :
+            // 恢复到 run-as 之前的安全认证token
+            return new InterceptorStatusToken(origCtx, true, attributes, object);
+        }
+    }
+
+    /**
+     * Cleans up the work of the <tt>AbstractSecurityInterceptor</tt> after the secure
+     * object invocation has been completed. This method should be invoked after the
+     * secure object invocation and before afterInvocation regardless of the secure object
+     * invocation returning successfully (i.e. it should be done in a finally block).
+     *
+     * @param token as returned by the {@link #beforeInvocation(Object)} method
+     */
+    protected void finallyInvocation(InterceptorStatusToken token) {
+        if (token != null && token.isContextHolderRefreshRequired()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Reverting to original Authentication: "
+                        + token.getSecurityContext().getAuthentication());
+            }
+
+            SecurityContextHolder.setContext(token.getSecurityContext());
+        }
+    }
+
+    /**
+     * Completes the work of the <tt>AbstractSecurityInterceptor</tt> after the secure
+     * object invocation has been completed.
+     *
+     * @param token          as returned by the {@link #beforeInvocation(Object)} method
+     * @param returnedObject any object returned from the secure object invocation (may be
+     *                       <tt>null</tt>)
+     * @return the object the secure object invocation should ultimately return to its
+     * caller (may be <tt>null</tt>)
+     */
+    protected Object afterInvocation(InterceptorStatusToken token, Object returnedObject) {
+        if (token == null) {
+            // public object
+            return returnedObject;
+        }
+
+        finallyInvocation(token); // continue to clean in this method for passivity
+
+        if (afterInvocationManager != null) {
+            // Attempt after invocation handling
+            try {
+                returnedObject = afterInvocationManager.decide(token.getSecurityContext()
+                        .getAuthentication(), token.getSecureObject(), token
+                        .getAttributes(), returnedObject);
+            } catch (AccessDeniedException accessDeniedException) {
+                AuthorizationFailureEvent event = new AuthorizationFailureEvent(
+                        token.getSecureObject(), token.getAttributes(), token
+                        .getSecurityContext().getAuthentication(),
+                        accessDeniedException);
+                publishEvent(event);
+
+                throw accessDeniedException;
+            }
+        }
+
+        return returnedObject;
+    }
+
+    /**
+     * Checks the current authentication token and passes it to the AuthenticationManager
+     * if {@link org.springframework.security.core.Authentication#isAuthenticated()}
+     * returns false or the property <tt>alwaysReauthenticate</tt> has been set to true.
+     *
+     * @return an authenticated <tt>Authentication</tt> object.
+     */
+    private Authentication authenticateIfRequired() {
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+
+        if (authentication.isAuthenticated() && !alwaysReauthenticate) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Previously Authenticated: " + authentication);
+            }
+
+            return authentication;
+        }
+
+        authentication = authenticationManager.authenticate(authentication);
+
+        // We don't authenticated.setAuthentication(true), because each provider should do
+        // that
+        if (logger.isDebugEnabled()) {
+            logger.debug("Successfully Authenticated: " + authentication);
+        }
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return authentication;
+    }
+
+    /**
+     * Helper method which generates an exception containing the passed reason, and
+     * publishes an event to the application context.
+     * <p>
+     * Always throws an exception.
+     *
+     * @param reason        to be provided in the exception detail
+     * @param secureObject  that was being called
+     * @param configAttribs that were defined for the secureObject
+     */
+    private void credentialsNotFound(String reason, Object secureObject,
+                                     Collection<ConfigAttribute> configAttribs) {
+        AuthenticationCredentialsNotFoundException exception = new AuthenticationCredentialsNotFoundException(
+                reason);
+
+        AuthenticationCredentialsNotFoundEvent event = new AuthenticationCredentialsNotFoundEvent(
+                secureObject, configAttribs, exception);
+        publishEvent(event);
+
+        throw exception;
+    }
+
+    public AccessDecisionManager getAccessDecisionManager() {
+        return accessDecisionManager;
+    }
+
+    public AfterInvocationManager getAfterInvocationManager() {
+        return afterInvocationManager;
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return this.authenticationManager;
+    }
+
+    public RunAsManager getRunAsManager() {
+        return runAsManager;
+    }
+
+    /**
+     * Indicates the type of secure objects the subclass will be presenting to the
+     * abstract parent for processing. This is used to ensure collaborators wired to the
+     * {@code AbstractSecurityInterceptor} all support the indicated secure object class.
+     *
+     * @return the type of secure object the subclass provides services for
+     */
+    public abstract Class<?> getSecureObjectClass();
+
+    public boolean isAlwaysReauthenticate() {
+        return alwaysReauthenticate;
+    }
+
+    public boolean isRejectPublicInvocations() {
+        return rejectPublicInvocations;
+    }
+
+    public boolean isValidateConfigAttributes() {
+        return validateConfigAttributes;
+    }
+
+    public abstract SecurityMetadataSource obtainSecurityMetadataSource();
+
+    public void setAccessDecisionManager(AccessDecisionManager accessDecisionManager) {
+        this.accessDecisionManager = accessDecisionManager;
+    }
+
+    public void setAfterInvocationManager(AfterInvocationManager afterInvocationManager) {
+        this.afterInvocationManager = afterInvocationManager;
+    }
+
+    /**
+     * Indicates whether the <code>AbstractSecurityInterceptor</code> should ignore the
+     * {@link Authentication#isAuthenticated()} property. Defaults to <code>false</code>,
+     * meaning by default the <code>Authentication.isAuthenticated()</code> property is
+     * trusted and re-authentication will not occur if the principal has already been
+     * authenticated.
+     *
+     * @param alwaysReauthenticate <code>true</code> to force
+     *                             <code>AbstractSecurityInterceptor</code> to disregard the value of
+     *                             <code>Authentication.isAuthenticated()</code> and always re-authenticate the
+     *                             request (defaults to <code>false</code>).
+     */
+    public void setAlwaysReauthenticate(boolean alwaysReauthenticate) {
+        this.alwaysReauthenticate = alwaysReauthenticate;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(
+            ApplicationEventPublisher applicationEventPublisher) {
+        this.eventPublisher = applicationEventPublisher;
+    }
+
+    public void setAuthenticationManager(AuthenticationManager newManager) {
+        this.authenticationManager = newManager;
+    }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messages = new MessageSourceAccessor(messageSource);
+    }
+
+    /**
+     * Only {@code AuthorizationFailureEvent} will be published. If you set this property
+     * to {@code true}, {@code AuthorizedEvent}s will also be published.
+     *
+     * @param publishAuthorizationSuccess default value is {@code false}
+     */
+    public void setPublishAuthorizationSuccess(boolean publishAuthorizationSuccess) {
+        this.publishAuthorizationSuccess = publishAuthorizationSuccess;
+    }
+
+    /**
+     * By rejecting public invocations (and setting this property to <tt>true</tt>),
+     * essentially you are ensuring that every secure object invocation advised by
+     * <code>AbstractSecurityInterceptor</code> has a configuration attribute defined.
+     * This is useful to ensure a "fail safe" mode where undeclared secure objects will be
+     * rejected and configuration omissions detected early. An
+     * <tt>IllegalArgumentException</tt> will be thrown by the
+     * <tt>AbstractSecurityInterceptor</tt> if you set this property to <tt>true</tt> and
+     * an attempt is made to invoke a secure object that has no configuration attributes.
+     *
+     * @param rejectPublicInvocations set to <code>true</code> to reject invocations of
+     *                                secure objects that have no configuration attributes (by default it is
+     *                                <code>false</code> which treats undeclared secure objects as "public" or
+     *                                unauthorized).
+     */
+    public void setRejectPublicInvocations(boolean rejectPublicInvocations) {
+        this.rejectPublicInvocations = rejectPublicInvocations;
+    }
+
+    public void setRunAsManager(RunAsManager runAsManager) {
+        this.runAsManager = runAsManager;
+    }
+
+    public void setValidateConfigAttributes(boolean validateConfigAttributes) {
+        this.validateConfigAttributes = validateConfigAttributes;
+    }
+
+    private void publishEvent(ApplicationEvent event) {
+        if (this.eventPublisher != null) {
+            this.eventPublisher.publishEvent(event);
+        }
+    }
+
+    private static class NoOpAuthenticationManager implements AuthenticationManager {
+
+        @Override
+        public Authentication authenticate(Authentication authentication)
+                throws AuthenticationException {
+            throw new AuthenticationServiceException("Cannot authenticate "
+                    + authentication);
+        }
+    }
+}
+```
