@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Java SPI机制详解 | 吴益龙的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="吴益龙的博客">
+    
+    <link rel="preload" href="/blog-docs/assets/css/0.styles.51dfe6fe.css" as="style"><link rel="preload" href="/blog-docs/assets/js/app.2064cad8.js" as="script"><link rel="preload" href="/blog-docs/assets/js/2.d20fb779.js" as="script"><link rel="preload" href="/blog-docs/assets/js/165.5ea2b8f5.js" as="script"><link rel="prefetch" href="/blog-docs/assets/js/10.ce89d165.js"><link rel="prefetch" href="/blog-docs/assets/js/100.ead7e371.js"><link rel="prefetch" href="/blog-docs/assets/js/101.7a7619df.js"><link rel="prefetch" href="/blog-docs/assets/js/102.20346e15.js"><link rel="prefetch" href="/blog-docs/assets/js/103.64b30ebc.js"><link rel="prefetch" href="/blog-docs/assets/js/104.522b4976.js"><link rel="prefetch" href="/blog-docs/assets/js/105.74b26057.js"><link rel="prefetch" href="/blog-docs/assets/js/106.7e839b9a.js"><link rel="prefetch" href="/blog-docs/assets/js/107.eb23121d.js"><link rel="prefetch" href="/blog-docs/assets/js/108.8a32a2e5.js"><link rel="prefetch" href="/blog-docs/assets/js/109.6be0c37b.js"><link rel="prefetch" href="/blog-docs/assets/js/11.7af1ea0e.js"><link rel="prefetch" href="/blog-docs/assets/js/110.238cb720.js"><link rel="prefetch" href="/blog-docs/assets/js/111.3e99f827.js"><link rel="prefetch" href="/blog-docs/assets/js/112.eb22a5fa.js"><link rel="prefetch" href="/blog-docs/assets/js/113.de1dd438.js"><link rel="prefetch" href="/blog-docs/assets/js/114.fa17a8b6.js"><link rel="prefetch" href="/blog-docs/assets/js/115.7bb1f73c.js"><link rel="prefetch" href="/blog-docs/assets/js/116.56886a9e.js"><link rel="prefetch" href="/blog-docs/assets/js/117.79d7c802.js"><link rel="prefetch" href="/blog-docs/assets/js/118.1f537ce0.js"><link rel="prefetch" href="/blog-docs/assets/js/119.3ebcb7db.js"><link rel="prefetch" href="/blog-docs/assets/js/12.5f02203f.js"><link rel="prefetch" href="/blog-docs/assets/js/120.2d112561.js"><link rel="prefetch" href="/blog-docs/assets/js/121.fe7b63ad.js"><link rel="prefetch" href="/blog-docs/assets/js/122.f73684d2.js"><link rel="prefetch" href="/blog-docs/assets/js/123.719ba570.js"><link rel="prefetch" href="/blog-docs/assets/js/124.6298f285.js"><link rel="prefetch" href="/blog-docs/assets/js/125.b2902409.js"><link rel="prefetch" href="/blog-docs/assets/js/126.12319946.js"><link rel="prefetch" href="/blog-docs/assets/js/127.0c1bd267.js"><link rel="prefetch" href="/blog-docs/assets/js/128.9bfcd23b.js"><link rel="prefetch" href="/blog-docs/assets/js/129.6b3a41be.js"><link rel="prefetch" href="/blog-docs/assets/js/13.7c743478.js"><link rel="prefetch" href="/blog-docs/assets/js/130.a5246f49.js"><link rel="prefetch" href="/blog-docs/assets/js/131.72e86b5c.js"><link rel="prefetch" href="/blog-docs/assets/js/132.6c749ed3.js"><link rel="prefetch" href="/blog-docs/assets/js/133.f0bbfed1.js"><link rel="prefetch" href="/blog-docs/assets/js/134.b40b57e1.js"><link rel="prefetch" href="/blog-docs/assets/js/135.c2701081.js"><link rel="prefetch" href="/blog-docs/assets/js/136.b98ae517.js"><link rel="prefetch" href="/blog-docs/assets/js/137.36ee3f9d.js"><link rel="prefetch" href="/blog-docs/assets/js/138.07a7ea2b.js"><link rel="prefetch" href="/blog-docs/assets/js/139.867a32e4.js"><link rel="prefetch" href="/blog-docs/assets/js/14.ba2733bb.js"><link rel="prefetch" href="/blog-docs/assets/js/140.2527c10f.js"><link rel="prefetch" href="/blog-docs/assets/js/141.556a5bcb.js"><link rel="prefetch" href="/blog-docs/assets/js/142.ffb1e6ae.js"><link rel="prefetch" href="/blog-docs/assets/js/143.5c96e2cd.js"><link rel="prefetch" href="/blog-docs/assets/js/144.490be9db.js"><link rel="prefetch" href="/blog-docs/assets/js/145.4f1a11c9.js"><link rel="prefetch" href="/blog-docs/assets/js/146.ef447713.js"><link rel="prefetch" href="/blog-docs/assets/js/147.a0176e98.js"><link rel="prefetch" href="/blog-docs/assets/js/148.d2280eae.js"><link rel="prefetch" href="/blog-docs/assets/js/149.7784a68a.js"><link rel="prefetch" href="/blog-docs/assets/js/15.5b47152f.js"><link rel="prefetch" href="/blog-docs/assets/js/150.3badab5c.js"><link rel="prefetch" href="/blog-docs/assets/js/151.f1cbd0f1.js"><link rel="prefetch" href="/blog-docs/assets/js/152.bba59ff9.js"><link rel="prefetch" href="/blog-docs/assets/js/153.c8327d38.js"><link rel="prefetch" href="/blog-docs/assets/js/154.17b29860.js"><link rel="prefetch" href="/blog-docs/assets/js/155.2ef06949.js"><link rel="prefetch" href="/blog-docs/assets/js/156.88cd84fd.js"><link rel="prefetch" href="/blog-docs/assets/js/157.f9477b06.js"><link rel="prefetch" href="/blog-docs/assets/js/158.d9144f9c.js"><link rel="prefetch" href="/blog-docs/assets/js/159.426c71ec.js"><link rel="prefetch" href="/blog-docs/assets/js/16.5c1ff9fb.js"><link rel="prefetch" href="/blog-docs/assets/js/160.bd59a846.js"><link rel="prefetch" href="/blog-docs/assets/js/161.de322f47.js"><link rel="prefetch" href="/blog-docs/assets/js/162.7f0e64aa.js"><link rel="prefetch" href="/blog-docs/assets/js/163.e0c7028d.js"><link rel="prefetch" href="/blog-docs/assets/js/164.ad637a13.js"><link rel="prefetch" href="/blog-docs/assets/js/166.d1dd33b1.js"><link rel="prefetch" href="/blog-docs/assets/js/167.f381877d.js"><link rel="prefetch" href="/blog-docs/assets/js/168.75ad3027.js"><link rel="prefetch" href="/blog-docs/assets/js/169.86f45320.js"><link rel="prefetch" href="/blog-docs/assets/js/17.9e3fb97a.js"><link rel="prefetch" href="/blog-docs/assets/js/170.e70685f2.js"><link rel="prefetch" href="/blog-docs/assets/js/171.152fea02.js"><link rel="prefetch" href="/blog-docs/assets/js/172.763341ac.js"><link rel="prefetch" href="/blog-docs/assets/js/18.78ccb707.js"><link rel="prefetch" href="/blog-docs/assets/js/19.288e2506.js"><link rel="prefetch" href="/blog-docs/assets/js/20.4bbf35de.js"><link rel="prefetch" href="/blog-docs/assets/js/21.66a3f7e9.js"><link rel="prefetch" href="/blog-docs/assets/js/22.53103f80.js"><link rel="prefetch" href="/blog-docs/assets/js/23.7d3b191c.js"><link rel="prefetch" href="/blog-docs/assets/js/24.3e1c653d.js"><link rel="prefetch" href="/blog-docs/assets/js/25.72b659bd.js"><link rel="prefetch" href="/blog-docs/assets/js/26.79a9eade.js"><link rel="prefetch" href="/blog-docs/assets/js/27.a4f0209b.js"><link rel="prefetch" href="/blog-docs/assets/js/28.bc36032c.js"><link rel="prefetch" href="/blog-docs/assets/js/29.77ec583b.js"><link rel="prefetch" href="/blog-docs/assets/js/3.5fa11848.js"><link rel="prefetch" href="/blog-docs/assets/js/30.ffca4ac6.js"><link rel="prefetch" href="/blog-docs/assets/js/31.005446e8.js"><link rel="prefetch" href="/blog-docs/assets/js/32.c4bf0cce.js"><link rel="prefetch" href="/blog-docs/assets/js/33.7c9331d1.js"><link rel="prefetch" href="/blog-docs/assets/js/34.c0827e26.js"><link rel="prefetch" href="/blog-docs/assets/js/35.6f50269a.js"><link rel="prefetch" href="/blog-docs/assets/js/36.34976541.js"><link rel="prefetch" href="/blog-docs/assets/js/37.0b7d15c6.js"><link rel="prefetch" href="/blog-docs/assets/js/38.931d2ddc.js"><link rel="prefetch" href="/blog-docs/assets/js/39.2a8d35ff.js"><link rel="prefetch" href="/blog-docs/assets/js/4.04ab9679.js"><link rel="prefetch" href="/blog-docs/assets/js/40.4aa9327a.js"><link rel="prefetch" href="/blog-docs/assets/js/41.2dffb318.js"><link rel="prefetch" href="/blog-docs/assets/js/42.9c456f1a.js"><link rel="prefetch" href="/blog-docs/assets/js/43.6d2a19a3.js"><link rel="prefetch" href="/blog-docs/assets/js/44.18cb6971.js"><link rel="prefetch" href="/blog-docs/assets/js/45.ecd9f4d0.js"><link rel="prefetch" href="/blog-docs/assets/js/46.626ba871.js"><link rel="prefetch" href="/blog-docs/assets/js/47.6da494ef.js"><link rel="prefetch" href="/blog-docs/assets/js/48.7cf52545.js"><link rel="prefetch" href="/blog-docs/assets/js/49.5594ab03.js"><link rel="prefetch" href="/blog-docs/assets/js/5.1873b179.js"><link rel="prefetch" href="/blog-docs/assets/js/50.bcd443d4.js"><link rel="prefetch" href="/blog-docs/assets/js/51.8c84becb.js"><link rel="prefetch" href="/blog-docs/assets/js/52.ee31a612.js"><link rel="prefetch" href="/blog-docs/assets/js/53.ef72ee44.js"><link rel="prefetch" href="/blog-docs/assets/js/54.ada4baf0.js"><link rel="prefetch" href="/blog-docs/assets/js/55.310a1b2a.js"><link rel="prefetch" href="/blog-docs/assets/js/56.dabb55ad.js"><link rel="prefetch" href="/blog-docs/assets/js/57.57be9686.js"><link rel="prefetch" href="/blog-docs/assets/js/58.bc2af85c.js"><link rel="prefetch" href="/blog-docs/assets/js/59.57695909.js"><link rel="prefetch" href="/blog-docs/assets/js/6.ffc21dda.js"><link rel="prefetch" href="/blog-docs/assets/js/60.e1469407.js"><link rel="prefetch" href="/blog-docs/assets/js/61.28a5ef7a.js"><link rel="prefetch" href="/blog-docs/assets/js/62.65746977.js"><link rel="prefetch" href="/blog-docs/assets/js/63.9385a046.js"><link rel="prefetch" href="/blog-docs/assets/js/64.4c58f8cb.js"><link rel="prefetch" href="/blog-docs/assets/js/65.f5def24f.js"><link rel="prefetch" href="/blog-docs/assets/js/66.edcbb351.js"><link rel="prefetch" href="/blog-docs/assets/js/67.a9580d80.js"><link rel="prefetch" href="/blog-docs/assets/js/68.d349e673.js"><link rel="prefetch" href="/blog-docs/assets/js/69.f89e0ad1.js"><link rel="prefetch" href="/blog-docs/assets/js/7.604f2cf3.js"><link rel="prefetch" href="/blog-docs/assets/js/70.d8037a02.js"><link rel="prefetch" href="/blog-docs/assets/js/71.2c659dbc.js"><link rel="prefetch" href="/blog-docs/assets/js/72.30ff712e.js"><link rel="prefetch" href="/blog-docs/assets/js/73.d6124c43.js"><link rel="prefetch" href="/blog-docs/assets/js/74.b368add8.js"><link rel="prefetch" href="/blog-docs/assets/js/75.710c78a6.js"><link rel="prefetch" href="/blog-docs/assets/js/76.d02af389.js"><link rel="prefetch" href="/blog-docs/assets/js/77.772d7877.js"><link rel="prefetch" href="/blog-docs/assets/js/78.acdf1204.js"><link rel="prefetch" href="/blog-docs/assets/js/79.3841a692.js"><link rel="prefetch" href="/blog-docs/assets/js/8.02188626.js"><link rel="prefetch" href="/blog-docs/assets/js/80.9f8115b4.js"><link rel="prefetch" href="/blog-docs/assets/js/81.454cfc40.js"><link rel="prefetch" href="/blog-docs/assets/js/82.c9501ea9.js"><link rel="prefetch" href="/blog-docs/assets/js/83.d1f8f4b2.js"><link rel="prefetch" href="/blog-docs/assets/js/84.1a4e4481.js"><link rel="prefetch" href="/blog-docs/assets/js/85.8b5062bd.js"><link rel="prefetch" href="/blog-docs/assets/js/86.c2c231b6.js"><link rel="prefetch" href="/blog-docs/assets/js/87.11d0bd52.js"><link rel="prefetch" href="/blog-docs/assets/js/88.570ca5e4.js"><link rel="prefetch" href="/blog-docs/assets/js/89.b78d36e0.js"><link rel="prefetch" href="/blog-docs/assets/js/9.5585259d.js"><link rel="prefetch" href="/blog-docs/assets/js/90.55d0d283.js"><link rel="prefetch" href="/blog-docs/assets/js/91.d1b21ad6.js"><link rel="prefetch" href="/blog-docs/assets/js/92.77128d92.js"><link rel="prefetch" href="/blog-docs/assets/js/93.049b7031.js"><link rel="prefetch" href="/blog-docs/assets/js/94.7288d09b.js"><link rel="prefetch" href="/blog-docs/assets/js/95.14f41657.js"><link rel="prefetch" href="/blog-docs/assets/js/96.1586307c.js"><link rel="prefetch" href="/blog-docs/assets/js/97.7fae0f0e.js"><link rel="prefetch" href="/blog-docs/assets/js/98.fab6426d.js"><link rel="prefetch" href="/blog-docs/assets/js/99.a9e1819c.js">
+    <link rel="stylesheet" href="/blog-docs/assets/css/0.styles.51dfe6fe.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog-docs/" class="home-link router-link-active"><!----> <span class="site-name">吴益龙的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><a href="/blog-docs/technology/前端/jQuery中封装ajax请求/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/blog-docs/technology/Rust/Rust编程语言入门/" class="nav-link">
+  Rust编程语言
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java" class="dropdown-title"><span class="title">java</span> <span class="arrow down"></span></button> <button type="button" aria-label="java" class="mobile-dropdown-title"><span class="title">java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/" class="nav-link">
+  基于OAuth2.0的统一身份认证中心
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="工具" class="dropdown-title"><span class="title">工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="工具" class="mobile-dropdown-title"><span class="title">工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线图表编辑工具
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.aconvert.com/cn/image/webp-to-jpg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  WEBP转JPG - 在线转换图像文件
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://jwt.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JWT解码
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          客户端
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.devart.com/dbforge/mysql/studio/download.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  dbForge Studio for MySQL
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.tianxiaobo.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  田小波的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://funtl.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  千锋教育-李卫民
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://segmentfault.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  segmentfault技术社区
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://andyboke.blog.csdn.net/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  安迪源文
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog-docs/install/" class="nav-link">
+  安装文档
+</a></div><div class="nav-item"><a href="/blog-docs/technology/前端/jQuery中封装ajax请求/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/blog-docs/technology/Rust/Rust编程语言入门/" class="nav-link">
+  Rust编程语言
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="java" class="dropdown-title"><span class="title">java</span> <span class="arrow down"></span></button> <button type="button" aria-label="java" class="mobile-dropdown-title"><span class="title">java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/spring/Spring IOC/SpringBean的生命流程/" class="nav-link">
+  Spring专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpringBoot专题/" class="nav-link">
+  SpringBoot专题
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/基于OAuth2.0的统一身份认证中心/Spring Security oAuth2/" class="nav-link">
+  基于OAuth2.0的统一身份认证中心
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/SpingCloud Alibaba实战/微服务与SpringCloud Alibaba/" class="nav-link">
+  SpingCloud Alibaba实战
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/MyBatis/MyBatis 源码分析系列文章导读/" class="nav-link">
+  MyBatis
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Dubbo/Dubbo 源码分析 - SPI 机制/" class="nav-link">
+  Dubbo
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Docker/Docker入门教程/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/Jvm系列/Java类的加载机制/" class="nav-link">
+  Jvm系列
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/thread/基础知识/并发编程的优缺点/" class="nav-link">
+  高并发
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/算法/Java手写二叉搜索树算法/" class="nav-link">
+  算法
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/查缺补漏/Java面试题基础系列228道/" class="nav-link">
+  查缺补漏
+</a></li><li class="dropdown-item"><!----> <a href="/blog-docs/technology/java/other/基于canal的mysql数据同步/" class="nav-link">
+  其它
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="工具" class="dropdown-title"><span class="title">工具</span> <span class="arrow down"></span></button> <button type="button" aria-label="工具" class="mobile-dropdown-title"><span class="title">工具</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          在线编辑
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线图表编辑工具
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.aconvert.com/cn/image/webp-to-jpg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  WEBP转JPG - 在线转换图像文件
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  PDF 转换器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JSON 编辑器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tableconvert.com/?output=text" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  MD 表格生成
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cron.qqe2.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CRON 表达式
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://tool.oschina.net/codeformat/html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  代码格式化
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://cli.im/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  二维码生成器
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  在线编码转换
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://www.toyaml.com/index.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YAML &lt;--&gt; Properties
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-subitem"><a href="https://jwt.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  JWT解码
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          客户端
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://www.devart.com/dbforge/mysql/studio/download.html" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  dbForge Studio for MySQL
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li><li class="dropdown-item"><h4>
+          趋势分析
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://index.baidu.com/v2/index.html#/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  百度指数
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="常用网站" class="dropdown-title"><span class="title">常用网站</span> <span class="arrow down"></span></button> <button type="button" aria-label="常用网站" class="mobile-dropdown-title"><span class="title">常用网站</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://juejin.cn/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.moyundong.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  牛魔王的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.tianxiaobo.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  田小波的博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://funtl.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  千锋教育-李卫民
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://segmentfault.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  segmentfault技术社区
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://andyboke.blog.csdn.net/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  安迪源文
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><a href="https://gitee.com/wuyilong/blog-docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/ty-wssf/blog-docs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="java-spi机制详解"><a href="#java-spi机制详解" class="header-anchor">#</a> Java SPI机制详解</h1> <h2 id="什么是spi"><a href="#什么是spi" class="header-anchor">#</a> 什么是SPI？</h2> <p>SPI 全称为 (Service Provider Interface) ，是JDK内置的一种服务提供发现机制。SPI是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是java.sql.Driver接口，其他不同厂商可以针对同一接口做出不同的实现，mysql和postgresql都有不同的实现提供给用户，而Java的SPI机制可以为某个接口寻找服务实现。</p> <p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/5/14/1635dec2151e31e4~tplv-t2oaga2asx-watermark.awebp" alt="img"></p> <p>类图中，接口对应定义的抽象SPI接口；实现方实现SPI接口；调用方依赖SPI接口。</p> <p>SPI接口的定义在调用方，在概念上更依赖调用方；组织上位于调用方所在的包中；实现位于独立的包中。</p> <p>当接口属于实现方的情况，实现方提供了接口和实现，这个用法很常见，属于API调用。我们可以引用接口来达到调用某实现类的功能。</p> <h2 id="java-spi-应用实例"><a href="#java-spi-应用实例" class="header-anchor">#</a> Java SPI 应用实例</h2> <p>当服务的提供者提供了一种接口的实现之后，需要在classpath下的META-INF/services/目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的实现类。当其他的程序需要这个服务的时候，就可以通过查找这个jar包（一般都是以jar包做依赖）的META-INF/services/中的配置文件，配置文件中有接口的具体实现类名，可以根据这个类名进行加载实例化，就可以使用该服务了。JDK中查找服务实现的工具类是：java.util.ServiceLoader。</p> <h3 id="spi接口"><a href="#spi接口" class="header-anchor">#</a> SPI接口</h3> <div class="language- extra-class"><pre class="language-text"><code>public interface ObjectSerializer {
+
+    byte[] serialize(Object obj) throws ObjectSerializerException;
+
+    &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException;
+
+    String getSchemeName();
+}
+
+</code></pre></div><p>定义了一个对象序列化接口，内有三个方法：序列化方法、反序列化方法和序列化名称。</p> <h3 id="spi具体实现"><a href="#spi具体实现" class="header-anchor">#</a> SPI具体实现</h3> <div class="language- extra-class"><pre class="language-text"><code>public class KryoSerializer implements ObjectSerializer {
+
+    @Override
+    public byte[] serialize(Object obj) throws ObjectSerializerException {
+        byte[] bytes;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            //获取kryo对象
+            Kryo kryo = new Kryo();
+            Output output = new Output(outputStream);
+            kryo.writeObject(output, obj);
+            bytes = output.toBytes();
+            output.flush();
+        } catch (Exception ex) {
+            throw new ObjectSerializerException(&quot;kryo serialize error&quot; + ex.getMessage());
+        } finally {
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+
+            }
+        }
+        return bytes;
+    }
+
+    @Override
+    public &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException {
+        T object;
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(param)) {
+            Kryo kryo = new Kryo();
+            Input input = new Input(inputStream);
+            object = kryo.readObject(input, clazz);
+            input.close();
+        } catch (Exception e) {
+            throw new ObjectSerializerException(&quot;kryo deSerialize error&quot; + e.getMessage());
+        }
+        return object;
+    }
+
+    @Override
+    public String getSchemeName() {
+        return &quot;kryoSerializer&quot;;
+    }
+
+}
+
+</code></pre></div><p>使用Kryo的序列化方式。Kryo 是一个快速高效的Java对象图形序列化框架，它原生支持java，且在java的序列化上甚至优于google著名的序列化框架protobuf。</p> <div class="language- extra-class"><pre class="language-text"><code>public class JavaSerializer implements ObjectSerializer {
+    @Override
+    public byte[] serialize(Object obj) throws ObjectSerializerException {
+        ByteArrayOutputStream arrayOutputStream;
+        try {
+            arrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutput objectOutput = new ObjectOutputStream(arrayOutputStream);
+            objectOutput.writeObject(obj);
+            objectOutput.flush();
+            objectOutput.close();
+        } catch (IOException e) {
+            throw new ObjectSerializerException(&quot;JAVA serialize error &quot; + e.getMessage());
+        }
+        return arrayOutputStream.toByteArray();
+    }
+
+    @Override
+    public &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException {
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(param);
+        try {
+            ObjectInput input = new ObjectInputStream(arrayInputStream);
+            return (T) input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new ObjectSerializerException(&quot;JAVA deSerialize error &quot; + e.getMessage());
+        }
+    }
+
+    @Override
+    public String getSchemeName() {
+        return &quot;javaSerializer&quot;;
+    }
+
+}
+
+</code></pre></div><p>Java原生的序列化方式。</p> <h3 id="增加meta-inf目录文件"><a href="#增加meta-inf目录文件" class="header-anchor">#</a> 增加META-INF目录文件</h3> <p>Resource下面创建META-INF/services 目录里创建一个以服务接口命名的文件</p> <p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/5/14/1635dec21502ba4d~tplv-t2oaga2asx-watermark.awebp" alt="img"></p> <div class="language- extra-class"><pre class="language-text"><code>com.blueskykong.javaspi.serializer.KryoSerializer
+com.blueskykong.javaspi.serializer.JavaSerializer
+
+</code></pre></div><h3 id="service类"><a href="#service类" class="header-anchor">#</a> Service类</h3> <div class="language- extra-class"><pre class="language-text"><code>@Service
+public class SerializerService {
+
+
+    public ObjectSerializer getObjectSerializer() {
+        ServiceLoader&lt;ObjectSerializer&gt; serializers = ServiceLoader.load(ObjectSerializer.class);
+
+        final Optional&lt;ObjectSerializer&gt; serializer = StreamSupport.stream(serializers.spliterator(), false)
+                .findFirst();
+
+        return serializer.orElse(new JavaSerializer());
+    }
+}
+
+</code></pre></div><p>获取定义的序列化方式，且只取第一个（我们在配置中写了两个），如果找不到则返回Java原生序列化方式。</p> <h3 id="测试类"><a href="#测试类" class="header-anchor">#</a> 测试类</h3> <div class="language- extra-class"><pre class="language-text"><code>    @Autowired
+    private SerializerService serializerService;
+
+    @Test
+    public void serializerTest() throws ObjectSerializerException {
+        ObjectSerializer objectSerializer = serializerService.getObjectSerializer();
+        System.out.println(objectSerializer.getSchemeName());
+        byte[] arrays = objectSerializer.serialize(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;));
+        ArrayList list = objectSerializer.deSerialize(arrays, ArrayList.class);
+        Assert.assertArrayEquals(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;).toArray(), list.toArray());
+    }
+
+</code></pre></div><p>测试用例通过，且输出<code>kryoSerializer</code>。</p> <h2 id="spi的用途"><a href="#spi的用途" class="header-anchor">#</a> SPI的用途</h2> <p>数据库DriverManager、Spring、ConfigurableBeanFactory等都用到了SPI机制，这里以数据库DriverManager为例，看一下其实现的内幕。</p> <p>DriverManager是jdbc里管理和注册不同数据库driver的工具类。针对一个数据库，可能会存在着不同的数据库驱动实现。我们在使用特定的驱动实现时，不希望修改现有的代码，而希望通过一个简单的配置就可以达到效果。 在使用mysql驱动的时候，会有一个疑问，DriverManager是怎么获得某确定驱动类的？我们在运用Class.forName(&quot;com.mysql.jdbc.Driver&quot;)加载mysql驱动后，就会执行其中的静态代码把driver注册到DriverManager中，以便后续的使用。</p> <p>在JDBC4.0之前，连接数据库的时候，通常会用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>这句先加载数据库相关的驱动，然后再进行获取连接等的操作。而JDBC4.0之后不需要<code>Class.forName</code>来加载驱动，直接获取连接即可，这里使用了Java的SPI扩展机制来实现。</p> <p>在java中定义了接口java.sql.Driver，并没有具体的实现，具体的实现都是由不同厂商来提供的。</p> <h3 id="mysql"><a href="#mysql" class="header-anchor">#</a> mysql</h3> <p>在mysql-connector-java-5.1.45.jar中，META-INF/services目录下会有一个名字为java.sql.Driver的文件：</p> <div class="language- extra-class"><pre class="language-text"><code>com.mysql.jdbc.Driver
+com.mysql.fabric.jdbc.FabricMySQLDriver
+
+</code></pre></div><h3 id="pg"><a href="#pg" class="header-anchor">#</a> pg</h3> <p>而在postgresql-42.2.2.jar中，META-INF/services目录下会有一个名字为java.sql.Driver的文件：</p> <div class="language- extra-class"><pre class="language-text"><code>org.postgresql.Driver
+
+</code></pre></div><h3 id="用法"><a href="#用法" class="header-anchor">#</a> 用法</h3> <div class="language- extra-class"><pre class="language-text"><code>String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
+Connection conn = DriverManager.getConnection(url,username,password);
+
+</code></pre></div><p>上面展示的是mysql的用法，pg用法也是类似。不需要使用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>来加载驱动。</p> <h3 id="mysql-drivermanager实现"><a href="#mysql-drivermanager实现" class="header-anchor">#</a> Mysql DriverManager实现</h3> <p>上面代码没有了加载驱动的代码，我们怎么去确定使用哪个数据库连接的驱动呢？这里就涉及到使用Java的SPI扩展机制来查找相关驱动的东西了，关于驱动的查找其实都在DriverManager中，DriverManager是Java中的实现，用来获取数据库连接，在DriverManager中有一个静态代码块如下：</p> <div class="language- extra-class"><pre class="language-text"><code>static {
+	loadInitialDrivers();
+	println(&quot;JDBC DriverManager initialized&quot;);
+}
+
+</code></pre></div><p>可以看到其内部的静态代码块中有一个<code>loadInitialDrivers</code>方法，<code>loadInitialDrivers</code>用法用到了上文提到的spi工具类<code>ServiceLoader</code>:</p> <div class="language- extra-class"><pre class="language-text"><code>    public Void run() {
+
+        ServiceLoader&lt;Driver&gt; loadedDrivers = ServiceLoader.load(Driver.class);
+        Iterator&lt;Driver&gt; driversIterator = loadedDrivers.iterator();
+
+        /* Load these drivers, so that they can be instantiated.
+         * It may be the case that the driver class may not be there
+         * i.e. there may be a packaged driver with the service class
+         * as implementation of java.sql.Driver but the actual class
+         * may be missing. In that case a java.util.ServiceConfigurationError
+         * will be thrown at runtime by the VM trying to locate
+         * and load the service.
+         *
+         * Adding a try catch block to catch those runtime errors
+         * if driver not available in classpath but it's
+         * packaged as service and that service is there in classpath.
+         */
+        try{
+            while(driversIterator.hasNext()) {
+                driversIterator.next();
+            }
+        } catch(Throwable t) {
+        // Do nothing
+        }
+        return null;
+    }
+
+</code></pre></div><p>遍历使用SPI获取到的具体实现，实例化各个实现类。在遍历的时候，首先调用<code>driversIterator.hasNext()</code>方法，这里会搜索classpath下以及jar包中所有的META-INF/services目录下的java.sql.Driver文件，并找到文件中的实现类的名字，此时并没有实例化具体的实现类。</p> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <p>SPI机制在实际开发中使用得场景也有很多。特别是统一标准的不同厂商实现，当有关组织或者公司定义标准之后，具体厂商或者框架开发者实现，之后提供给开发者使用。</p> <p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。作者：aoho
+链接：https://juejin.cn/post/6844903605695152142
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/ty-wssf/blog-docs/edit/master/docs/technology/java/源码阅读/Java SPI机制详解.md" target="_blank" rel="noopener noreferrer">帮助我们改善此页面！</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">9/17/2021, 9:00:07 AM</span></div></footer> <!----> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog-docs/assets/js/app.2064cad8.js" defer></script><script src="/blog-docs/assets/js/2.d20fb779.js" defer></script><script src="/blog-docs/assets/js/165.5ea2b8f5.js" defer></script>
+  </body>
+</html>
