@@ -176,3 +176,8 @@ net start ssh-agent
 ### 环境变量配置
 
 ![image-20210823114103403](https://gitee.com/wuyilong/picture-bed/raw/master/img/image-20210823114103403.png)
+
+## 参考资料
+
+- [Windows 下 cmd 窗口使用 ssh 命令](https://blog.csdn.net/wm609972715/article/details/83759114)
+
